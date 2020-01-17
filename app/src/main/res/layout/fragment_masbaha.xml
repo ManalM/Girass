@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/subha_back"
+    android:orientation="vertical"
+    tools:context=".MasbahaFragment">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/choose_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+        android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="25sp"
+
+            android:background="@android:color/transparent"
+            android:layoutDirection="rtl"
+            android:src="@drawable/choose_icon1"
+           />
+
+
+        <ImageButton
+            android:id="@+id/reset"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="10dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="25dp"
+            android:src="@drawable/reset_icon"
+            android:background="@android:color/transparent"
+            android:layoutDirection="ltr"
+            />
+    </RelativeLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="50dp"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/third_zikr"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:textSize="10sp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="30dp"
+
+            android:fontFamily="@font/tajawal_regular"
+            android:gravity="center"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/sec_zikr"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/tajawal_regular"
+            android:gravity="center"
+            android:textColor="@color/secondText"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/fisrt_zikr"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="20dp"
+            android:textSize="15sp"
+
+            android:fontFamily="@font/tajawal_regular"
+            android:gravity="center"
+            android:textColor="@color/firstText"
+         />
+
+        <TextView
+            android:id="@+id/no_tasbih"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/tajawal_regular"
+            android:gravity="center"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold" />
+
+
+    </LinearLayout>
+    <ImageButton
+        android:id="@+id/subha_btn"
+        android:layout_width="141dp"
+        android:layout_height="94dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="30dp"
+        android:background="@android:color/transparent"
+
+        android:src="@drawable/subha_b" />
+</LinearLayout>
