@@ -19,9 +19,8 @@
         android:layout_height="wrap_content"
         android:textColor="@color/colorAccent"
         android:textSize="20sp"
-        android:padding="5dp"
+        android:padding="15dp"
         android:fontFamily="@font/tajawal_regular"
-        android:textStyle="bold"
 
         />
     <RelativeLayout
