@@ -73,12 +73,12 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
         editor = getContext().getSharedPreferences(MY_PREFS, MODE_PRIVATE).edit();
         prefs = getContext().getSharedPreferences(MY_PREFS, MODE_PRIVATE);
         chozenZikr = prefs.getString("chooseZikr", null);
-        l = new ListDialog();
 
 
         ////////////////////////////////////////////////////////////////////
         /////////////  show List Azkar using ListDialog class /////////////
         //////////////////////////////////////////////////////////////////
+        l = new ListDialog();
 
 
         resetCount.setOnClickListener(this);
