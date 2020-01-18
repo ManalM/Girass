@@ -15,6 +15,8 @@ import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 import android.os.VibrationEffect;
@@ -360,18 +362,21 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
 
     public void showListenDialog(){
         dialog=new Dialog(getContext());
-        View view = getLayoutInflater().inflate(R.layout.custom_dialog, null);
+        dialog.setContentView(R.layout.custom_dialog2);
 
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        ListView lv;
+        RecyclerView mRecyclerView;
 
-        lv = (ListView) view.findViewById(R.id.dialog_list);
+        mRecyclerView =  dialog.findViewById(R.id.dialog_list);
         DataService dataService = new DataService();
         String[] headZikrObjects = dataService.GetChosenAzkar();
+
         Log.d("Testttt",headZikrObjects[3]);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.dialog_item, R.id.choose_zikr_item, headZikrObjects);
-        lv.setAdapter(adapter);
+        AdapterAzkar mAdapterAzkar=new AdapterAzkar(getContext(),headZikrObjects);
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
+        mRecyclerView.setAdapter(mAdapterAzkar);
+/*
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -399,7 +404,7 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
         if (lv.getParent() != null) {
             ((ViewGroup) lv.getParent()).removeView(lv);
         }
-        dialog.setContentView(view);
+*/
         dialog.show();
     }
 
