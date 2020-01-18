@@ -27,4 +27,7 @@
     <string name="wakeup_zikr">أذكــار الاِسْـتِيقاظ </string>
     <string name="sleeping_zikr">أذكــار الـنَّــوْم</string>
     <string name="reminder">تذكير بالأذكـار</string>
+    <string name="hour">السّـاعة:</string>
+    <string name="send_reminder">إرسال تنبيه :</string>
+    <string name="choose_notification_time">اِختر وقت التنبيه</string>
 </resources>

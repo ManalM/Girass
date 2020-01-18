@@ -26,7 +26,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
     private TextView toolbarText;
     LinearLayout general, masbaha, notification, share, rate, about;
     private Dialog dialog;
-    private Switch activate;
+    private Switch activate, morning, evening, sleep, wakeup, reminder;
     private ImageButton close;
 
     @Override
@@ -99,8 +99,13 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
     private void showDialog() {
 
         dialog = new Dialog(getContext());
-        activate = dialog.findViewById(R.id.activate);
-        close = dialog.findViewById(R.id.close);
+        activate = (Switch) dialog.findViewById(R.id.activate);
+        close = (ImageButton) dialog.findViewById(R.id.close);
+        evening = (Switch) dialog.findViewById(R.id.evening);
+        morning = (Switch) dialog.findViewById(R.id.morning);
+        sleep = (Switch) dialog.findViewById(R.id.sleep);
+        wakeup = (Switch) dialog.findViewById(R.id.wakeup);
+        reminder = (Switch) dialog.findViewById(R.id.reminder);
 
 
         close.setOnClickListener(new View.OnClickListener() {
