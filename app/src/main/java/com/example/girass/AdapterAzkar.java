@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -15,7 +16,15 @@ public class AdapterAzkar extends RecyclerView.Adapter<AdapterAzkar.NewViewHolde
     private Context mContext;
     private String[] mAzkarArray;
     private AdapterAzkar mAdapterAzkar;
+    private OnItemClickListener mListener;
 
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mListener = listener;
+    }
 
     public AdapterAzkar(Context context, String[] mAzkarArray) {
         this.mContext = context;
@@ -26,7 +35,7 @@ public class AdapterAzkar extends RecyclerView.Adapter<AdapterAzkar.NewViewHolde
     public NewViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater mInflater = LayoutInflater.from(mContext);
         View view = mInflater.inflate(R.layout.dialog_item,parent,false);
-        return new AdapterAzkar.NewViewHolder(view);
+        return new AdapterAzkar.NewViewHolder(view,mListener);
     }
 
 
@@ -46,10 +55,23 @@ public class AdapterAzkar extends RecyclerView.Adapter<AdapterAzkar.NewViewHolde
         private TextView mTextView;
         private LinearLayout mLinearLayout;
 
-        public NewViewHolder(View itemView){
+        public NewViewHolder(View itemView,final OnItemClickListener listener){
             super(itemView);
             mTextView=itemView.findViewById(R.id.choose_zikr_item);
             mLinearLayout=itemView.findViewById(R.id.linearLayout);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
+
         }
 
     }

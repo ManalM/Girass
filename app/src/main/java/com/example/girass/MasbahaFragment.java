@@ -13,7 +13,6 @@ import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,11 +27,8 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 
-import android.widget.ListView;
 import android.widget.TextView;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -47,10 +43,10 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
     private Boolean doIVibrate = true;
     private TextView noOfTasih, firstZikr, secZikr, thirdZikr;
     private final static String MY_PREFS = "MY_PREFS";
-    ListDialog l;
     SharedPreferences.Editor editor;
     SharedPreferences prefs;
     String zikr, chozenZikr = "";
+    private String[] headZikrObjects;
 
     private Dialog dialog;
     @Override
@@ -80,7 +76,6 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
         ////////////////////////////////////////////////////////////////////
         /////////////  show List Azkar using ListDialog class /////////////
         //////////////////////////////////////////////////////////////////
-        l = new ListDialog();
 
 
         resetCount.setOnClickListener(this);
@@ -127,7 +122,7 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
 
      //   alrt = onCreateDialog();
 
-    showListenDialog();
+    showDialog();
 
 
     }
@@ -314,53 +309,7 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    public AlertDialog onCreateDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-        LayoutInflater inflater = requireActivity().getLayoutInflater();
-        View v = inflater.inflate(R.layout.custom_dialog, null);
-        ListView lv;
-
-        lv = v.findViewById(R.id.dialog_list);
-        DataService dataService = new DataService();
-        String[] headZikrObjects = dataService.GetChosenAzkar();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.dialog_item, R.id.choose_zikr_item, headZikrObjects);
-        lv.setAdapter(adapter);
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                chozenZikr = parent.getItemAtPosition(position).toString();
-
-                     editor.putString("chooseZikr", chozenZikr);
-                    editor.apply();
-                    if(editor.putString("chooseZikr" , chozenZikr) != null)
-                    {
-                        noOfTasih.setText(chozenZikr);
-                        noOfTasih.setText(ListDialog.selected);
-                        noOfTasih.setTextColor(getResources().getColor(R.color.firstText));
-                        noOfTasih.setTextSize(15);// change with settings
-                        //Hi Where are you?
-                    }
-                    firstZikr.setText("");
-                    secZikr.setText("");
-                    thirdZikr.setText("");
-                    count =0 ;
-                    theCount = 0 ;
-                   alrt.dismiss();
-            }
-        });
-        if (lv.getParent() != null) {
-            ((ViewGroup) lv.getParent()).removeView(lv);
-        }
-
-
-        builder.setView(v);
-        builder.create();
-
-        return builder.show();
-    }
-
-    public void showListenDialog(){
+    public void showDialog(){
         dialog=new Dialog(getContext());
         dialog.setContentView(R.layout.custom_dialog2);
 
@@ -370,24 +319,24 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
 
         mRecyclerView =  dialog.findViewById(R.id.dialog_list);
         DataService dataService = new DataService();
-        String[] headZikrObjects = dataService.GetChosenAzkar();
+        headZikrObjects = dataService.GetChosenAzkar();
 
         Log.d("Testttt",headZikrObjects[3]);
         AdapterAzkar mAdapterAzkar=new AdapterAzkar(getContext(),headZikrObjects);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
         mRecyclerView.setAdapter(mAdapterAzkar);
-/*
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mAdapterAzkar.setOnItemClickListener(new AdapterAzkar.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                chozenZikr = parent.getItemAtPosition(position).toString();
+            public void onItemClick(int position) {
+                chozenZikr = headZikrObjects[position];
 
                 editor.putString("chooseZikr", chozenZikr);
                 editor.apply();
-                if(editor.putString("chooseZikr" , chozenZikr) != null)
+
+
+                if(prefs.getString("chooseZikr" , chozenZikr) != null)
                 {
                     noOfTasih.setText(chozenZikr);
-                    noOfTasih.setText(ListDialog.selected);
                     noOfTasih.setTextColor(getResources().getColor(R.color.firstText));
                     noOfTasih.setTextSize(15);// change with settings
                 }
@@ -396,15 +345,12 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
                 thirdZikr.setText("");
                 count =0 ;
                 theCount = 0 ;
-              //  alrt.dismiss();
-
+                dialog.dismiss();
+                dialog.cancel();
 
             }
         });
-        if (lv.getParent() != null) {
-            ((ViewGroup) lv.getParent()).removeView(lv);
-        }
-*/
+
         dialog.show();
     }
 

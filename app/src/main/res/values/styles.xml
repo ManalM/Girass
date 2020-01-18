@@ -13,4 +13,9 @@
     <item name="android:textColor">@color/colorAccent </item>
 
 </style>
+
+    <style name="dialog_theme">
+        <item name="android:windowBackground">@drawable/shadow</item>
+    </style>
+
 </resources>
