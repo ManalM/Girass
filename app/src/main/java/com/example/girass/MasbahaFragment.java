@@ -49,6 +49,7 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
     private String[] headZikrObjects;
 
     private Dialog dialog;
+
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
@@ -90,7 +91,6 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
     ///////////////////////////////////////////////
     /////////////  Buttons Functions /////////////
     /////////////////////////////////////////////
-    AlertDialog alrt;
 
     @Override
     public void onClick(View v) {
@@ -120,9 +120,9 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
 
         //   setResetCount();
 
-     //   alrt = onCreateDialog();
+        //   alrt = onCreateDialog();
 
-    showDialog();
+        showDialog();
 
 
     }
@@ -309,21 +309,19 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    public void showDialog(){
-        dialog=new Dialog(getContext());
+    public void showDialog() {
+        dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.custom_dialog2);
 
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         RecyclerView mRecyclerView;
 
-        mRecyclerView =  dialog.findViewById(R.id.dialog_list);
+        mRecyclerView = dialog.findViewById(R.id.dialog_list);
         DataService dataService = new DataService();
         headZikrObjects = dataService.GetChosenAzkar();
-
-        Log.d("Testttt",headZikrObjects[3]);
-        AdapterAzkar mAdapterAzkar=new AdapterAzkar(getContext(),headZikrObjects);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
+        AdapterAzkar mAdapterAzkar = new AdapterAzkar(getContext(), headZikrObjects);
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
         mRecyclerView.setAdapter(mAdapterAzkar);
         mAdapterAzkar.setOnItemClickListener(new AdapterAzkar.OnItemClickListener() {
             @Override
@@ -334,8 +332,7 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
                 editor.apply();
 
 
-                if(prefs.getString("chooseZikr" , chozenZikr) != null)
-                {
+                if (prefs.getString("chooseZikr", chozenZikr) != null) {
                     noOfTasih.setText(chozenZikr);
                     noOfTasih.setTextColor(getResources().getColor(R.color.firstText));
                     noOfTasih.setTextSize(15);// change with settings
@@ -343,8 +340,8 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
                 firstZikr.setText("");
                 secZikr.setText("");
                 thirdZikr.setText("");
-                count =0 ;
-                theCount = 0 ;
+                count = 0;
+                theCount = 0;
                 dialog.dismiss();
                 dialog.cancel();
 

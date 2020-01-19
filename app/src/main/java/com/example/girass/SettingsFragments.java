@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -16,18 +18,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.List;
 
 
 public class SettingsFragments extends Fragment implements View.OnClickListener {
     private Toolbar toolbar;
     private TextView toolbarText;
     LinearLayout general, masbaha, notification, share, rate, about;
-    private Dialog dialog;
+    private Dialog dialog, aboutDialog;
     private Switch activate, morning, evening, sleep, wakeup, reminder;
-    private ImageButton close;
+    private ImageButton close ,aboutClose;
+    private TextView www, phone, twitter, email;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,6 +71,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         share.setOnClickListener(this);
         rate.setOnClickListener(this);
         about.setOnClickListener(this);
+
         return rootView;
     }
 
@@ -92,29 +99,56 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                 rateApp();
                 break;
             case R.id.about:
+                aboutApp();
                 break;
+            case R.id.phone:
+                Toast.makeText(getContext(), "phone", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void aboutApp() {
+        aboutDialog = new Dialog(getContext());
+        aboutDialog.setContentView(R.layout.about_dialog);
+        aboutDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        aboutClose = aboutDialog.findViewById(R.id.about_close);
+        phone = aboutDialog.findViewById(R.id.phone);
+        www  = aboutDialog.findViewById(R.id.www);
+        twitter= aboutDialog.findViewById(R.id.twitter);
+        email = aboutDialog.findViewById(R.id.email);
+
+        twitter.setText("@dozo_apps");
+
+        phone.setOnClickListener(this);
+        aboutDialog.show();
+
     }
 
     private void showDialog() {
 
         dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.notification_dialog);
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
         activate = (Switch) dialog.findViewById(R.id.activate);
-        close = (ImageButton) dialog.findViewById(R.id.close);
         evening = (Switch) dialog.findViewById(R.id.evening);
         morning = (Switch) dialog.findViewById(R.id.morning);
         sleep = (Switch) dialog.findViewById(R.id.sleep);
         wakeup = (Switch) dialog.findViewById(R.id.wakeup);
         reminder = (Switch) dialog.findViewById(R.id.reminder);
+        close = (ImageButton) dialog.findViewById(R.id.close);
 
-
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.setContentView(R.layout.notification_dialog);
+        try {
+            close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+        } catch (Exception e) {
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
         dialog.show();
     }
 

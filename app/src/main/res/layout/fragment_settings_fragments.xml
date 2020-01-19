@@ -38,7 +38,7 @@
             android:text="@string/general_setting"
             android:textColor="@color/colorAccent"
             android:textDirection="rtl"
-            android:textSize="10sp" />
+            android:textSize="20sp" />
 
 
     </LinearLayout>
@@ -73,7 +73,7 @@
             android:text="@string/masbaha_setting"
             android:textColor="@color/colorAccent"
             android:textDirection="rtl"
-            android:textSize="10sp" />
+            android:textSize="20sp" />
 
 
     </LinearLayout>
@@ -109,7 +109,7 @@
             android:text="@string/notification"
             android:textColor="@color/colorAccent"
             android:textDirection="rtl"
-            android:textSize="10sp" />
+            android:textSize="20sp" />
 
 
     </LinearLayout>
@@ -131,7 +131,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:src="@drawable/left_arrow" />
 
         <TextView
@@ -161,7 +161,7 @@
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:orientation="horizontal">
 
         <ImageView
@@ -196,7 +196,7 @@
         android:id="@+id/about"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:orientation="horizontal">
 
         <ImageView
