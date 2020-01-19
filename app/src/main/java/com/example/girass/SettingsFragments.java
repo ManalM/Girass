@@ -1,9 +1,14 @@
 package com.example.girass;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -17,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Switch;
@@ -32,8 +38,9 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
     LinearLayout general, masbaha, notification, share, rate, about;
     private Dialog dialog, aboutDialog;
     private Switch activate, morning, evening, sleep, wakeup, reminder;
-    private ImageButton close ,aboutClose;
+    private ImageButton close, aboutClose;
     private TextView www, phone, twitter, email;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -99,30 +106,20 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                 rateApp();
                 break;
             case R.id.about:
-                aboutApp();
+                try{
+
+                    startActivity(new Intent(getContext(), Notes.class));
+                 //   aboutApp();
+                }catch (OutOfMemoryError e ){
+                    Toast.makeText(getContext(), "Error"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+
                 break;
-            case R.id.phone:
-                Toast.makeText(getContext(), "phone", Toast.LENGTH_SHORT).show();
+         /*  case R.id.phone:
+                Toast.makeText(getContext(), "phone", Toast.LENGTH_SHORT).show();*/
         }
     }
 
-    private void aboutApp() {
-        aboutDialog = new Dialog(getContext());
-        aboutDialog.setContentView(R.layout.about_dialog);
-        aboutDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        aboutClose = aboutDialog.findViewById(R.id.about_close);
-        phone = aboutDialog.findViewById(R.id.phone);
-        www  = aboutDialog.findViewById(R.id.www);
-        twitter= aboutDialog.findViewById(R.id.twitter);
-        email = aboutDialog.findViewById(R.id.email);
-
-        twitter.setText("@dozo_apps");
-
-        phone.setOnClickListener(this);
-        aboutDialog.show();
-
-    }
 
     private void showDialog() {
 
@@ -171,4 +168,6 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                     Uri.parse("http://play.google.com/store/apps/details?id=" + getContext().getPackageName())));
         }
     }
+
+
 }

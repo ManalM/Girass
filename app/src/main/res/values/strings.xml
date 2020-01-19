@@ -30,4 +30,10 @@
     <string name="hour">السّـاعة:</string>
     <string name="send_reminder">إرسال تنبيه :</string>
     <string name="choose_notification_time">اِختر وقت التنبيه</string>
+
+    <!-- about Settings   -->
+
+    <string name="info"></string>
+    <string name="call_title">اتصل بنا</string>
+    <string name="call_message">اختر إحدى الطريقتين</string>
 </resources>

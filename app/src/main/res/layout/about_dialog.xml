@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/dark_back"
@@ -12,37 +13,37 @@
         android:orientation="horizontal">
 
         <ImageButton
-            android:layout_marginTop="5dp"
             android:id="@+id/about_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="25dp"
             android:layout_marginRight="25dp"
             android:background="@android:color/transparent"
-            android:src="@drawable/ic_cancel_black_24dp" />
+          />
 
         <ImageButton
-            android:layout_marginTop="5dp"
-
             android:id="@+id/about_app"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_marginStart="17dp"
             android:layout_marginLeft="17dp"
+            android:layout_marginTop="5dp"
             android:background="@android:color/transparent"
-            android:src="@drawable/i" />
+             />
 
     </RelativeLayout>
+
     <RelativeLayout
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        >
+        android:layout_marginTop="20dp">
 
 
         <ImageButton
@@ -60,25 +61,26 @@
             android:layout_marginRight="150dp"
             android:background="@drawable/dozo1"
             android:gravity="center" />
+
         <TextView
             android:id="@+id/desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
-            android:fontFamily="@font/tajawal_regular"
-            android:text="fdbddfbdfgbgn"
             android:layout_below="@id/dozo"
             android:layout_margin="30dp"
+            android:fontFamily="@font/tajawal_regular"
             android:gravity="fill_horizontal"
-            android:textDirection="rtl"
-            />
+            android:text="fdbddfbdfgbgn"
+            android:textColor="@color/colorAccent"
+            android:textDirection="rtl" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
+            android:layout_below="@id/desc"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:background="@color/colorAccent"
-            android:layout_below="@id/desc"/>
+            android:background="@color/colorAccent" />
 
 
     </RelativeLayout>
@@ -89,90 +91,102 @@
         android:layout_margin="15dp"
         android:background="@drawable/contact_background"
         android:orientation="horizontal">
+
         <TextView
             android:id="@+id/www"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_weight="1"
             android:fontFamily="@font/tajawal_regular"
-            android:textStyle="bold"
-            android:layout_gravity="center"
-            android:text="www.dozo-apps.com"
             android:gravity="center"
-            android:textColor="@color/textColor" />
+
+            android:text="www.dozo-apps.com"
+            android:textColor="@color/textColor"
+            android:textStyle="bold" />
 
         <ImageView
+            android:id="@+id/www_img"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:background="@drawable/www" />
+          />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
         android:background="@drawable/contact_background"
         android:orientation="horizontal">
+
         <TextView
             android:id="@+id/email"
             android:layout_width="match_parent"
-            android:text="info@dozo-apps.com"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_weight="1"
             android:fontFamily="@font/tajawal_regular"
-            android:textStyle="bold"
-            android:layout_gravity="center"
             android:gravity="center"
-            android:textColor="@color/textColor" />
+            android:text="info@dozo-apps.com"
+            android:textColor="@color/textColor"
+            android:textStyle="bold" />
 
         <ImageView
+            android:id="@+id/email_img"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:background="@drawable/email" />
+         />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
         android:background="@drawable/contact_background"
         android:orientation="horizontal">
+
         <TextView
             android:id="@+id/twitter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-
-            android:fontFamily="@font/tajawal_regular"
-            android:textStyle="bold"
             android:layout_gravity="center"
+
+            android:layout_weight="1"
+            android:fontFamily="@font/tajawal_regular"
             android:gravity="center"
-            android:textColor="@color/textColor" />
+            android:textColor="@color/textColor"
+            android:textStyle="bold" />
 
         <ImageView
+            android:id="@+id/twitter_img"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:background="@drawable/twitter" />
+             />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
         android:background="@drawable/contact_background"
         android:orientation="horizontal">
+
         <TextView
             android:id="@+id/phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_weight="1"
             android:fontFamily="@font/tajawal_regular"
-            android:textStyle="bold"
-            android:text="00966567636391"
-            android:layout_gravity="center"
             android:gravity="center"
-            android:textColor="@color/textColor" />
+            android:text="00966567636391"
+            android:textColor="@color/textColor"
+            android:textStyle="bold" />
 
         <ImageView
+            android:id="@+id/phone_img"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:background="@drawable/phone" />
+       />
     </LinearLayout>
 </LinearLayout>
