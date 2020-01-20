@@ -33,7 +33,7 @@
 
     <!-- about Settings   -->
 
-    <string name="info"></string>
+    <string name="info">جزى اللّه خيرا، كل من ساهم في \n بناء و نشر هذا التطبيق </string>
     <string name="call_title">اتصل بنا</string>
     <string name="call_message">اختر إحدى الطريقتين</string>
 </resources>
