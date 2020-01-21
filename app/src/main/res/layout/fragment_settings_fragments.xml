@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/dark_back"
@@ -21,6 +25,7 @@
         android:orientation="horizontal">
 
         <ImageView
+            android:id="@+id/general_arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -39,9 +44,170 @@
             android:textColor="@color/colorAccent"
             android:textDirection="rtl"
             android:textSize="20sp" />
-
-
     </LinearLayout>
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/general_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@color/colorAccent"
+
+        android:visibility="gone"
+        app:cardCornerRadius="9dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Switch
+                android:id="@+id/general_vibrate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/tajawal_regular"
+                android:text="تشغيل الاهتزازات"
+                android:textColor="@color/textColor" />
+
+            <Switch
+                android:id="@+id/general_sounds"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/tajawal_regular"
+                android:text="تشغيل الأصوات"
+                android:textColor="@color/textColor" />
+
+            <TextView
+                android:id="@+id/text_size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:fontFamily="@font/tajawal_regular"
+                android:text="حجم الخط"
+                android:textColor="@color/textColor" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:fontFamily="@font/tajawal_regular"
+                android:text="نَوْع الخَطْ"
+                android:textColor="@color/textColor" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/card_background"
+                android:stretchColumns="*"
+
+                >
+
+                <TableRow android:layout_width="0dp"
+
+
+                    >
+
+                    <TextView
+                        android:id="@+id/font1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:background="#fff"
+                        android:fontFamily="@font/tajawal_regular"
+                        android:gravity="center"
+                        android:text="تٍجْوال"
+                        android:textColor="@color/textColor" />
+
+                    <TextView
+                        android:id="@+id/font2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:background="#fff"
+                        android:fontFamily="@font/tajawal_regular"
+                        android:gravity="center"
+                        android:text="دِمَشْـقِي "
+                        android:textColor="@color/textColor" />
+
+                    <TextView
+                        android:id="@+id/font3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:background="#fff"
+                        android:fontFamily="@font/tajawal_regular"
+                        android:gravity="center"
+                        android:text="نَــسْـخْ "
+                        android:textColor="@color/textColor" />
+                </TableRow>
+
+            </TableLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:fontFamily="@font/tajawal_regular"
+                android:text="صفحة البدء"
+                android:textColor="@color/textColor" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/card_background"
+                android:stretchColumns="*"
+
+                >
+
+                <TableRow android:layout_width="0dp"
+
+
+                    >
+
+                    <TextView
+                        android:id="@+id/luncher_zikr"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:background="#fff"
+                        android:fontFamily="@font/tajawal_regular"
+                        android:gravity="center"
+                        android:text="الأذكار"
+                        android:textColor="@color/textColor" />
+
+                    <TextView
+                        android:id="@+id/luncher_fav"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:background="#fff"
+                        android:fontFamily="@font/tajawal_regular"
+                        android:gravity="center"
+                        android:text="المفضّلة "
+                        android:textColor="@color/textColor" />
+
+                    <TextView
+                        android:id="@+id/luncher_masbaha"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:background="#fff"
+                        android:fontFamily="@font/tajawal_regular"
+                        android:gravity="center"
+                        android:text="المسبحة"
+                        android:textColor="@color/textColor" />
+                </TableRow>
+
+            </TableLayout>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -58,6 +224,7 @@
         android:orientation="horizontal">
 
         <ImageView
+            android:id="@+id/masbaha_arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -77,6 +244,118 @@
 
 
     </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/masbaha_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@color/colorAccent"
+        android:visibility="gone"
+        app:cardCornerRadius="9dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Switch
+                android:id="@+id/masbaha_vibrate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="تشغيل الاهتزازات"
+                android:fontFamily="@font/tajawal_regular"
+
+                android:textColor="@color/textColor" />
+
+            <Switch
+                android:id="@+id/masbaha_sounds"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:fontFamily="@font/tajawal_regular"
+
+                android:text="تشغيل الأصوات"
+                android:textColor="@color/textColor" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="أصوات المسبحة"
+                android:fontFamily="@font/tajawal_regular"
+
+                android:textColor="@color/textColor" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/card_background"
+                android:stretchColumns="*"
+
+                >
+
+                <TableRow android:layout_width="0dp"
+
+
+                    >
+
+                    <TextView
+                        android:id="@+id/sound1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:background="#fff"
+                        android:gravity="center"
+                        android:text="صوت 1 "
+                        android:fontFamily="@font/tajawal_regular"
+
+                        android:textColor="@color/textColor" />
+
+                    <TextView
+                        android:id="@+id/sound2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:background="#fff"
+                        android:gravity="center"
+                        android:text="صوت 2"
+                        android:fontFamily="@font/tajawal_regular"
+
+                        android:textColor="@color/textColor" />
+
+                    <TextView
+                        android:id="@+id/sound3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:background="#fff"
+                        android:gravity="center"
+                        android:text="صوت 3 "
+                        android:fontFamily="@font/tajawal_regular"
+
+                        android:textColor="@color/textColor" />
+
+                    <TextView
+                        android:id="@+id/sound4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:background="#fff"
+                        android:gravity="center"
+                        android:text="صوت 4 "
+                        android:fontFamily="@font/tajawal_regular"
+
+                        android:textColor="@color/textColor" />
+                </TableRow>
+
+            </TableLayout>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -227,3 +506,4 @@
         android:layout_marginEnd="15dp"
         android:background="@color/secondText" />
 </LinearLayout>
+</ScrollView>

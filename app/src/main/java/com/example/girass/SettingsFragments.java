@@ -6,6 +6,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -37,17 +38,21 @@ import com.google.android.material.internal.CircularBorderDrawable;
 
 import java.util.List;
 
+import static android.content.Context.MODE_PRIVATE;
+
 
 public class SettingsFragments extends Fragment implements View.OnClickListener {
     private Toolbar toolbar;
     private TextView toolbarText;
     LinearLayout general, masbaha, notification, share, rate, about;
-    private Dialog dialog, aboutDialog, detailsDialog;;
+    private Dialog dialog, aboutDialog, detailsDialog;
+    private CardView generalCard , masbahaCard;
     private Switch activate, morning, evening, sleep, wakeup, reminder;
     private ImageButton aboutApp, close, aboutClose;
-    private TextView www, phone, twitter, email,desc;
-    private ImageView background_img, www_img, email_img, phone_img, twitter_img , dozo; // the image
-
+    private TextView www, phone, twitter, email, desc,
+            morningTime, eveningTime, sleepTime, wakeTime, reminderTime;
+    private ImageView background_img, www_img, email_img, phone_img, twitter_img, dozo; // the image
+    private ImageView generalArrow , masbahaArrow;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,6 +72,11 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         share = (LinearLayout) rootView.findViewById(R.id.share);
         rate = (LinearLayout) rootView.findViewById(R.id.rate);
         about = (LinearLayout) rootView.findViewById(R.id.about);
+        generalCard = rootView.findViewById(R.id.general_card);
+        masbahaCard = rootView.findViewById(R.id.masbaha_card);
+        generalArrow = rootView.findViewById(R.id.general_arrow);
+        masbahaArrow  = rootView.findViewById(R.id.masbaha_arrow);
+
 
         /////////////////////////////////////////////
         /////////////     ToolBar       ////////////
@@ -100,8 +110,23 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 
         switch (v.getId()) {
             case R.id.general_setting:
+                if (generalCard.getVisibility() ==View.GONE){
+                    generalCard.setVisibility(View.VISIBLE);
+                      Glide.with(getContext()).load(R.drawable.up_arrow).into(generalArrow);
+                }else{
+                    generalCard.setVisibility(View.GONE);
+                       Glide.with(getContext()).load(R.drawable.down_arrow).into(generalArrow);
+                }
+
                 break;
             case R.id.masbaha_setting:
+                if (masbahaCard.getVisibility() ==View.GONE){
+                    masbahaCard.setVisibility(View.VISIBLE);
+                      Glide.with(getContext()).load(R.drawable.up_arrow).into(masbahaArrow);
+                }else{
+                    masbahaCard.setVisibility(View.GONE);
+                    Glide.with(getContext()).load(R.drawable.down_arrow).into(masbahaArrow);
+                }
                 break;
             case R.id.notification:
                 showDialog();
@@ -113,12 +138,12 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                 rateApp();
                 break;
             case R.id.about:
-                try{
+                try {
 
-                   // startActivity(new Intent(getContext(), Notes.class));
-             aboutApp();
-                }catch (OutOfMemoryError e ){
-                    Toast.makeText(getContext(), "Error"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    // startActivity(new Intent(getContext(), Notes.class));
+                    aboutApp();
+                } catch (OutOfMemoryError e) {
+                    Toast.makeText(getContext(), "Error" + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
                 break;
@@ -134,14 +159,62 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
+        ///-----------TextView--------------
+        morningTime = dialog.findViewById(R.id.morning_time);
+        eveningTime = dialog.findViewById(R.id.evening_time);
+        sleepTime = dialog.findViewById(R.id.sleep_time);
+        wakeTime = dialog.findViewById(R.id.wakeup_time);
+        reminderTime = dialog.findViewById(R.id.reminder_time);
+
+        //--------------------Switch------------
         activate = (Switch) dialog.findViewById(R.id.activate);
         evening = (Switch) dialog.findViewById(R.id.evening);
         morning = (Switch) dialog.findViewById(R.id.morning);
         sleep = (Switch) dialog.findViewById(R.id.sleep);
         wakeup = (Switch) dialog.findViewById(R.id.wakeup);
         reminder = (Switch) dialog.findViewById(R.id.reminder);
-        close = (ImageButton) dialog.findViewById(R.id.close);
 
+        close = (ImageButton) dialog.findViewById(R.id.close);
+        String[] VerityTimeArray= {
+
+        "كل نصف ساعة",
+                "كل ساعة",
+                "كل ساعتين",
+                "كل ثلاث ساعات",
+                "كل أربع ساعات",
+                "كل خمس ساعات",
+                "كل ستة ساعات",
+                "كل ١٢ ساعة",
+
+    };
+
+
+       int[] VerityIntervalArray  = {1800,
+               3600,
+               7200,
+               10800,
+               14400,
+               18000,
+               21600,
+               43200} ;
+
+
+
+        final int Minute= 60;
+        final int HalfHour  = 1800;
+        final int OneHoer = 3600;
+        final int TowHoers = 7200;
+        final int TreeHoers= 10800;
+        final int FourHoers = 14400;
+        final int FiveHoers  = 18000;
+        final int SixHoers= 21600;
+        final int HalfDay  = 43200;
+
+        if (activate.isActivated()) {
+
+
+
+        }
         try {
             close.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -174,6 +247,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                     Uri.parse("http://play.google.com/store/apps/details?id=" + getContext().getPackageName())));
         }
     }
+
     private void aboutApp() {
 
 
@@ -198,10 +272,10 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         www_img.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         twitter_img.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-      //  Glide.with(this).load(R.drawable.www).into(www_img);
+        //  Glide.with(this).load(R.drawable.www).into(www_img);
         Glide.with(this).load(R.drawable.phone).into(phone_img);
         Glide.with(this).load(R.drawable.email1).into(email_img);
-       // Glide.with(this).load(R.drawable.twitter).into(twitter_img);
+        // Glide.with(this).load(R.drawable.twitter).into(twitter_img);
         Glide.with(this).load(R.drawable.ic_cancel_black_24dp).into(aboutClose);
         Glide.with(this).load(R.drawable.i).into(aboutApp);
         //    Glide.with(this).load(R.drawable.dozo1).into(dozo);
@@ -276,15 +350,15 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                         //sendIntent.setType("text/plain");
                         sendIntent.setPackage("com.whatsapp");
                         // sendIntent.setPackage("com.twitter");
-                      try{
-                        startActivity(sendIntent);}
-                      catch(ActivityNotFoundException e ){
-                          String message = e.getMessage();
+                        try {
+                            startActivity(sendIntent);
+                        } catch (ActivityNotFoundException e) {
+                            String message = e.getMessage();
 
-                          Toast.makeText(getContext(), "Error:" + message, Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), "Error:" + message, Toast.LENGTH_LONG).show();
 
 
-                      }
+                        }
                     }
                 });
                 builder.show();
@@ -300,7 +374,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                 browserIntent.setPackage("com.twitter");
                 try {
                     startActivity(browserIntent);
-                }catch(ActivityNotFoundException e){
+                } catch (ActivityNotFoundException e) {
                     String message = e.getMessage();
 
                     Toast.makeText(getContext(), "Error:" + message, Toast.LENGTH_LONG).show();
@@ -317,10 +391,10 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 
                 detailsDialog = new Dialog(getContext());
                 detailsDialog.setContentView(R.layout.details_dialog);
-            //    CardView card =detailsDialog.findViewById(R.id.card);
+                //    CardView card =detailsDialog.findViewById(R.id.card);
 
-            ///    card.setRadius(9);
-               detailsDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                ///    card.setRadius(9);
+                detailsDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 detailsDialog.show();
             }
         });
