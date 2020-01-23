@@ -11,7 +11,9 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.fonts.FontFamily;
 import android.media.Image;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -44,23 +46,26 @@ import static android.content.Context.MODE_PRIVATE;
 
 
 public class SettingsFragments extends Fragment implements View.OnClickListener {
+
     private Toolbar toolbar;
     private TextView toolbarText;
     LinearLayout general, masbaha, notification, share, rate, about;
     private Dialog dialog, aboutDialog, detailsDialog;
-    private CardView generalCard , masbahaCard;
-    private Switch activate, morning, evening, sleep, wakeup, reminder ,masbahaSound,masbahaVibrate,generalSound,generalVibrate;
+    private CardView generalCard, masbahaCard;
+    private Switch activate, morning, evening, sleep, wakeup, reminder, masbahaSound, masbahaVibrate, generalSound, generalVibrate;
     private ImageButton aboutApp, close, aboutClose;
     private TextView www, phone, twitter, email, desc,
             morningTime, eveningTime, sleepTime, wakeTime, reminderTime,
-            sound1 ,sound2,sound3,sound4,
-    font1 , font2,font3,
-    luncherMasbaha ,lucherfav,luncherZikr;
+            sound1, sound2, sound3, sound4,
+            font1, font2, font3,
+            luncherMasbaha, lucherfav, luncherZikr;
     private ImageView background_img, www_img, email_img, phone_img, twitter_img, dozo; // the image
-    private ImageView generalArrow , masbahaArrow;
+    private ImageView generalArrow, masbahaArrow;
     public static MediaPlayer defualtSound;
-    public  static  Boolean Masbahavibrate = true , Masbahasound=true
-            ,GeneralSound= true , Generalvibrate= true;
+    public static Typeface defualtFont;
+
+    public static Boolean Masbahavibrate = true, Masbahasound = true, GeneralSound = true, Generalvibrate = true;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -79,28 +84,36 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         share = (LinearLayout) rootView.findViewById(R.id.share);
         rate = (LinearLayout) rootView.findViewById(R.id.rate);
         about = (LinearLayout) rootView.findViewById(R.id.about);
+        //-------------------------------------------------------------
+
         generalCard = (CardView) rootView.findViewById(R.id.general_card);
         masbahaCard = (CardView) rootView.findViewById(R.id.masbaha_card);
         generalArrow = (ImageView) rootView.findViewById(R.id.general_arrow);
-        masbahaArrow  = (ImageView) rootView.findViewById(R.id.masbaha_arrow);
+        masbahaArrow = (ImageView) rootView.findViewById(R.id.masbaha_arrow);
         masbahaSound = (Switch) rootView.findViewById(R.id.masbaha_sounds);
         masbahaVibrate = (Switch) rootView.findViewById(R.id.masbaha_vibrate);
         generalSound = (Switch) rootView.findViewById(R.id.general_sounds);
-        generalVibrate =  (Switch) rootView.findViewById(R.id.general_vibrate);
-        font1= (TextView)   rootView.findViewById(R.id.font1);
-        font2= (TextView)   rootView.findViewById(R.id.font2);
-        font3= (TextView)   rootView.findViewById(R.id.font3);
-        lucherfav = (TextView)   rootView.findViewById(R.id.luncher_fav);
-        luncherMasbaha=(TextView)   rootView.findViewById(R.id.luncher_masbaha);
+        generalVibrate = (Switch) rootView.findViewById(R.id.general_vibrate);
+        //-------------------------------------------------------------
 
-        luncherZikr
-                =(TextView)   rootView.findViewById(R.id.luncher_zikr);
+        font1 = (TextView) rootView.findViewById(R.id.font1);
+        font2 = (TextView) rootView.findViewById(R.id.font2);
+        font3 = (TextView) rootView.findViewById(R.id.font3);
+      //-------------------------------------------------------------
+        lucherfav = (TextView) rootView.findViewById(R.id.luncher_fav);
+        luncherMasbaha = (TextView) rootView.findViewById(R.id.luncher_masbaha);
+
+        luncherZikr = (TextView) rootView.findViewById(R.id.luncher_zikr);
+        //-------------------------------------------------------------
+
         sound1 = (TextView) rootView.findViewById(R.id.sound1);
         sound2 = (TextView) rootView.findViewById(R.id.sound2);
         sound3 = (TextView) rootView.findViewById(R.id.sound3);
         sound4 = (TextView) rootView.findViewById(R.id.sound4);
-        defualtSound= MediaPlayer.create(getContext(),R.raw.click);
+        //-------------------------------------------------------------
 
+        defualtSound = MediaPlayer.create(getContext(), R.raw.click);
+        defualtFont =Typeface.createFromAsset(getContext().getAssets(),"font/tajawal_regular");
         /////////////////////////////////////////////
         /////////////     ToolBar       ////////////
         //////////////////////////////////////////
@@ -111,6 +124,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 
         toolbar.setTitle("");
         toolbarText.setText(R.string.settings);
+        //-------------------------------------------------------------
 
         general.setOnClickListener(this);
         masbaha.setOnClickListener(this);
@@ -134,23 +148,23 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         switch (v.getId()) {
 
             case R.id.general_setting:
-                if (generalCard.getVisibility() ==View.GONE){
+                if (generalCard.getVisibility() == View.GONE) {
                     generalCard.setVisibility(View.VISIBLE);
-                      Glide.with(getContext()).load(R.drawable.up_arrow).into(generalArrow);
-                      GenetalSetting();
-                }else{
+                    Glide.with(getContext()).load(R.drawable.up_arrow).into(generalArrow);
+                    GenetalSetting();
+                } else {
                     generalCard.setVisibility(View.GONE);
-                       Glide.with(getContext()).load(R.drawable.down_arrow).into(generalArrow);
+                    Glide.with(getContext()).load(R.drawable.down_arrow).into(generalArrow);
                 }
 
                 break;
 
             case R.id.masbaha_setting:
-                if (masbahaCard.getVisibility() ==View.GONE){
+                if (masbahaCard.getVisibility() == View.GONE) {
                     masbahaCard.setVisibility(View.VISIBLE);
-                      Glide.with(getContext()).load(R.drawable.up_arrow).into(masbahaArrow);
-                      MasbahaSetting();
-                }else{
+                    Glide.with(getContext()).load(R.drawable.up_arrow).into(masbahaArrow);
+                    MasbahaSetting();
+                } else {
                     masbahaCard.setVisibility(View.GONE);
                     Glide.with(getContext()).load(R.drawable.down_arrow).into(masbahaArrow);
                 }
@@ -181,26 +195,45 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
     private void GenetalSetting() {
 
 
-        boolean VibrationChecked =generalVibrate.isChecked();
+        boolean VibrationChecked = generalVibrate.isChecked();
         boolean SoundsChecked = generalSound.isChecked();
 
-        if(VibrationChecked == true){
+        if (VibrationChecked == true) {
 
-           Generalvibrate= true;
-        }else{
-            Generalvibrate= false;
+            Generalvibrate = true;
+        } else {
+            Generalvibrate = false;
         }
 
-        if(SoundsChecked == true){
+        if (SoundsChecked == true) {
 
-            GeneralSound= true;
+            GeneralSound = true;
             defualtSound.start();
-        }else {
+        } else {
             GeneralSound = false;
         }
 
 
+        font1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajawal_regular");
+            }
+        });
+        font2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajawal_light");
 
+            }
+        });
+        font3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajwal_bold");
+
+            }
+        });
     }
 
     private void MasbahaSetting() {
@@ -208,53 +241,52 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         boolean VibrationChecked = masbahaVibrate.isChecked();
         boolean SoundsChecked = masbahaSound.isChecked();
 
-        if(VibrationChecked == true){
+        if (VibrationChecked == true) {
 
             Masbahavibrate = true;
-        }else{
+        } else {
             Masbahavibrate = false;
         }
 
-        if(SoundsChecked == true){
+        if (SoundsChecked == true) {
 
-         Masbahasound= true;
-        }else {
+            Masbahasound = true;
+        } else {
             Masbahasound = false;
         }
 
-        final MediaPlayer mediaSound1 , mediaSound2 , mediaSound3,mediaSound4;
-        mediaSound1 = MediaPlayer.create(getContext() , R.raw.click2);
-        mediaSound2 = MediaPlayer.create(getContext() , R.raw.pop);
-        mediaSound3 = MediaPlayer.create(getContext() , R.raw.click);
-        mediaSound4 = MediaPlayer.create(getContext() , R.raw.menu2);
+        final MediaPlayer mediaSound1, mediaSound2, mediaSound3, mediaSound4;
+        mediaSound1 = MediaPlayer.create(getContext(), R.raw.click2);
+        mediaSound2 = MediaPlayer.create(getContext(), R.raw.pop);
+        mediaSound3 = MediaPlayer.create(getContext(), R.raw.click);
+        mediaSound4 = MediaPlayer.create(getContext(), R.raw.menu2);
 
 
+        sound1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Masbahasound == true)
+                    mediaSound1.start();
+                defualtSound = mediaSound1;
 
-       sound1.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               if(Masbahasound == true)
-               mediaSound1.start();
-               defualtSound= mediaSound1;
+            }
+        });
 
-           }
-       });
+        sound2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Masbahasound == true)
+                    mediaSound2.start();
+                defualtSound = mediaSound2;
 
-       sound2.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               if(Masbahasound == true)
-                   mediaSound2.start();
-               defualtSound= mediaSound2;
-
-           }
-       });
+            }
+        });
         sound3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Masbahasound == true)
+                if (Masbahasound == true)
                     mediaSound3.start();
-                defualtSound= mediaSound3;
+                defualtSound = mediaSound3;
 
             }
         });
@@ -262,14 +294,13 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         sound4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Masbahasound == true)
+                if (Masbahasound == true)
                     mediaSound4.start();
-                defualtSound= mediaSound4;
+                defualtSound = mediaSound4;
 
             }
         });
     }
-
 
 
     private void showDialog() {
@@ -295,9 +326,9 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         reminder = (Switch) dialog.findViewById(R.id.reminder);
 
         close = (ImageButton) dialog.findViewById(R.id.close);
-        String[] VerityTimeArray= {
+        String[] VerityTimeArray = {
 
-        "كل نصف ساعة",
+                "كل نصف ساعة",
                 "كل ساعة",
                 "كل ساعتين",
                 "كل ثلاث ساعات",
@@ -306,32 +337,30 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                 "كل ستة ساعات",
                 "كل ١٢ ساعة",
 
-    };
+        };
 
 
-       int[] VerityIntervalArray  = {1800,
-               3600,
-               7200,
-               10800,
-               14400,
-               18000,
-               21600,
-               43200} ;
+        int[] VerityIntervalArray = {1800,
+                3600,
+                7200,
+                10800,
+                14400,
+                18000,
+                21600,
+                43200};
 
 
-
-        final int Minute= 60;
-        final int HalfHour  = 1800;
+        final int Minute = 60;
+        final int HalfHour = 1800;
         final int OneHoer = 3600;
         final int TowHoers = 7200;
-        final int TreeHoers= 10800;
+        final int TreeHoers = 10800;
         final int FourHoers = 14400;
-        final int FiveHoers  = 18000;
-        final int SixHoers= 21600;
-        final int HalfDay  = 43200;
+        final int FiveHoers = 18000;
+        final int SixHoers = 21600;
+        final int HalfDay = 43200;
 
         if (activate.isActivated()) {
-
 
 
         }
