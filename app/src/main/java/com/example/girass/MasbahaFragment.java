@@ -39,8 +39,8 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
 
     private ImageButton resetCount, chooseZikr, subhaBtn;
     private int count = 0, theCount = 0;
-    private Boolean doIPlaySound = true, selected = false;
-    private Boolean doIVibrate = true;
+    private Boolean doIPlaySound = SettingsFragments.Masbahasound, selected = false;
+    private Boolean doIVibrate = SettingsFragments.Masbahavibrate;
     private TextView noOfTasih, firstZikr, secZikr, thirdZikr;
     private final static String MY_PREFS = "MY_PREFS";
     SharedPreferences.Editor editor;
@@ -117,13 +117,9 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
     }
 
     private void chooseZikr() {
-
-        //   setResetCount();
-
-        //   alrt = onCreateDialog();
-
+        if (doIPlaySound)
+            SettingsFragments.defualtSound.start();
         showDialog();
-
 
     }
 
@@ -285,7 +281,7 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
             menu.start();
         else if (doIPlaySound && count >= 1000)
             menu.start();
-        else click.start(); /// change it after settings page < depends on user choice;
+        else SettingsFragments.defualtSound.start(); /// change it after settings page < depends on user choice;
 
 
     }
@@ -298,6 +294,8 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
          *************************************/
 
 
+        if (doIPlaySound)
+            SettingsFragments.defualtSound.start();
         // do nt forget to play sound depends on settings
         count = 0;
         theCount = 0;

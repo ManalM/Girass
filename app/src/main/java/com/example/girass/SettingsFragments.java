@@ -12,6 +12,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.Image;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -47,13 +49,18 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
     LinearLayout general, masbaha, notification, share, rate, about;
     private Dialog dialog, aboutDialog, detailsDialog;
     private CardView generalCard , masbahaCard;
-    private Switch activate, morning, evening, sleep, wakeup, reminder;
+    private Switch activate, morning, evening, sleep, wakeup, reminder ,masbahaSound,masbahaVibrate,generalSound,generalVibrate;
     private ImageButton aboutApp, close, aboutClose;
     private TextView www, phone, twitter, email, desc,
-            morningTime, eveningTime, sleepTime, wakeTime, reminderTime;
+            morningTime, eveningTime, sleepTime, wakeTime, reminderTime,
+            sound1 ,sound2,sound3,sound4,
+    font1 , font2,font3,
+    luncherMasbaha ,lucherfav,luncherZikr;
     private ImageView background_img, www_img, email_img, phone_img, twitter_img, dozo; // the image
     private ImageView generalArrow , masbahaArrow;
-
+    public static MediaPlayer defualtSound;
+    public  static  Boolean Masbahavibrate = true , Masbahasound=true
+            ,GeneralSound= true , Generalvibrate= true;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -72,11 +79,27 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         share = (LinearLayout) rootView.findViewById(R.id.share);
         rate = (LinearLayout) rootView.findViewById(R.id.rate);
         about = (LinearLayout) rootView.findViewById(R.id.about);
-        generalCard = rootView.findViewById(R.id.general_card);
-        masbahaCard = rootView.findViewById(R.id.masbaha_card);
-        generalArrow = rootView.findViewById(R.id.general_arrow);
-        masbahaArrow  = rootView.findViewById(R.id.masbaha_arrow);
+        generalCard = (CardView) rootView.findViewById(R.id.general_card);
+        masbahaCard = (CardView) rootView.findViewById(R.id.masbaha_card);
+        generalArrow = (ImageView) rootView.findViewById(R.id.general_arrow);
+        masbahaArrow  = (ImageView) rootView.findViewById(R.id.masbaha_arrow);
+        masbahaSound = (Switch) rootView.findViewById(R.id.masbaha_sounds);
+        masbahaVibrate = (Switch) rootView.findViewById(R.id.masbaha_vibrate);
+        generalSound = (Switch) rootView.findViewById(R.id.general_sounds);
+        generalVibrate =  (Switch) rootView.findViewById(R.id.general_vibrate);
+        font1= (TextView)   rootView.findViewById(R.id.font1);
+        font2= (TextView)   rootView.findViewById(R.id.font2);
+        font3= (TextView)   rootView.findViewById(R.id.font3);
+        lucherfav = (TextView)   rootView.findViewById(R.id.luncher_fav);
+        luncherMasbaha=(TextView)   rootView.findViewById(R.id.luncher_masbaha);
 
+        luncherZikr
+                =(TextView)   rootView.findViewById(R.id.luncher_zikr);
+        sound1 = (TextView) rootView.findViewById(R.id.sound1);
+        sound2 = (TextView) rootView.findViewById(R.id.sound2);
+        sound3 = (TextView) rootView.findViewById(R.id.sound3);
+        sound4 = (TextView) rootView.findViewById(R.id.sound4);
+        defualtSound= MediaPlayer.create(getContext(),R.raw.click);
 
         /////////////////////////////////////////////
         /////////////     ToolBar       ////////////
@@ -109,20 +132,24 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 
 
         switch (v.getId()) {
+
             case R.id.general_setting:
                 if (generalCard.getVisibility() ==View.GONE){
                     generalCard.setVisibility(View.VISIBLE);
                       Glide.with(getContext()).load(R.drawable.up_arrow).into(generalArrow);
+                      GenetalSetting();
                 }else{
                     generalCard.setVisibility(View.GONE);
                        Glide.with(getContext()).load(R.drawable.down_arrow).into(generalArrow);
                 }
 
                 break;
+
             case R.id.masbaha_setting:
                 if (masbahaCard.getVisibility() ==View.GONE){
                     masbahaCard.setVisibility(View.VISIBLE);
                       Glide.with(getContext()).load(R.drawable.up_arrow).into(masbahaArrow);
+                      MasbahaSetting();
                 }else{
                     masbahaCard.setVisibility(View.GONE);
                     Glide.with(getContext()).load(R.drawable.down_arrow).into(masbahaArrow);
@@ -150,6 +177,99 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 
         }
     }
+
+    private void GenetalSetting() {
+
+
+        boolean VibrationChecked =generalVibrate.isChecked();
+        boolean SoundsChecked = generalSound.isChecked();
+
+        if(VibrationChecked == true){
+
+           Generalvibrate= true;
+        }else{
+            Generalvibrate= false;
+        }
+
+        if(SoundsChecked == true){
+
+            GeneralSound= true;
+            defualtSound.start();
+        }else {
+            GeneralSound = false;
+        }
+
+
+
+    }
+
+    private void MasbahaSetting() {
+
+        boolean VibrationChecked = masbahaVibrate.isChecked();
+        boolean SoundsChecked = masbahaSound.isChecked();
+
+        if(VibrationChecked == true){
+
+            Masbahavibrate = true;
+        }else{
+            Masbahavibrate = false;
+        }
+
+        if(SoundsChecked == true){
+
+         Masbahasound= true;
+        }else {
+            Masbahasound = false;
+        }
+
+        final MediaPlayer mediaSound1 , mediaSound2 , mediaSound3,mediaSound4;
+        mediaSound1 = MediaPlayer.create(getContext() , R.raw.click2);
+        mediaSound2 = MediaPlayer.create(getContext() , R.raw.pop);
+        mediaSound3 = MediaPlayer.create(getContext() , R.raw.click);
+        mediaSound4 = MediaPlayer.create(getContext() , R.raw.menu2);
+
+
+
+       sound1.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               if(Masbahasound == true)
+               mediaSound1.start();
+               defualtSound= mediaSound1;
+
+           }
+       });
+
+       sound2.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               if(Masbahasound == true)
+                   mediaSound2.start();
+               defualtSound= mediaSound2;
+
+           }
+       });
+        sound3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(Masbahasound == true)
+                    mediaSound3.start();
+                defualtSound= mediaSound3;
+
+            }
+        });
+
+        sound4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(Masbahasound == true)
+                    mediaSound4.start();
+                defualtSound= mediaSound4;
+
+            }
+        });
+    }
+
 
 
     private void showDialog() {
