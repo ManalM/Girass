@@ -24,6 +24,7 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +32,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.Switch;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,14 +61,24 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
             morningTime, eveningTime, sleepTime, wakeTime, reminderTime,
             sound1, sound2, sound3, sound4,
             font1, font2, font3,
-            luncherMasbaha, lucherfav, luncherZikr;
+            luncherMasbaha, lucherfav, luncherZikr,
+    textSize;
     private ImageView background_img, www_img, email_img, phone_img, twitter_img, dozo; // the image
     private ImageView generalArrow, masbahaArrow;
+
+    private Boolean selected = true;
+    private SeekBar seekBar;
+    TextView[] sounds;
+    //-------------------------------------------------------------
+    static int i=0;
     public static MediaPlayer defualtSound;
     public static Typeface defualtFont;
-
+    private final static String MY_PREFS = "MY_PREFS";
+    public static  float TextSize;
     public static Boolean Masbahavibrate = true, Masbahasound = true, GeneralSound = true, Generalvibrate = true;
-
+    //-------------------------------------------------------------
+SharedPreferences pref ;
+SharedPreferences.Editor editor;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -77,6 +90,9 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         /////////////  initiate variables  /////////////
         ///////////////////////////////////////////////
 
+
+        pref = getContext().getSharedPreferences(MY_PREFS,MODE_PRIVATE);
+        editor =  getContext().getSharedPreferences(MY_PREFS, MODE_PRIVATE).edit();
 
         general = (LinearLayout) rootView.findViewById(R.id.general_setting);
         masbaha = (LinearLayout) rootView.findViewById(R.id.masbaha_setting);
@@ -113,7 +129,16 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         //-------------------------------------------------------------
 
         defualtSound = MediaPlayer.create(getContext(), R.raw.click);
-        defualtFont =Typeface.createFromAsset(getContext().getAssets(),"font/tajawal_regular");
+     //   defualtFont =Typeface.createFromAsset(getContext().getAssets(),"font/tajawal_regular");
+      //  defualtFont= Typeface.createFromFile("font/tajawal_regular");
+        //-------------------------------------------------------------
+        textSize  =(TextView) rootView.findViewById(R.id.text_size);
+        seekBar = rootView.findViewById(R.id.seek_bar);
+
+
+        TextSize = pref.getFloat("fontsize", 12);
+        seekBar.setProgress((int)TextSize);
+        textSize.setTextSize(TypedValue.COMPLEX_UNIT_PX,seekBar.getProgress());
         /////////////////////////////////////////////
         /////////////     ToolBar       ////////////
         //////////////////////////////////////////
@@ -201,6 +226,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         if (VibrationChecked == true) {
 
             Generalvibrate = true;
+
         } else {
             Generalvibrate = false;
         }
@@ -217,20 +243,44 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         font1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajawal_regular");
+              //  defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajawal_regular");
+                defualtFont =  Typeface.createFromFile("font/tajawal_regular");
             }
         });
         font2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajawal_light");
-
+              //  defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajawal_light");
+                defualtFont =  Typeface.createFromFile("font/tajawal_light");
             }
         });
         font3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajwal_bold");
+
+
+           //     defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajwal_bold");
+                defualtFont =  Typeface.createFromFile("font/tajawal_bold");
+
+            }
+        });
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+               textSize.setTextSize(TypedValue.COMPLEX_UNIT_PX,progress);
+               editor.putFloat("fontsize",progress);
+               editor.commit();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
 
             }
         });
@@ -261,10 +311,44 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         mediaSound3 = MediaPlayer.create(getContext(), R.raw.click);
         mediaSound4 = MediaPlayer.create(getContext(), R.raw.menu2);
 
+    /*    sounds = new TextView[]{sound1, sound2, sound3, sound4};
+
+        for( i =0; i<sounds.length;i++){
+            sounds[i].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                sounds[i].setTextColor(getResources().getColor(R.color.colorAccent));
+                sounds[i].setBackgroundColor(getResources().getColor(R.color.textColor));
+
+
+                if (sounds[i] == sound1){
+                    mediaSound1.start();
+                    defualtSound = mediaSound1;
+
+                }else if(sounds[i] == sound2){
+                    mediaSound2.start();
+                    defualtSound = mediaSound2;
+
+                }else if(sounds[i] == sound3){
+                    mediaSound3.start();
+                    defualtSound = mediaSound3;
+
+                }else if(sounds[i] == sound4){
+                    mediaSound4.start();
+                    defualtSound = mediaSound4;
+                }
+            }
+        });
+
+
+        }*/
 
         sound1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sound1.setTextColor(getResources().getColor(R.color.colorAccent));
+                sound1.setBackgroundColor(getResources().getColor(R.color.textColor));
                 if (Masbahasound == true)
                     mediaSound1.start();
                 defualtSound = mediaSound1;
@@ -275,6 +359,8 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         sound2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sound1.setTextColor(getResources().getColor(R.color.colorAccent));
+                sound1.setBackgroundColor(getResources().getColor(R.color.textColor));
                 if (Masbahasound == true)
                     mediaSound2.start();
                 defualtSound = mediaSound2;
@@ -294,6 +380,8 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         sound4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sound4.setTextColor(getResources().getColor(R.color.colorAccent));
+                sound4.setBackgroundColor(getResources().getColor(R.color.textColor));
                 if (Masbahasound == true)
                     mediaSound4.start();
                 defualtSound = mediaSound4;
@@ -399,7 +487,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 
     private void aboutApp() {
 
-
+// here
         aboutDialog = new Dialog(getContext());
         aboutDialog.setContentView(R.layout.about_dialog);
         aboutDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

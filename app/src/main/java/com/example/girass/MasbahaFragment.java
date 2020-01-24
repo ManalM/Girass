@@ -39,7 +39,7 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
 
     private ImageButton resetCount, chooseZikr, subhaBtn;
     private int count = 0, theCount = 0;
-    private Boolean doIPlaySound = SettingsFragments.Masbahasound, selected = false;
+    private Boolean doIPlaySound = SettingsFragments.Masbahasound;
     private Boolean doIVibrate = SettingsFragments.Masbahavibrate;
     private TextView noOfTasih, firstZikr, secZikr, thirdZikr;
     private final static String MY_PREFS = "MY_PREFS";

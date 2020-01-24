@@ -36,4 +36,7 @@
     <string name="info">جزى اللّه خيرا، كل من ساهم في \n بناء و نشر هذا التطبيق </string>
     <string name="call_title">اتصل بنا</string>
     <string name="call_message">اختر إحدى الطريقتين</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
