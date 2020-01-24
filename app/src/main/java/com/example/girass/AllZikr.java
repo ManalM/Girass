@@ -1,6 +1,5 @@
 package com.example.girass;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -22,7 +21,7 @@ public class AllZikr extends FragmentActivity {
     protected static int num_pages;
     private ViewPager mPager;
 
-    ImageView backBtn ;
+    private ImageView backBtn;
     private PagerAdapter pagerAdapter;
 
 
@@ -40,7 +39,8 @@ public class AllZikr extends FragmentActivity {
         mPager = (ViewPager) findViewById(R.id.view_pager);
         pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(pagerAdapter);
-//------------------------------------------------------------------
+
+        //------------------------------------------------------------------
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -48,7 +48,8 @@ public class AllZikr extends FragmentActivity {
                         new AzkarFragment()).commit();
             }
         });
-//------------------------------------------------------------------
+
+        //------------------------------------------------------------------
 
         Intent intent = getIntent();
         String title = intent.getStringExtra("array");
@@ -81,7 +82,9 @@ public class AllZikr extends FragmentActivity {
 
 }
 
-class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
+
+ class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
+
     public ScreenSlidePagerAdapter(FragmentManager fm) {
         super(fm);
     }

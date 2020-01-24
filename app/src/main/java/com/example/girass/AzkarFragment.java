@@ -71,13 +71,13 @@ public class AzkarFragment extends Fragment {
 
        // ArrayAdapter adapter = new ArrayAdapter(getContext(), R.layout.zikr_list_item, R.id.zikrText, titles);
 
-       AzkarAndFavAdapter mAdapterAzkar = new AzkarAndFavAdapter(getContext(),titles);
+     Adapter mAdapterAzkar = new Adapter(getContext(),titles);
         listView.setLayoutManager(new GridLayoutManager(getContext(), 1));
         listView.setAdapter(mAdapterAzkar);
 
 
 
-        mAdapterAzkar.setOnItemClickListener(new AzkarAndFavAdapter.OnItemClickListener() {
+        mAdapterAzkar.setOnItemClickListener(new Adapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 Intent intent = new Intent(getContext() , AllZikr.class);
