@@ -81,6 +81,8 @@ public class AzkarFragment extends Fragment {
             @Override
             public void onItemClick(int position) {
                 Intent intent = new Intent(getContext() , AllZikr.class);
+                Intent detailsIntent = new Intent(getContext(),ZikrDetails.class);
+                detailsIntent.putExtra("array",titles[position]);
                 intent.putExtra("array", titles[position]);
                 startActivity(intent);
             }

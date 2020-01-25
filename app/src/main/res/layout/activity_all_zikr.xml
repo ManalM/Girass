@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
-
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_above="@+id/bottom_navigation"
 
         />
@@ -31,6 +31,9 @@
         android:layout_margin="20dp"
         android:src="@drawable/fav_heart" />
 
+    <include
+        layout="@layout/activity_main"/>
+<!--
     <com.google.android.material.bottomnavigation.BottomNavigationView
 
         android:id="@+id/bottom_navigation"
@@ -44,5 +47,5 @@
         app:itemTextColor="@drawable/bottom_nav_colors"
 
         app:labelVisibilityMode="labeled"
-        app:menu="@menu/menu" />
+        app:menu="@menu/menu" />-->
 </RelativeLayout>

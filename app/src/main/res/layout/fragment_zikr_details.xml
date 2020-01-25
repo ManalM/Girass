@@ -16,10 +16,10 @@
         <TextView
             android:id="@+id/zikr"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="20dp"
+            android:layout_height="280dp"
             android:layout_gravity="center|center_vertical"
+            android:layout_margin="20dp"
+            android:layout_weight="1"
             android:gravity="center|center_vertical"
             android:textColor="@color/textColor"
             android:textStyle="bold" />
@@ -28,7 +28,6 @@
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_margin="20dp"
 
             android:text="-------------------------------------"
@@ -39,7 +38,6 @@
 
         <TextView
             android:id="@+id/narriated"
-            android:layout_weight="1"
             android:layout_margin="20dp"
 
             android:layout_width="match_parent"

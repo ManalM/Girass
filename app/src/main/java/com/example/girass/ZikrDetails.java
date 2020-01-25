@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class ZikrDetails extends Fragment {
@@ -28,8 +29,10 @@ ImageView click , repeat;
         zikr = rootView.findViewById(R.id.zikr);
         narriated = rootView.findViewById(R.id.narriated);
         timeToRepeat= rootView.findViewById(R.id.time_repeat);
+        ///-------------------------------------------
         click = rootView.findViewById(R.id.click);
         repeat = rootView.findViewById(R.id.repeat);
+
 
 
         Intent intent = getActivity().getIntent();
@@ -40,13 +43,19 @@ ImageView click , repeat;
 
             if (headZikrObjects[i].TITLE.equals(title)) {
 
-                HeadZikrObject h = headZikrObjects[i];
-                ZikrObject zikrObject = h.AllAzkar[i];
-                zikr.setText(zikrObject.Details);
-                narriated.setText(zikrObject.Narriated);
-                timeToRepeat.setText(zikrObject.TimesToRepeat);
+                Toast.makeText(getContext(),headZikrObjects[i].TITLE +headZikrObjects.length , Toast.LENGTH_SHORT).show();
+            //    HeadZikrObject h = headZikrObjects[i];
+                ZikrObject[] zikrObject = headZikrObjects[i].AllAzkar;
+
+                for(int j =0;j<zikrObject.length;j++){
+                    zikr.setText(zikrObject[j].Details);
+                    narriated.setText(zikrObject[j].Narriated);
+                    timeToRepeat.setText(Integer.valueOf(zikrObject[j].TimesToRepeat).toString());
+                }
 
 
+
+                break;
             }
         }
         return rootView;

@@ -1,29 +1,43 @@
 package com.example.girass;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.net.URISyntaxException;
+import java.util.zip.Inflater;
 
 public class AllZikr extends FragmentActivity {
     private Toolbar toolbar;
     private TextView toolbarText;
 
-    protected static int num_pages;
-    private ViewPager mPager;
+   // protected static int num_pages=1;
+
 
     private ImageView backBtn;
     private PagerAdapter pagerAdapter;
-
+    private ViewPager mPager;
+    public static String title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +50,21 @@ public class AllZikr extends FragmentActivity {
         toolbar.setTitle("");
         backBtn.setImageResource(R.drawable.left_arrow);
         //--------------------------------------------------------
+
+        Intent intent = getIntent();
+         title = intent.getStringExtra("array");
+        toolbarText.setText(title);
+        DataService dataService = new DataService();
+        final HeadZikrObject[] headZikrObjects = dataService.GetAllAzkar();
+
+        //--------------------------------------------------------
+
+
         mPager = (ViewPager) findViewById(R.id.view_pager);
         pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
-        mPager.setAdapter(pagerAdapter);
+
+        pagerAdapter.notifyDataSetChanged();
+
 
         //------------------------------------------------------------------
         backBtn.setOnClickListener(new View.OnClickListener() {
@@ -46,26 +72,17 @@ public class AllZikr extends FragmentActivity {
             public void onClick(View v) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new AzkarFragment()).commit();
+                //startActivity(new Intent(AllZikr.this,AzkarFragment.class));
             }
         });
 
         //------------------------------------------------------------------
 
-        Intent intent = getIntent();
-        String title = intent.getStringExtra("array");
-        DataService dataService = new DataService();
-        final HeadZikrObject[] headZikrObjects = dataService.GetAllAzkar();
-        for (int i = 0; i < headZikrObjects.length; i++) {
-
-            if (headZikrObjects[i].TITLE.equals(title)) {
-
-                HeadZikrObject h = headZikrObjects[i];
-                toolbarText.setText(h.TITLE);
-                num_pages = h.AllAzkar.length;
 
 
-            }
-        }
+        mPager.setAdapter(pagerAdapter);
+
+
     }
 
     @Override
@@ -83,20 +100,83 @@ public class AllZikr extends FragmentActivity {
 }
 
 
- class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
+ class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
 
+int num_pages;
+LinearLayout mLayoutInflater;
+/*     private Toolbar toolbar;
+     private TextView toolbarText;
+
+     // protected static int num_pages=1;
+
+
+     private ImageView backBtn;
+     String title;*/
+  //  int no_pages = AllZikr.num_pages;
     public ScreenSlidePagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
-    @Override
+/*     @NonNull
+     @Override
+     public Object instantiateItem(@NonNull ViewGroup container, int position) {
+
+             View itemView = mLayoutInflater.inflate(R.layout.pager_item, container, false);
+
+
+         backBtn = itemView.findViewById(R.id.button);
+         toolbar = (Toolbar) itemView.findViewById(R.id.main_toolbar);
+         toolbarText = itemView.findViewById(R.id.toolbar_title);
+         toolbar.setTitle("");
+         backBtn.setImageResource(R.drawable.left_arrow);
+         //--------------------------------------------------------
+
+         Intent intent = null;
+         try {
+             intent = Intent.getIntent("");
+         } catch (URISyntaxException e) {
+             e.printStackTrace();
+         }
+         title = intent.getStringExtra("array");
+         toolbarText.setText(title);
+             container.addView(itemView);
+
+             return itemView;
+
+     }*/
+     @Override
+     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+
+       //  Fragment f = (Fragment) object;
+    container.removeView((RelativeLayout) object);
+         super.destroyItem(container, position, object);
+     }
+
+     @Override
     public Fragment getItem(int position) {
-        return new ZikrDetails();
+
+   return new ZikrDetails();
+
     }
 
     @Override
     public int getCount() {
-        return AllZikr.num_pages;
+        DataService dataService = new DataService();
+        final HeadZikrObject[] headZikrObjects = dataService.GetAllAzkar();
+     //       notifyDataSetChanged();
+        for (int i = 0; i < headZikrObjects.length; i++) {
+
+            if (headZikrObjects[i].TITLE.equals(AllZikr.title)) {
+
+                HeadZikrObject h = headZikrObjects[i];
+                // toolbarText.setText(h.TITLE);
+                num_pages = h.AllAzkar.length;
+
+                break;
+            }
+        }
+        return num_pages;
     }
+
 }
 
