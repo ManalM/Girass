@@ -25,6 +25,8 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.zip.Inflater;
 
 public class AllZikr extends FragmentActivity {
@@ -45,7 +47,7 @@ public class AllZikr extends FragmentActivity {
         setContentView(R.layout.activity_all_zikr);
 
         backBtn = findViewById(R.id.button);
-        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        toolbar = (Toolbar) findViewById(R.id.bar);
         toolbarText = findViewById(R.id.toolbar_title);
         toolbar.setTitle("");
         backBtn.setImageResource(R.drawable.left_arrow);
@@ -101,9 +103,12 @@ public class AllZikr extends FragmentActivity {
 
 
  class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
-
-int num_pages;
+     DataService dataService = new DataService();
+     final HeadZikrObject[] headZikrObjects = dataService.GetAllAzkar();
+public static int num_pages;
+ZikrObject views;
 LinearLayout mLayoutInflater;
+     ArrayList<ZikrObject> arrayList = new ArrayList<>();
 /*     private Toolbar toolbar;
      private TextView toolbarText;
 
@@ -144,16 +149,40 @@ LinearLayout mLayoutInflater;
              return itemView;
 
      }*/
+
+
+     @Override
+     public int getItemPosition(Object object) {
+/*         for(int index = 0 ; index < getCount() ; index++){
+             if(object.equals(views.ID.equals(index))) {
+                 return index;
+             }
+         }
+         return POSITION_NONE;*/
+         arrayList = fetchArray();
+         Fragment fragment = (Fragment) object;
+
+         int position = arrayList.indexOf(fragment);
+         if (position >= 0) {
+             return position;
+         } else {
+             return POSITION_NONE;
+         }
+
+     }
+
      @Override
      public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
 
        //  Fragment f = (Fragment) object;
-    container.removeView((RelativeLayout) object);
+    container.removeView((View) object);
          super.destroyItem(container, position, object);
      }
 
      @Override
     public Fragment getItem(int position) {
+
+
 
    return new ZikrDetails();
 
@@ -161,22 +190,33 @@ LinearLayout mLayoutInflater;
 
     @Override
     public int getCount() {
-        DataService dataService = new DataService();
-        final HeadZikrObject[] headZikrObjects = dataService.GetAllAzkar();
-     //       notifyDataSetChanged();
+
         for (int i = 0; i < headZikrObjects.length; i++) {
 
-            if (headZikrObjects[i].TITLE.equals(AllZikr.title)) {
+            num_pages = headZikrObjects[i].AllAzkar.length;
 
-                HeadZikrObject h = headZikrObjects[i];
-                // toolbarText.setText(h.TITLE);
-                num_pages = h.AllAzkar.length;
-
-                break;
-            }
+            break;
         }
         return num_pages;
     }
 
+    public ArrayList<ZikrObject> fetchArray() {
+         ArrayList<ZikrObject> a = new ArrayList<>();
+        for (int i = 0; i < headZikrObjects.length; i++) {
+            if (headZikrObjects[i].TITLE.equals(AllZikr.title)) {
+
+                ZikrObject[] zikrObject = headZikrObjects[i].AllAzkar;
+                for (int j = 0; j < zikrObject.length; j++) {
+
+
+                    a.add(zikrObject[j]);
+
+                }
+
+
+            }
+        }
+    return a;
+     }
 }
 

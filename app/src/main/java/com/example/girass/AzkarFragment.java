@@ -22,17 +22,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class AzkarFragment extends Fragment {
-    private RecyclerView  listView;
+    private RecyclerView listView;
     private Toolbar toolbar;
     private TextView toolbarText;
     private ImageButton searchBtn;
+
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView= inflater.inflate(R.layout.fragment_azkar,container,false);
+        View rootView = inflater.inflate(R.layout.fragment_azkar, container, false);
 
-       // final Animation anim = AnimationUtils.loadAnimation(this, R.anim.fade_anim);
+        // final Animation anim = AnimationUtils.loadAnimation(this, R.anim.fade_anim);
         /////////////////////////////////////////////
         /////////////     ToolBar       ////////////
         //////////////////////////////////////////
@@ -69,30 +70,26 @@ public class AzkarFragment extends Fragment {
             i++;
         }
 
-       // ArrayAdapter adapter = new ArrayAdapter(getContext(), R.layout.zikr_list_item, R.id.zikrText, titles);
+        // ArrayAdapter adapter = new ArrayAdapter(getContext(), R.layout.zikr_list_item, R.id.zikrText, titles);
 
-     Adapter mAdapterAzkar = new Adapter(getContext(),titles);
+        Adapter mAdapterAzkar = new Adapter(getContext(), titles);
         listView.setLayoutManager(new GridLayoutManager(getContext(), 1));
         listView.setAdapter(mAdapterAzkar);
-
 
 
         mAdapterAzkar.setOnItemClickListener(new Adapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Intent intent = new Intent(getContext() , AllZikr.class);
-                Intent detailsIntent = new Intent(getContext(),ZikrDetails.class);
-                detailsIntent.putExtra("array",titles[position]);
+                Intent intent = new Intent(getContext(), AllZikr.class);
+                Intent detailsIntent = new Intent(getContext(), ZikrDetails.class);
+                detailsIntent.putExtra("array", titles[position]);
                 intent.putExtra("array", titles[position]);
                 startActivity(intent);
             }
         });
 
 
-
         return rootView;
-
-
 
 
     }

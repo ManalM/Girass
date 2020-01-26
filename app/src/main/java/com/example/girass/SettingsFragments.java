@@ -28,6 +28,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -62,23 +63,24 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
             sound1, sound2, sound3, sound4,
             font1, font2, font3,
             luncherMasbaha, lucherfav, luncherZikr,
-    textSize;
+            textSize;
     private ImageView background_img, www_img, email_img, phone_img, twitter_img, dozo; // the image
     private ImageView generalArrow, masbahaArrow;
 
-    private Boolean selected = true;
     private SeekBar seekBar;
-    TextView[] sounds;
     //-------------------------------------------------------------
-    static int i=0;
+    private MediaPlayer mediaSound1, mediaSound2, mediaSound3, mediaSound4;
+    //-------------------------------------------------------------
+
     public static MediaPlayer defualtSound;
     public static Typeface defualtFont;
-    private final static String MY_PREFS = "MY_PREFS";
-    public static  float TextSize;
+     String MY_PREFS = "SETTING_PREFS";
+    public static float TextSize;
     public static Boolean Masbahavibrate = true, Masbahasound = true, GeneralSound = true, Generalvibrate = true;
     //-------------------------------------------------------------
-SharedPreferences pref ;
-SharedPreferences.Editor editor;
+    public  static SharedPreferences pref;
+    public  static SharedPreferences.Editor editor;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -91,8 +93,8 @@ SharedPreferences.Editor editor;
         ///////////////////////////////////////////////
 
 
-        pref = getContext().getSharedPreferences(MY_PREFS,MODE_PRIVATE);
-        editor =  getContext().getSharedPreferences(MY_PREFS, MODE_PRIVATE).edit();
+        pref = getContext().getSharedPreferences(MY_PREFS, MODE_PRIVATE);
+        editor = getContext().getSharedPreferences(MY_PREFS, MODE_PRIVATE).edit();
 
         general = (LinearLayout) rootView.findViewById(R.id.general_setting);
         masbaha = (LinearLayout) rootView.findViewById(R.id.masbaha_setting);
@@ -115,7 +117,7 @@ SharedPreferences.Editor editor;
         font1 = (TextView) rootView.findViewById(R.id.font1);
         font2 = (TextView) rootView.findViewById(R.id.font2);
         font3 = (TextView) rootView.findViewById(R.id.font3);
-      //-------------------------------------------------------------
+        //-------------------------------------------------------------
         lucherfav = (TextView) rootView.findViewById(R.id.luncher_fav);
         luncherMasbaha = (TextView) rootView.findViewById(R.id.luncher_masbaha);
 
@@ -126,19 +128,23 @@ SharedPreferences.Editor editor;
         sound2 = (TextView) rootView.findViewById(R.id.sound2);
         sound3 = (TextView) rootView.findViewById(R.id.sound3);
         sound4 = (TextView) rootView.findViewById(R.id.sound4);
+
         //-------------------------------------------------------------
 
         defualtSound = MediaPlayer.create(getContext(), R.raw.click);
-     //   defualtFont =Typeface.createFromAsset(getContext().getAssets(),"font/tajawal_regular");
-      //  defualtFont= Typeface.createFromFile("font/tajawal_regular");
+        //   defualtFont =Typeface.createFromAsset(getContext().getAssets(),"font/tajawal_regular");
+        //  defualtFont= Typeface.createFromFile("font/tajawal_regular");
         //-------------------------------------------------------------
-        textSize  =(TextView) rootView.findViewById(R.id.text_size);
+        textSize = (TextView) rootView.findViewById(R.id.text_size);
         seekBar = rootView.findViewById(R.id.seek_bar);
 
 
         TextSize = pref.getFloat("fontsize", 12);
-        seekBar.setProgress((int)TextSize);
-        textSize.setTextSize(TypedValue.COMPLEX_UNIT_PX,seekBar.getProgress());
+        seekBar.setProgress((int) TextSize);
+        textSize.setTextSize(TypedValue.COMPLEX_UNIT_PX, seekBar.getProgress());
+        //-------------------------------------------------------------
+
+
         /////////////////////////////////////////////
         /////////////     ToolBar       ////////////
         //////////////////////////////////////////
@@ -150,6 +156,10 @@ SharedPreferences.Editor editor;
         toolbar.setTitle("");
         toolbarText.setText(R.string.settings);
         //-------------------------------------------------------------
+
+        masbahaSound.setChecked(pref.getBoolean("masbahaSound", Masbahasound));
+        masbahaVibrate.setChecked(pref.getBoolean("masbahaVibrate", Masbahavibrate));
+
 
         general.setOnClickListener(this);
         masbaha.setOnClickListener(this);
@@ -192,6 +202,7 @@ SharedPreferences.Editor editor;
                 } else {
                     masbahaCard.setVisibility(View.GONE);
                     Glide.with(getContext()).load(R.drawable.down_arrow).into(masbahaArrow);
+                    MasbahaSetting();
                 }
                 break;
             case R.id.notification:
@@ -219,7 +230,7 @@ SharedPreferences.Editor editor;
 
     private void GenetalSetting() {
 
-
+/*
         boolean VibrationChecked = generalVibrate.isChecked();
         boolean SoundsChecked = generalSound.isChecked();
 
@@ -237,40 +248,85 @@ SharedPreferences.Editor editor;
             defualtSound.start();
         } else {
             GeneralSound = false;
-        }
+        }*/
 
 
+        generalVibrate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if (isChecked) {
+                    Generalvibrate = true;
+                    editor.putBoolean("generalVibrate", Generalvibrate);
+                    editor.commit();
+                } else {
+                    Generalvibrate = false;
+                    editor.putBoolean("generalVibrate", Generalvibrate);
+                    editor.commit();
+                }
+            }
+        });
+
+        generalSound.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+
+                    GeneralSound = true;
+                    editor.putBoolean("generalSound", GeneralSound);
+                    editor.commit();
+                } else {
+                    GeneralSound = false;
+                    editor.putBoolean("generalSound", GeneralSound);
+                    editor.commit();
+                }
+            }
+        });
+
+
+        //----------------------------------------------------
         font1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              //  defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajawal_regular");
-                defualtFont =  Typeface.createFromFile("font/tajawal_regular");
+                //  defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajawal_regular");
+                changeGeneralTextView(font1, font2, font3);
+                defualtFont = Typeface.createFromFile("font/tajawal_regular");
+                editor.putInt("defualtFont", R.font.tajawal_regular);
+                editor.commit();
             }
         });
         font2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              //  defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajawal_light");
-                defualtFont =  Typeface.createFromFile("font/tajawal_light");
+                changeGeneralTextView(font2, font1, font3);
+
+                //  defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajawal_light");
+                defualtFont = Typeface.createFromFile("font/tajawal_light");
+                editor.putInt("defualtFont", R.font.tajawal_light);
+                editor.commit();
             }
         });
         font3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                changeGeneralTextView(font3, font2, font1);
 
 
-           //     defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajwal_bold");
-                defualtFont =  Typeface.createFromFile("font/tajawal_bold");
+                //     defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajwal_bold");
+                defualtFont = Typeface.createFromFile("font/tajawal_bold");
+                editor.putInt("defualtFont", R.font.tajwal_bold);
+                editor.commit();
 
             }
         });
+        //----------------------------------------------------
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-               textSize.setTextSize(TypedValue.COMPLEX_UNIT_PX,progress);
-               editor.putFloat("fontsize",progress);
-               editor.commit();
+                textSize.setTextSize(TypedValue.COMPLEX_UNIT_PX, progress);
+                editor.putFloat("fontsize", progress);
+                editor.commit();
             }
 
             @Override
@@ -287,11 +343,50 @@ SharedPreferences.Editor editor;
     }
 
     private void MasbahaSetting() {
+        mediaSound1 = MediaPlayer.create(getContext(), R.raw.click2);
+        mediaSound2 = MediaPlayer.create(getContext(), R.raw.pop);
+        mediaSound3 = MediaPlayer.create(getContext(), R.raw.click);
+        mediaSound4 = MediaPlayer.create(getContext(), R.raw.menu2);
+/*        boolean VibrationChecked = masbahaVibrate.isChecked();
+        boolean SoundsChecked = masbahaSound.isChecked();*/
 
-        boolean VibrationChecked = masbahaVibrate.isChecked();
-        boolean SoundsChecked = masbahaSound.isChecked();
+        masbahaVibrate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
 
-        if (VibrationChecked == true) {
+                    Masbahavibrate = true;
+
+                    editor.putBoolean("masbahaVibrate", Masbahavibrate);
+                    editor.commit();
+                } else {
+                    Masbahavibrate = false;
+                    editor.putBoolean("masbahaVibrate", Masbahavibrate);
+                    editor.commit();
+                }
+
+            }
+        });
+
+        masbahaSound.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+
+                    Masbahasound = true;
+
+                    defualtSound.start();
+                    editor.putBoolean("masbahaSound", Masbahasound);
+                    editor.commit();
+                } else {
+                    Masbahasound = false;
+                    defualtSound.start();
+                    editor.putBoolean("masbahaSound", Masbahasound);
+                    editor.commit();
+                }
+            }
+        });
+    /*    if (VibrationChecked == true) {
 
             Masbahavibrate = true;
         } else {
@@ -303,13 +398,9 @@ SharedPreferences.Editor editor;
             Masbahasound = true;
         } else {
             Masbahasound = false;
-        }
+        }*/
 
-        final MediaPlayer mediaSound1, mediaSound2, mediaSound3, mediaSound4;
-        mediaSound1 = MediaPlayer.create(getContext(), R.raw.click2);
-        mediaSound2 = MediaPlayer.create(getContext(), R.raw.pop);
-        mediaSound3 = MediaPlayer.create(getContext(), R.raw.click);
-        mediaSound4 = MediaPlayer.create(getContext(), R.raw.menu2);
+
 
     /*    sounds = new TextView[]{sound1, sound2, sound3, sound4};
 
@@ -347,11 +438,15 @@ SharedPreferences.Editor editor;
         sound1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sound1.setTextColor(getResources().getColor(R.color.colorAccent));
-                sound1.setBackgroundColor(getResources().getColor(R.color.textColor));
-                if (Masbahasound == true)
-                    mediaSound1.start();
-                defualtSound = mediaSound1;
+                changeMasbahaTextView(sound1, sound4, sound2, sound3);
+                mediaSound1.start();
+
+
+                if (pref.getBoolean("masbahaSound", Masbahasound)) {
+                    defualtSound = mediaSound1;
+                            editor.putInt("defaultSound",R.raw.click2);
+                            editor.commit();
+                }
 
             }
         });
@@ -359,40 +454,50 @@ SharedPreferences.Editor editor;
         sound2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sound1.setTextColor(getResources().getColor(R.color.colorAccent));
-                sound1.setBackgroundColor(getResources().getColor(R.color.textColor));
-                if (Masbahasound == true)
-                    mediaSound2.start();
-                defualtSound = mediaSound2;
+                changeMasbahaTextView(sound2, sound1, sound4, sound3);
 
+                mediaSound2.start();
+                if (pref.getBoolean("masbahaSound", Masbahasound)) {
+                    defualtSound = mediaSound2;
+                    editor.putInt("defaultSound", R.raw.pop);
+                    editor.commit();
+                }
             }
         });
         sound3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Masbahasound == true)
-                    mediaSound3.start();
-                defualtSound = mediaSound3;
+                changeMasbahaTextView(sound3, sound1, sound2, sound4);
 
+                mediaSound3.start();
+                if (pref.getBoolean("masbahaSound", Masbahasound)) {
+                    defualtSound = mediaSound3;
+                    editor.putInt("defaultSound", R.raw.click);
+                    editor.commit();
+                }
             }
         });
 
         sound4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sound4.setTextColor(getResources().getColor(R.color.colorAccent));
-                sound4.setBackgroundColor(getResources().getColor(R.color.textColor));
-                if (Masbahasound == true)
-                    mediaSound4.start();
-                defualtSound = mediaSound4;
+                changeMasbahaTextView(sound4, sound1, sound2, sound3);
 
+                mediaSound4.start();
+                if (pref.getBoolean("masbahaSound", Masbahasound)) {
+                    defualtSound = mediaSound4;
+                    editor.putInt("defaultSound", R.raw.menu2);
+                    editor.commit();
+                }
+              /*  Bundle b = new Bundle();
+                b.putInt();*/
             }
         });
     }
 
 
     private void showDialog() {
-
+// notification part
         dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.notification_dialog);
 
@@ -487,7 +592,7 @@ SharedPreferences.Editor editor;
 
     private void aboutApp() {
 
-// here
+
         aboutDialog = new Dialog(getContext());
         aboutDialog.setContentView(R.layout.about_dialog);
         aboutDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -639,5 +744,31 @@ SharedPreferences.Editor editor;
 
     }
 
+    private void changeMasbahaTextView(TextView clickble, TextView other1, TextView other2, TextView other3) {
+        clickble.setTextColor(getResources().getColor(R.color.colorAccent));
+        clickble.setBackgroundColor(getResources().getColor(R.color.textColor));
 
+
+        other1.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+        other1.setTextColor(getResources().getColor(R.color.textColor));
+
+        other2.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+        other2.setTextColor(getResources().getColor(R.color.textColor));
+
+        other3.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+        other3.setTextColor(getResources().getColor(R.color.textColor));
+    }
+
+    private void changeGeneralTextView(TextView clickble, TextView other1, TextView other2) {
+        clickble.setTextColor(getResources().getColor(R.color.colorAccent));
+        clickble.setBackgroundColor(getResources().getColor(R.color.textColor));
+
+
+        other1.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+        other1.setTextColor(getResources().getColor(R.color.textColor));
+
+        other2.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+        other2.setTextColor(getResources().getColor(R.color.textColor));
+
+    }
 }

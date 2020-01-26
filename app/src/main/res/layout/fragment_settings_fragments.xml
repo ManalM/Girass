@@ -55,7 +55,7 @@
             android:layout_margin="10dp"
             android:background="@color/colorAccent"
 
-            android:visibility="visible"
+            android:visibility="gone"
             app:cardCornerRadius="9dp">
 
             <LinearLayout
@@ -286,7 +286,8 @@
                     android:layout_margin="10dp"
                     android:fontFamily="@font/tajawal_regular"
                     android:text="تشغيل الاهتزازات"
-
+                    android:checked="true"
+                    android:switchMinWidth="45dp"
                     android:textColor="@color/textColor" />
 
                 <Switch
@@ -295,8 +296,9 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:fontFamily="@font/tajawal_regular"
-
+                    android:switchMinWidth="45dp"
                     android:text="تشغيل الأصوات"
+                    android:checked="true"
                     android:textColor="@color/textColor" />
 
                 <TextView

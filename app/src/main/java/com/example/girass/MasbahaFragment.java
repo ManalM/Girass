@@ -31,6 +31,8 @@ import android.widget.ImageButton;
 
 import android.widget.TextView;
 
+import java.util.Set;
+
 import static android.content.Context.MODE_PRIVATE;
 
 
@@ -39,27 +41,46 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
 
     private ImageButton resetCount, chooseZikr, subhaBtn;
     private int count = 0, theCount = 0;
-    private Boolean doIPlaySound = SettingsFragments.Masbahasound;
-    private Boolean doIVibrate = SettingsFragments.Masbahavibrate;
+    private Boolean doIPlaySound ;
+    private Boolean doIVibrate ;
     private TextView noOfTasih, firstZikr, secZikr, thirdZikr;
     private final static String MY_PREFS = "MY_PREFS";
     SharedPreferences.Editor editor;
     SharedPreferences prefs;
+    SharedPreferences settings;
+    SharedPreferences.Editor settingsEditor;
     String zikr, chozenZikr = "";
     private String[] headZikrObjects;
-
+    MediaPlayer defualt;
     private Dialog dialog;
-
+    Vibrator v;
+    MediaPlayer pop, menu, click;
+    Context context ;
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_masbaha, container, false);
 
-
+        context = getActivity().getApplicationContext();
         /////////////////////////////////////////////////
         /////////////  initiate variables  /////////////
         ///////////////////////////////////////////////
 
+        settings = context.getSharedPreferences("SETTING_PREF",MODE_PRIVATE);
+        settingsEditor =  context.getSharedPreferences("SETTING_PREF",MODE_PRIVATE).edit();
+
+
+        defualt = MediaPlayer.create(getContext(),settings.getInt("defaultSound",R.raw.click));
+
+        doIPlaySound= settings.getBoolean("masbahaSound",true);
+        doIVibrate = settings.getBoolean("masbahaVibrate",true);
+
+        pop = MediaPlayer.create(getContext(), R.raw.pop);
+        menu = MediaPlayer.create(getContext(), R.raw.menu);
+        click = MediaPlayer.create(getContext(), R.raw.click);
+
+
+        v = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
 
         resetCount = (ImageButton) rootView.findViewById(R.id.reset);
         chooseZikr = (ImageButton) rootView.findViewById(R.id.choose_btn);
@@ -71,6 +92,7 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
         thirdZikr = (TextView) rootView.findViewById(R.id.third_zikr);
         editor = getContext().getSharedPreferences(MY_PREFS, MODE_PRIVATE).edit();
         prefs = getContext().getSharedPreferences(MY_PREFS, MODE_PRIVATE);
+        settings = getContext().getSharedPreferences("SETTING_PREFS", MODE_PRIVATE);
         chozenZikr = prefs.getString("chooseZikr", null);
 
 
@@ -118,7 +140,10 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
 
     private void chooseZikr() {
         if (doIPlaySound)
-            SettingsFragments.defualtSound.start();
+            defualt.start();
+
+        if (doIVibrate)
+            v.vibrate(500);
         showDialog();
 
     }
@@ -179,14 +204,7 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
          *************************************/
 
 
-        MediaPlayer pop = MediaPlayer.create(getContext(), R.raw.pop);
-        MediaPlayer menu = MediaPlayer.create(getContext(), R.raw.menu);
-        MediaPlayer click = MediaPlayer.create(getContext(), R.raw.click);
-
-
-        Vibrator v = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
-
-        if (!doIVibrate)
+        if (doIVibrate == false)
             System.out.println("No Vibrate");
         else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (doIVibrate && count == 33)
@@ -253,7 +271,7 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
             }
         }
 
-        if (!doIPlaySound)
+        if (doIPlaySound == false)
             System.out.println("No Sound");
         else if (doIPlaySound && count == 33)
             pop.start();
@@ -281,8 +299,7 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
             menu.start();
         else if (doIPlaySound && count >= 1000)
             menu.start();
-        else SettingsFragments.defualtSound.start(); /// change it after settings page < depends on user choice;
-
+        else defualt.start(); /// change it after settings page < depends on user choice;
 
     }
 
@@ -293,9 +310,10 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
          ****  reset count and textViews  *****
          *************************************/
 
-
+        if (doIVibrate)
+            v.vibrate(500);
         if (doIPlaySound)
-            SettingsFragments.defualtSound.start();
+            defualt.start();
         // do nt forget to play sound depends on settings
         count = 0;
         theCount = 0;
