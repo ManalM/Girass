@@ -70,10 +70,17 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
         settingsEditor =  context.getSharedPreferences("SETTING_PREF",MODE_PRIVATE).edit();
 
 
-        defualt = MediaPlayer.create(getContext(),settings.getInt("defaultSound",R.raw.click));
+        if(context.getSharedPreferences("SETTINGS_PREF", MODE_PRIVATE)!= null){
+            defualt = MediaPlayer.create(getContext(),settings.getInt("defaultSound",R.raw.click));
+            doIPlaySound= settings.getBoolean("masbahaSound",true);
+            doIVibrate = settings.getBoolean("masbahaVibrate",true);
 
-        doIPlaySound= settings.getBoolean("masbahaSound",true);
-        doIVibrate = settings.getBoolean("masbahaVibrate",true);
+        }else{
+            defualt = MediaPlayer.create(getContext() , R.raw.click);
+            doIVibrate = true;
+            doIPlaySound = true;
+        }
+
 
         pop = MediaPlayer.create(getContext(), R.raw.pop);
         menu = MediaPlayer.create(getContext(), R.raw.menu);
