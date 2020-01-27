@@ -35,8 +35,10 @@
 android:layout_alignParentBottom="true"
         android:src="@drawable/fav_heart" />
 
+<!--
     <include
         layout="@layout/activity_main"/>
+-->
 <!--
     <com.google.android.material.bottomnavigation.BottomNavigationView
 

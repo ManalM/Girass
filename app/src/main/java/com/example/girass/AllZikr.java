@@ -72,8 +72,11 @@ public class AllZikr extends FragmentActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                onBackPressed();
+/*
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new AzkarFragment()).commit();
+*/
                 //startActivity(new Intent(AllZikr.this,AzkarFragment.class));
             }
         });
@@ -87,6 +90,7 @@ public class AllZikr extends FragmentActivity {
 
     }
 
+/*
     @Override
     public void onBackPressed() {
         if (mPager.getCurrentItem() == 0) {
@@ -98,6 +102,7 @@ public class AllZikr extends FragmentActivity {
             mPager.setCurrentItem(mPager.getCurrentItem() - 1);
         }
     }
+*/
 
 }
 
@@ -171,6 +176,7 @@ LinearLayout mLayoutInflater;
 
      }
 
+/*
      @Override
      public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
 
@@ -178,6 +184,7 @@ LinearLayout mLayoutInflater;
     container.removeView((View) object);
          super.destroyItem(container, position, object);
      }
+*/
 
      @Override
     public Fragment getItem(int position) {
