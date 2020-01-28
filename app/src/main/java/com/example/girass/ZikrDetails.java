@@ -1,6 +1,11 @@
 package com.example.girass;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Typeface;
+import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,6 +13,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +30,14 @@ public class ZikrDetails extends Fragment {
     TextView zikr, narriated, timeToRepeat;
     ImageView click, repeat;
 
+    Context context;
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
+    MediaPlayer defualt;
+    Boolean doIPlaySound, doIVibrate;
+
+    Typeface defaultFont;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -37,7 +51,51 @@ public class ZikrDetails extends Fragment {
         ///-------------------------------------------
         click = rootView.findViewById(R.id.click);
         repeat = rootView.findViewById(R.id.repeat);
+//--------------------SharedPreference-----------------------------
 
+        context = getActivity().getApplicationContext();
+
+        pref = PreferenceManager.getDefaultSharedPreferences(getContext());
+        editor = PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
+
+
+        if (pref != null) {
+            defualt = MediaPlayer.create(getContext(), pref.getInt("defaultSound", R.raw.click));
+            doIPlaySound = pref.getBoolean("masbahaSound", true);
+            doIVibrate = pref.getBoolean("masbahaVibrate", true);
+
+            if(pref.getString("defaultFont","regular").equals("regular"))
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    defaultFont= getResources().getFont(R.font.tajawal_regular);
+                }
+
+            else if (pref.getString("defaultFont","bold").equals("bold"))
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        defaultFont= getResources().getFont(R.font.tajwal_bold);
+                    }
+            else if(pref.getString("defaultFont","light").equals("light"))
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            defaultFont= getResources().getFont(R.font.tajawal_light);
+                        }
+        } else {
+            defualt = MediaPlayer.create(getContext(), R.raw.click);
+            doIVibrate = true;
+            doIPlaySound = true;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                defaultFont= getResources().getFont(R.font.tajawal_regular);
+            }
+            editor.putInt("defaultSound", R.raw.click);
+            editor.putBoolean("masbahaSound", true);
+            editor.putBoolean("masbahaVibrate", true);
+            editor.putString("defaultFont", "regular");
+            editor.commit();
+        }
+
+
+        //-------------------------------------------------------
+
+        zikr.setTypeface(defaultFont);
+        //---------------------------------------------------------
         Intent intent = getActivity().getIntent();
         String title = intent.getStringExtra("array");
         DataService dataService = new DataService();
@@ -49,15 +107,15 @@ public class ZikrDetails extends Fragment {
                 //    HeadZikrObject h = headZikrObjects[i];
                 ZikrObject[] zikrObject = headZikrObjects[i].AllAzkar;
 
-          //      int index =new ZikrDetails().getId();
+                //      int index =new ZikrDetails().getId();
                 for (int j = 0; j < zikrObject.length; j++) {
 
 
                     //Toast.makeText(getContext(), "this is "+ new ZikrDetails().getId(), Toast.LENGTH_SHORT).show();
 
-                        zikr.setText(zikrObject[j].Details);
-                        narriated.setText(zikrObject[j].Narriated);
-                        timeToRepeat.setText(Integer.valueOf(zikrObject[j].TimesToRepeat).toString());
+                    zikr.setText(zikrObject[j].Details);
+                    narriated.setText(zikrObject[j].Narriated);
+                    timeToRepeat.setText(Integer.valueOf(zikrObject[j].TimesToRepeat).toString());
 
 
                 }

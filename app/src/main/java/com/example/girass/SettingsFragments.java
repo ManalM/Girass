@@ -17,6 +17,7 @@ import android.graphics.fonts.FontFamily;
 import android.media.Image;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.Toolbar;
@@ -79,8 +80,8 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
     public static float TextSize;
     public static Boolean Masbahavibrate, Masbahasound, GeneralSound = true, Generalvibrate = true;
     //-------------------------------------------------------------
-    public  static SharedPreferences pref;
-    public  static SharedPreferences.Editor editor;
+    public static SharedPreferences pref;
+    public static SharedPreferences.Editor editor;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -92,7 +93,6 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         /////////////////////////////////////////////////
         /////////////  initiate variables  /////////////
         ///////////////////////////////////////////////
-
 
 
         //-------------------------------------------------------------
@@ -132,11 +132,17 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 
         //--------------------- Defaults ------------------------------
 
-        defualtSound = MediaPlayer.create(getContext(), R.raw.click);
-        //   defualtFont =Typeface.createFromAsset(getContext().getAssets(),"font/tajawal_regular");
+       /* defualtSound = MediaPlayer.create(getContext(), R.raw.click);
+         defualtFont =Typeface.createFromAsset(getContext().getAssets(),"tajawal_regular.ttf");//tajawal_regular*/
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            defualtFont =  getResources().getFont(R.font.tajawal_regular);
+        }
         //  defualtFont= Typeface.createFromFile("font/tajawal_regular");
+     //defualtFont =    Typeface.createFromFile("font/tajawal_regular");
         //-------------------------------------------------------------
         textSize = (TextView) rootView.findViewById(R.id.text_size);
+
+        textSize.setTypeface(defualtFont);
         seekBar = rootView.findViewById(R.id.seek_bar);
 
 
@@ -161,24 +167,50 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         pref = PreferenceManager.getDefaultSharedPreferences(getContext());
         editor = PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
 
-        if(pref !=null){
+        if (pref != null) {
             masbahaSound.setChecked(pref.getBoolean("masbahaSound", true));
             masbahaVibrate.setChecked(pref.getBoolean("masbahaVibrate", true));
-        }else {
+            generalSound.setChecked(pref.getBoolean("generalSound", true));
+            generalVibrate.setChecked(pref.getBoolean("generalVibrate", true));
+            if(pref.getString("generalCardVisibility","visible").equals("visible"))
+                generalCard.setVisibility(View.VISIBLE);
+            else if (pref.getString("generalCardVisibility","gone").equals("gone"))
+                generalCard.setVisibility(View.GONE);
+
+            if(pref.getString("masbahaCardVisibility","visible").equals("visible"))
+                generalCard.setVisibility(View.VISIBLE);
+            else if (pref.getString("masbahaCardVisibility","gone").equals("gone"))
+                generalCard.setVisibility(View.GONE);
+
+
+        } else {
             masbahaVibrate.setChecked(true);
             Masbahavibrate = true;
 
             masbahaSound.setChecked(true);
             Masbahasound = true;
 
+            generalVibrate.setChecked(true);
+            Generalvibrate = true;
+
+            generalSound.setChecked(true);
+            GeneralSound = true;
+
+            generalCard.setVisibility(View.GONE);
+            masbahaCard.setVisibility(View.GONE);
+
             editor.putBoolean("masbahaSound", Masbahasound);
             editor.putBoolean("masbahaVibrate", Masbahavibrate);
+            editor.putBoolean("generalSound", GeneralSound);
+            editor.putBoolean("generalVibrate", Generalvibrate);
+            editor.putString("generalCardVisibility","gone");
+            editor.putString("masbahaCardVisibility","gone");
             editor.commit();
         }
 
         changeTextViewsBackground();
 
- //-----------------------------------------------------------
+        //-----------------------------------------------------------
 
         general.setOnClickListener(this);
         masbaha.setOnClickListener(this);
@@ -205,7 +237,25 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
             changeMasbahaTextView(sound4, sound1, sound3, sound1);
 
         // -----------------------General fonts ---------------------------
+
+        if (pref.getString("defaultFont", "bold").equals("bold"))
+            changeGeneralTextView(font3, font2, font1);
+
+        else if (pref.getString("defaultFont", "light").equals("light"))
+            changeGeneralTextView(font2, font1, font3);
+
+        else if (pref.getString("defaultFont", "regular").equals("regular"))
+            changeGeneralTextView(font1, font2, font3);
+
         // -----------------------General launcher ---------------------------
+
+        if (pref.getString("launcher", "Zikr").equals("Zikr"))
+            changeGeneralTextView(luncherZikr, lucherfav, luncherMasbaha);
+        else if (pref.getString("launcher", "Masbaha").equals("Masbaha"))
+            changeGeneralTextView(luncherMasbaha, lucherfav, luncherZikr);
+
+        else if (pref.getString("launcher", "Fav").equals("Fav"))
+            changeGeneralTextView(lucherfav, luncherMasbaha, luncherZikr);
 
     }
 
@@ -225,9 +275,14 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                     generalCard.setVisibility(View.VISIBLE);
                     Glide.with(getContext()).load(R.drawable.up_arrow).into(generalArrow);
                     GenetalSetting();
+                    editor.putString("generalCardVisibility","visible");
+                    editor.commit();
                 } else {
                     generalCard.setVisibility(View.GONE);
                     Glide.with(getContext()).load(R.drawable.down_arrow).into(generalArrow);
+                    GenetalSetting();
+                    editor.putString("generalCardVisibility","gone");
+                    editor.commit();
                 }
 
                 break;
@@ -237,10 +292,14 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                     masbahaCard.setVisibility(View.VISIBLE);
                     Glide.with(getContext()).load(R.drawable.up_arrow).into(masbahaArrow);
                     MasbahaSetting();
+                    editor.putString("masbahaCardVisibility","visible");
+                    editor.commit();
                 } else {
                     masbahaCard.setVisibility(View.GONE);
                     Glide.with(getContext()).load(R.drawable.down_arrow).into(masbahaArrow);
                     MasbahaSetting();
+                    editor.putString("masbahaCardVisibility","gone");
+                    editor.commit();
                 }
                 break;
             case R.id.notification:
@@ -267,26 +326,6 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
     }
 
     private void GenetalSetting() {
-
-/*
-        boolean VibrationChecked = generalVibrate.isChecked();
-        boolean SoundsChecked = generalSound.isChecked();
-
-        if (VibrationChecked == true) {
-
-            Generalvibrate = true;
-
-        } else {
-            Generalvibrate = false;
-        }
-
-        if (SoundsChecked == true) {
-
-            GeneralSound = true;
-            defualtSound.start();
-        } else {
-            GeneralSound = false;
-        }*/
 
 
         generalVibrate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -322,14 +361,47 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         });
 
 
-        //----------------------------------------------------
+        //----------------Launcher Listener-----------------------------
+        luncherZikr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeGeneralTextView(luncherZikr, lucherfav, luncherMasbaha);
+                Toast.makeText(getContext(), "Zikr", Toast.LENGTH_SHORT).show();
+                editor.putString("launcher", "Zikr");
+                editor.commit();
+            }
+        });
+
+        luncherMasbaha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeGeneralTextView(luncherMasbaha, lucherfav, luncherZikr);
+                editor.putString("launcher", "Masbaha");
+                editor.commit();
+            }
+        });
+
+        lucherfav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeGeneralTextView(lucherfav, luncherZikr, luncherMasbaha);
+                editor.putString("launcher", "Fav");
+                editor.commit();
+            }
+        });
+        //---------------Fonts Listener---------------------------
         font1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //  defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajawal_regular");
                 changeGeneralTextView(font1, font2, font3);
-                defualtFont = Typeface.createFromFile("font/tajawal_regular");
-                editor.putInt("defualtFont", R.font.tajawal_regular);
+             //   defualtFont = Typeface.createFromAsset(getContext().getAssets(),"tajawal_regular.ttf");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    defualtFont= getResources().getFont(R.font.tajawal_regular);
+                }else{
+                  //  defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajawal_regular.ttf");
+                }
+                editor.putString("defaultFont", "regular");
                 editor.commit();
             }
         });
@@ -339,8 +411,12 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                 changeGeneralTextView(font2, font1, font3);
 
                 //  defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajawal_light");
-                defualtFont = Typeface.createFromFile("font/tajawal_light");
-                editor.putInt("defualtFont", R.font.tajawal_light);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    defualtFont= getResources().getFont(R.font.tajawal_light);
+                }else{
+             //       defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajawal_light.ttf");
+                }
+                editor.putString("defaultFont", "light");
                 editor.commit();
             }
         });
@@ -349,10 +425,15 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
             public void onClick(View v) {
                 changeGeneralTextView(font3, font2, font1);
 
-
+                Toast.makeText(getContext(), "font3", Toast.LENGTH_SHORT).show();
                 //     defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajwal_bold");
-                defualtFont = Typeface.createFromFile("font/tajawal_bold");
-                editor.putInt("defualtFont", R.font.tajwal_bold);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    defualtFont= getResources().getFont(R.font.tajwal_bold);
+                }else{
+                 //   defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajwal_bold.ttf");
+                }
+                editor.putString("defaultFont", "bold");
                 editor.commit();
 
             }
@@ -426,7 +507,6 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         });
 
 
-
         sound1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -435,8 +515,8 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 
                 if (pref.getBoolean("masbahaSound", true)) {
                     defualtSound = mediaSound1;
-                            editor.putInt("defaultSound",R.raw.click2);
-                            editor.commit();
+                    editor.putInt("defaultSound", R.raw.click2);
+                    editor.commit();
                 }
 
             }
@@ -461,7 +541,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                 changeMasbahaTextView(sound3, sound1, sound2, sound4);
 
                 mediaSound3.start();
-                if (pref.getBoolean("masbahaSound",true)) {
+                if (pref.getBoolean("masbahaSound", true)) {
                     defualtSound = mediaSound3;
                     editor.putInt("defaultSound", R.raw.click);
                     editor.commit();
@@ -754,12 +834,11 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         clickble.setTextColor(getResources().getColor(R.color.colorAccent));
         clickble.setBackgroundColor(getResources().getColor(R.color.textColor));
 
-
-        other1.setBackgroundColor(getResources().getColor(R.color.colorAccent));
         other1.setTextColor(getResources().getColor(R.color.textColor));
+        other1.setBackgroundColor(getResources().getColor(R.color.colorAccent));
 
-        other2.setBackgroundColor(getResources().getColor(R.color.colorAccent));
         other2.setTextColor(getResources().getColor(R.color.textColor));
+        other2.setBackgroundColor(getResources().getColor(R.color.colorAccent));
 
     }
 }
