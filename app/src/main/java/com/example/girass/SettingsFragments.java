@@ -77,8 +77,8 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 
     public static MediaPlayer defualtSound;
     public static Typeface defualtFont;
-    public static float TextSize;
-    public static Boolean Masbahavibrate, Masbahasound, GeneralSound = true, Generalvibrate = true;
+    public static int TextSize ;
+    public static Boolean Masbahavibrate, Masbahasound, GeneralSound , Generalvibrate ;
     //-------------------------------------------------------------
     public static SharedPreferences pref;
     public static SharedPreferences.Editor editor;
@@ -146,7 +146,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         seekBar = rootView.findViewById(R.id.seek_bar);
 
 
-//        TextSize = pref.getFloat("fontsize", 12);
+       TextSize =15;
         seekBar.setProgress((int) TextSize);
         textSize.setTextSize(TypedValue.COMPLEX_UNIT_PX, seekBar.getProgress());
         //-------------------------------------------------------------
@@ -182,6 +182,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
             else if (pref.getString("masbahaCardVisibility","gone").equals("gone"))
                 generalCard.setVisibility(View.GONE);
 
+            TextSize = pref.getInt("fontSize",18);
 
         } else {
             masbahaVibrate.setChecked(true);
@@ -199,13 +200,16 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
             generalCard.setVisibility(View.GONE);
             masbahaCard.setVisibility(View.GONE);
 
+            TextSize = 18;
+
             editor.putBoolean("masbahaSound", Masbahasound);
             editor.putBoolean("masbahaVibrate", Masbahavibrate);
             editor.putBoolean("generalSound", GeneralSound);
             editor.putBoolean("generalVibrate", Generalvibrate);
             editor.putString("generalCardVisibility","gone");
             editor.putString("masbahaCardVisibility","gone");
-            editor.commit();
+            editor.putInt("fontSize",TextSize);
+            editor.apply();
         }
 
         changeTextViewsBackground();
@@ -271,16 +275,19 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         switch (v.getId()) {
 
             case R.id.general_setting:
+                GenetalSetting();
+
                 if (generalCard.getVisibility() == View.GONE) {
                     generalCard.setVisibility(View.VISIBLE);
                     Glide.with(getContext()).load(R.drawable.up_arrow).into(generalArrow);
-                    GenetalSetting();
                     editor.putString("generalCardVisibility","visible");
                     editor.commit();
+
                 } else {
+                    GenetalSetting();
+
                     generalCard.setVisibility(View.GONE);
                     Glide.with(getContext()).load(R.drawable.down_arrow).into(generalArrow);
-                    GenetalSetting();
                     editor.putString("generalCardVisibility","gone");
                     editor.commit();
                 }
@@ -291,15 +298,17 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                 if (masbahaCard.getVisibility() == View.GONE) {
                     masbahaCard.setVisibility(View.VISIBLE);
                     Glide.with(getContext()).load(R.drawable.up_arrow).into(masbahaArrow);
-                    MasbahaSetting();
                     editor.putString("masbahaCardVisibility","visible");
                     editor.commit();
+                    MasbahaSetting();
+
                 } else {
                     masbahaCard.setVisibility(View.GONE);
                     Glide.with(getContext()).load(R.drawable.down_arrow).into(masbahaArrow);
-                    MasbahaSetting();
                     editor.putString("masbahaCardVisibility","gone");
                     editor.commit();
+                    MasbahaSetting();
+
                 }
                 break;
             case R.id.notification:
@@ -444,7 +453,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 textSize.setTextSize(TypedValue.COMPLEX_UNIT_PX, progress);
-                editor.putFloat("fontsize", progress);
+                editor.putInt("fontSize", progress);
                 editor.commit();
             }
 

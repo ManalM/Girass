@@ -90,10 +90,9 @@
                         android:id="@+id/seek_bar"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:progressDrawable="@color/textColor"
                         android:layout_weight="1"
-                        android:max="22"
-                        android:min="10"
+                        android:max="25"
+                        android:min="18"
                         android:progress="3" />
 
                     <TextView

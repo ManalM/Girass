@@ -38,6 +38,8 @@ public class ZikrDetails extends Fragment {
 
     Typeface defaultFont;
 
+    int TextSize;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -77,6 +79,8 @@ public class ZikrDetails extends Fragment {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                             defaultFont= getResources().getFont(R.font.tajawal_light);
                         }
+            TextSize  = pref.getInt("fontSize",18);
+
         } else {
             defualt = MediaPlayer.create(getContext(), R.raw.click);
             doIVibrate = true;
@@ -84,17 +88,18 @@ public class ZikrDetails extends Fragment {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 defaultFont= getResources().getFont(R.font.tajawal_regular);
             }
+            TextSize = 15;
             editor.putInt("defaultSound", R.raw.click);
             editor.putBoolean("masbahaSound", true);
             editor.putBoolean("masbahaVibrate", true);
             editor.putString("defaultFont", "regular");
+            editor.putInt("fontSize",TextSize);
             editor.commit();
         }
 
 
         //-------------------------------------------------------
 
-        zikr.setTypeface(defaultFont);
         //---------------------------------------------------------
         Intent intent = getActivity().getIntent();
         String title = intent.getStringExtra("array");
@@ -117,7 +122,9 @@ public class ZikrDetails extends Fragment {
                     narriated.setText(zikrObject[j].Narriated);
                     timeToRepeat.setText(Integer.valueOf(zikrObject[j].TimesToRepeat).toString());
 
+                    //------------------------Settings ------------------
 
+                    textStyle();
                 }
 
 
@@ -127,4 +134,11 @@ public class ZikrDetails extends Fragment {
         return rootView;
     }
 
+    private void textStyle(){
+        zikr.setTypeface(defaultFont);
+        narriated.setTypeface(defaultFont);
+
+        zikr.setTextSize(TextSize);
+        narriated.setTextSize(TextSize);
+    }
 }

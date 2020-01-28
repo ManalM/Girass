@@ -10,7 +10,11 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-
+/*
+ * This adapter is related to the dialog  List of the MasbahaFragment
+ *
+ *
+ * */
 public class AdapterAzkar extends RecyclerView.Adapter<AdapterAzkar.NewViewHolder> {
 
     private Context mContext;

@@ -1,6 +1,12 @@
 package com.example.girass;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Typeface;
+import android.os.Build;
+import android.preference.PreferenceManager;
+import android.text.Html;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +16,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+
+/*
+ * This adapter is related to the AzkarFragment
+ *
+ *
+ * */
+
+
 public class Adapter extends RecyclerView.Adapter<Adapter.viewHolder> {
 
-    private Context mContext;
+    private static Context mContext;
     private String[] mAzkarArray;
     private Adapter mAdapterAzkar;
     private Adapter.OnItemClickListener mListener;
+
 
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -33,8 +48,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.viewHolder> {
     @Override
     public Adapter.viewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater mInflater = LayoutInflater.from(mContext);
-        View view = mInflater.inflate(R.layout.zikr_list_item,parent,false);
-        return new Adapter.viewHolder(view,mListener);
+        View view = mInflater.inflate(R.layout.zikr_list_item, parent, false);
+        return new Adapter.viewHolder(view, mListener);
     }
 
     @Override
@@ -45,30 +60,73 @@ public class Adapter extends RecyclerView.Adapter<Adapter.viewHolder> {
 
     @Override
     public int getItemCount() {
-        return  mAzkarArray.length;
+        return mAzkarArray.length;
     }
 
-    public static class viewHolder extends RecyclerView.ViewHolder{
+    public static class viewHolder extends RecyclerView.ViewHolder {
 
-    private TextView mTextView;
-    private LinearLayout mLinearLayout;
+        private TextView mTextView;
+        private LinearLayout mLinearLayout;
+        SharedPreferences pref;
+        SharedPreferences.Editor editor;
 
-    public viewHolder(@NonNull View itemView,final Adapter.OnItemClickListener listener) {
-        super(itemView);
-        mTextView=itemView.findViewById(R.id.zikrText);
-        mLinearLayout=itemView.findViewById(R.id.zikr_linear);
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        listener.onItemClick(position);
+        int textSize;
+
+        Typeface   defaultFont;
+        public viewHolder(@NonNull View itemView, final Adapter.OnItemClickListener listener) {
+            super(itemView);
+
+            //-------------------------- SharedPreference -----------------
+            pref = PreferenceManager.getDefaultSharedPreferences(Adapter.mContext);
+            editor = PreferenceManager.getDefaultSharedPreferences(Adapter.mContext).edit();
+
+            if (pref != null){
+                    textSize = pref.getInt("fontSize", 18);
+
+
+            if (pref.getString("defaultFont", "regular").equals("regular"))
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    defaultFont = Adapter.mContext.getResources().getFont(R.font.tajawal_regular);
+                } else if (pref.getString("defaultFont", "bold").equals("bold"))
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        defaultFont =  Adapter.mContext.getResources().getFont(R.font.tajwal_bold);
+                    } else if (pref.getString("defaultFont", "light").equals("light"))
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            defaultFont =  Adapter.mContext.getResources().getFont(R.font.tajawal_light);
+                        }
+        }else{
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    defaultFont=  Adapter.mContext.getResources().getFont(R.font.tajawal_regular);
+                }
+                editor.putString("defaultFont", "regular");
+
+                textSize = 18;
+                editor.putInt("fontSize", textSize);
+                editor.apply();
+            }
+            //--------------------------------------------------------
+
+            mTextView = itemView.findViewById(R.id.zikrText);
+            mLinearLayout = itemView.findViewById(R.id.zikr_linear);
+            //-------------------- set Zikr text ---------------------------
+
+            mTextView.setTextSize(textSize);
+            mTextView.setTypeface(defaultFont);
+            //--------------------------------------------------------
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(position);
+                        }
                     }
                 }
-            }
-        });
-    }
+            });
+        }
 
 
     }
