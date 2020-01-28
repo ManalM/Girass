@@ -23,6 +23,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -74,7 +76,6 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 
     public static MediaPlayer defualtSound;
     public static Typeface defualtFont;
-     String MY_PREFS = "SETTING_PREFS";
     public static float TextSize;
     public static Boolean Masbahavibrate, Masbahasound, GeneralSound = true, Generalvibrate = true;
     //-------------------------------------------------------------
@@ -102,7 +103,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         share = (LinearLayout) rootView.findViewById(R.id.share);
         rate = (LinearLayout) rootView.findViewById(R.id.rate);
         about = (LinearLayout) rootView.findViewById(R.id.about);
-        //-------------------------------------------------------------
+        //--------------------- Cards ---------------------------------
 
         generalCard = (CardView) rootView.findViewById(R.id.general_card);
         masbahaCard = (CardView) rootView.findViewById(R.id.masbaha_card);
@@ -112,7 +113,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         masbahaVibrate = (Switch) rootView.findViewById(R.id.masbaha_vibrate);
         generalSound = (Switch) rootView.findViewById(R.id.general_sounds);
         generalVibrate = (Switch) rootView.findViewById(R.id.general_vibrate);
-        //-------------------------------------------------------------
+        //------------------------ Fonts -------------------------------
 
         font1 = (TextView) rootView.findViewById(R.id.font1);
         font2 = (TextView) rootView.findViewById(R.id.font2);
@@ -122,14 +123,14 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         luncherMasbaha = (TextView) rootView.findViewById(R.id.luncher_masbaha);
 
         luncherZikr = (TextView) rootView.findViewById(R.id.luncher_zikr);
-        //-------------------------------------------------------------
+        //------------------------- Sounds -------------------------------
 
         sound1 = (TextView) rootView.findViewById(R.id.sound1);
         sound2 = (TextView) rootView.findViewById(R.id.sound2);
         sound3 = (TextView) rootView.findViewById(R.id.sound3);
         sound4 = (TextView) rootView.findViewById(R.id.sound4);
 
-        //-------------------------------------------------------------
+        //--------------------- Defaults ------------------------------
 
         defualtSound = MediaPlayer.create(getContext(), R.raw.click);
         //   defualtFont =Typeface.createFromAsset(getContext().getAssets(),"font/tajawal_regular");
@@ -155,9 +156,10 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 
         toolbar.setTitle("");
         toolbarText.setText(R.string.settings);
-        //-------------------------------------------------------------
-        pref = getContext().getSharedPreferences(MY_PREFS, MODE_PRIVATE);
-        editor = getContext().getSharedPreferences(MY_PREFS, MODE_PRIVATE).edit();
+
+        //--------------------- SharedPreference ----------------------------
+        pref = PreferenceManager.getDefaultSharedPreferences(getContext());
+        editor = PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
 
         if(pref !=null){
             masbahaSound.setChecked(pref.getBoolean("masbahaSound", true));
@@ -174,7 +176,9 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
             editor.commit();
         }
 
+        changeTextViewsBackground();
 
+ //-----------------------------------------------------------
 
         general.setOnClickListener(this);
         masbaha.setOnClickListener(this);
@@ -184,6 +188,25 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         about.setOnClickListener(this);
 
         return rootView;
+    }
+
+    private void changeTextViewsBackground() {
+
+
+        //----------------------- Masbaha--------------------
+        if (pref.getInt("defaultSound", 0) == R.raw.click2)
+            changeMasbahaTextView(sound1, sound2, sound3, sound4);
+        else if (pref.getInt("defaultSound", 0) == R.raw.pop)
+            changeMasbahaTextView(sound2, sound1, sound3, sound4);
+        else if (pref.getInt("defaultSound", 0) == R.raw.click)
+            changeMasbahaTextView(sound3, sound1, sound1, sound4);
+
+        else if (pref.getInt("defaultSound", 0) == R.raw.menu2)
+            changeMasbahaTextView(sound4, sound1, sound3, sound1);
+
+        // -----------------------General fonts ---------------------------
+        // -----------------------General launcher ---------------------------
+
     }
 
     @Override
@@ -409,9 +432,8 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
             public void onClick(View v) {
                 changeMasbahaTextView(sound1, sound4, sound2, sound3);
                 mediaSound1.start();
-             //   editor.putInt("chozenSound", R.id.sound1)
 
-                if (pref.getBoolean("masbahaSound", Masbahasound)) {
+                if (pref.getBoolean("masbahaSound", true)) {
                     defualtSound = mediaSound1;
                             editor.putInt("defaultSound",R.raw.click2);
                             editor.commit();
@@ -426,7 +448,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                 changeMasbahaTextView(sound2, sound1, sound4, sound3);
 
                 mediaSound2.start();
-                if (pref.getBoolean("masbahaSound", Masbahasound)) {
+                if (pref.getBoolean("masbahaSound", true)) {
                     defualtSound = mediaSound2;
                     editor.putInt("defaultSound", R.raw.pop);
                     editor.commit();
@@ -439,7 +461,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                 changeMasbahaTextView(sound3, sound1, sound2, sound4);
 
                 mediaSound3.start();
-                if (pref.getBoolean("masbahaSound", Masbahasound)) {
+                if (pref.getBoolean("masbahaSound",true)) {
                     defualtSound = mediaSound3;
                     editor.putInt("defaultSound", R.raw.click);
                     editor.commit();
@@ -453,7 +475,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                 changeMasbahaTextView(sound4, sound1, sound2, sound3);
 
                 mediaSound4.start();
-                if (pref.getBoolean("masbahaSound", Masbahasound)) {
+                if (pref.getBoolean("masbahaSound", true)) {
                     defualtSound = mediaSound4;
                     editor.putInt("defaultSound", R.raw.menu2);
                     editor.commit();
@@ -666,7 +688,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                         } catch (ActivityNotFoundException e) {
                             String message = e.getMessage();
 
-                            Toast.makeText(getContext(), "Error:" + message, Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), "لايوجد برنامج واتس اب ", Toast.LENGTH_LONG).show();
 
 
                         }
@@ -688,7 +710,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                 } catch (ActivityNotFoundException e) {
                     String message = e.getMessage();
 
-                    Toast.makeText(getContext(), "Error:" + message, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "لايوجد برنامج تويتر", Toast.LENGTH_LONG).show();
 
                 }
 

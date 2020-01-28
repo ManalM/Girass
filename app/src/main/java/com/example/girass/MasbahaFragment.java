@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,8 +70,8 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
 
         context = getActivity().getApplicationContext();
 
-        settings = context.getSharedPreferences("SETTING_PREF", MODE_PRIVATE);
-        settingsEditor = context.getSharedPreferences("SETTING_PREF", MODE_PRIVATE).edit();
+        settings = PreferenceManager.getDefaultSharedPreferences(getContext());
+        settingsEditor = PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
 
 
         if (settings != null) {
@@ -91,7 +92,7 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
 //-------------------------------------------------------------------
         pop = MediaPlayer.create(getContext(), R.raw.pop);
         menu = MediaPlayer.create(getContext(), R.raw.menu);
-        click = MediaPlayer.create(getContext(), R.raw.click);
+        //click = MediaPlayer.create(getContext(), R.raw.click);
 
 
         v = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
@@ -221,31 +222,31 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
         if (doIVibrate == false)
             System.out.println("No Vibrate");
         else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            if (doIVibrate && count == 33)
+            if (doIVibrate && theCount == 33)
                 v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.EFFECT_HEAVY_CLICK));
-            else if (doIVibrate && count == 66)
+            else if (doIVibrate && theCount == 66)
                 v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
-            else if (doIVibrate && count == 99)
+            else if (doIVibrate && theCount == 99)
                 v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
-            else if (doIVibrate && count == 100)
+            else if (doIVibrate && theCount == 100)
                 v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
-            else if (doIVibrate && count == 200)
+            else if (doIVibrate && theCount == 200)
                 v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
-            else if (doIVibrate && count == 300)
+            else if (doIVibrate && theCount == 300)
                 v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
-            else if (doIVibrate && count == 400)
+            else if (doIVibrate && theCount == 400)
                 v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
-            else if (doIVibrate && count == 500)
+            else if (doIVibrate && theCount == 500)
                 v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
-            else if (doIVibrate && count == 600)
+            else if (doIVibrate && theCount == 600)
                 v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
-            else if (doIVibrate && count == 700)
+            else if (doIVibrate && theCount == 700)
                 v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
-            else if (doIVibrate && count == 800)
+            else if (doIVibrate && theCount == 800)
                 v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
-            else if (doIVibrate && count == 900)
+            else if (doIVibrate && theCount == 900)
                 v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
-            else if (doIVibrate && count >= 1000)
+            else if (doIVibrate && theCount >= 1000)
                 v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
             else {
                 v.vibrate(VibrationEffect.createOneShot(300, VibrationEffect.EFFECT_TICK));
@@ -253,31 +254,31 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
             }
 
         } else {
-            if (doIVibrate && count == 33)
+            if (doIVibrate && theCount == 33)
                 v.vibrate(500);
-            else if (doIVibrate && count == 66)
+            else if (doIVibrate && theCount == 66)
                 v.vibrate(500);
-            else if (doIVibrate && count == 99)
+            else if (doIVibrate && theCount == 99)
                 v.vibrate(500);
-            else if (doIVibrate && count == 100)
+            else if (doIVibrate && theCount == 100)
                 v.vibrate(500);
-            else if (doIVibrate && count == 200)
+            else if (doIVibrate && theCount == 200)
                 v.vibrate(500);
-            else if (doIVibrate && count == 300)
+            else if (doIVibrate && theCount == 300)
                 v.vibrate(500);
-            else if (doIVibrate && count == 400)
+            else if (doIVibrate && theCount == 400)
                 v.vibrate(500);
-            else if (doIVibrate && count == 500)
+            else if (doIVibrate && theCount == 500)
                 v.vibrate(500);
-            else if (doIVibrate && count == 600)
+            else if (doIVibrate && theCount == 600)
                 v.vibrate(500);
-            else if (doIVibrate && count == 700)
+            else if (doIVibrate && theCount == 700)
                 v.vibrate(500);
-            else if (doIVibrate && count == 800)
+            else if (doIVibrate && theCount == 800)
                 v.vibrate(500);
-            else if (doIVibrate && count == 900)
+            else if (doIVibrate && theCount == 900)
                 v.vibrate(500);
-            else if (doIVibrate && count >= 1000)
+            else if (doIVibrate && theCount >= 1000)
                 v.vibrate(500);
             else {
                 v.vibrate(500);
@@ -287,33 +288,35 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
 
         if (doIPlaySound == false)
             System.out.println("No Sound");
-        else if (doIPlaySound && count == 33)
+        else if (doIPlaySound && theCount == 33) {
             pop.start();
-        else if (doIPlaySound && count == 66)
+        } else if (doIPlaySound && theCount == 66) {
             pop.start();
-        else if (doIPlaySound && count == 99)
+        } else if (doIPlaySound && theCount == 99) {
             pop.start();
-        else if (doIPlaySound && count == 100)
+        } else if (doIPlaySound && theCount == 100)
             menu.start();
-        else if (doIPlaySound && count == 200)
+        else if (doIPlaySound && theCount == 200)
             menu.start();
-        else if (doIPlaySound && count == 300)
+        else if (doIPlaySound && theCount == 300)
             menu.start();
-        else if (doIPlaySound && count == 400)
+        else if (doIPlaySound && theCount == 400)
             menu.start();
-        else if (doIPlaySound && count == 500)
+        else if (doIPlaySound && theCount == 500)
             menu.start();
-        else if (doIPlaySound && count == 600)
+        else if (doIPlaySound && theCount == 600)
             menu.start();
-        else if (doIPlaySound && count == 700)
+        else if (doIPlaySound && theCount == 700)
             menu.start();
-        else if (doIPlaySound && count == 800)
+        else if (doIPlaySound && theCount == 800)
             menu.start();
-        else if (doIPlaySound && count == 900)
+        else if (doIPlaySound && theCount == 900)
             menu.start();
-        else if (doIPlaySound && count >= 1000)
+        else if (doIPlaySound && theCount >= 1000) {
             menu.start();
-        else defualt.start(); /// change it after settings page < depends on user choice;
+        } else {
+            defualt.start();
+        } /// change it after settings page < depends on user choice;
 
     }
 
