@@ -41,8 +41,8 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
 
     private ImageButton resetCount, chooseZikr, subhaBtn;
     private int count = 0, theCount = 0;
-    private Boolean doIPlaySound ;
-    private Boolean doIVibrate ;
+    private Boolean doIPlaySound;
+    private Boolean doIVibrate;
     private TextView noOfTasih, firstZikr, secZikr, thirdZikr;
     private final static String MY_PREFS = "MY_PREFS";
     SharedPreferences.Editor editor;
@@ -55,33 +55,40 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
     private Dialog dialog;
     Vibrator v;
     MediaPlayer pop, menu, click;
-    Context context ;
+    Context context;
+
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_masbaha, container, false);
 
-        context = getActivity().getApplicationContext();
         /////////////////////////////////////////////////
         /////////////  initiate variables  /////////////
         ///////////////////////////////////////////////
+        //---------------- SharedPreference settings -------------------------------------------
 
-        settings = context.getSharedPreferences("SETTING_PREF",MODE_PRIVATE);
-        settingsEditor =  context.getSharedPreferences("SETTING_PREF",MODE_PRIVATE).edit();
+        context = getActivity().getApplicationContext();
+
+        settings = context.getSharedPreferences("SETTING_PREF", MODE_PRIVATE);
+        settingsEditor = context.getSharedPreferences("SETTING_PREF", MODE_PRIVATE).edit();
 
 
-        if(context.getSharedPreferences("SETTINGS_PREF", MODE_PRIVATE)!= null){
-            defualt = MediaPlayer.create(getContext(),settings.getInt("defaultSound",R.raw.click));
-            doIPlaySound= settings.getBoolean("masbahaSound",true);
-            doIVibrate = settings.getBoolean("masbahaVibrate",true);
+        if (settings != null) {
+            defualt = MediaPlayer.create(getContext(), settings.getInt("defaultSound", R.raw.click));
+            doIPlaySound = settings.getBoolean("masbahaSound", true);
+            doIVibrate = settings.getBoolean("masbahaVibrate", true);
 
-        }else{
-            defualt = MediaPlayer.create(getContext() , R.raw.click);
+        } else {
+            defualt = MediaPlayer.create(getContext(), R.raw.click);
             doIVibrate = true;
             doIPlaySound = true;
+            settingsEditor.putInt("defaultSound", R.raw.click);
+            settingsEditor.putBoolean("masbahaSound", true);
+            settingsEditor.putBoolean("masbahaVibrate", true);
+            settingsEditor.commit();
         }
 
-
+//-------------------------------------------------------------------
         pop = MediaPlayer.create(getContext(), R.raw.pop);
         menu = MediaPlayer.create(getContext(), R.raw.menu);
         click = MediaPlayer.create(getContext(), R.raw.click);

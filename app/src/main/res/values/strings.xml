@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Girass</string>
 
+    <!-- Splash Screen-->
+
+    <string name="label1"> حصن المسلم من أذكار الكتاب والسنة </string>
+    <string name="label2"> لسعيد بن علي بن وهف القحطاني </string>
+
     <!-- Navigation bottom  -->
     <string name="azkar">الأذكار</string>
     <string name="fav">المفضلة</string>

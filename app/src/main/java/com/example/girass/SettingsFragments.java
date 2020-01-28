@@ -76,7 +76,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
     public static Typeface defualtFont;
      String MY_PREFS = "SETTING_PREFS";
     public static float TextSize;
-    public static Boolean Masbahavibrate = true, Masbahasound = true, GeneralSound = true, Generalvibrate = true;
+    public static Boolean Masbahavibrate, Masbahasound, GeneralSound = true, Generalvibrate = true;
     //-------------------------------------------------------------
     public  static SharedPreferences pref;
     public  static SharedPreferences.Editor editor;
@@ -93,8 +93,8 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         ///////////////////////////////////////////////
 
 
-        pref = getContext().getSharedPreferences(MY_PREFS, MODE_PRIVATE);
-        editor = getContext().getSharedPreferences(MY_PREFS, MODE_PRIVATE).edit();
+
+        //-------------------------------------------------------------
 
         general = (LinearLayout) rootView.findViewById(R.id.general_setting);
         masbaha = (LinearLayout) rootView.findViewById(R.id.masbaha_setting);
@@ -139,7 +139,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         seekBar = rootView.findViewById(R.id.seek_bar);
 
 
-        TextSize = pref.getFloat("fontsize", 12);
+//        TextSize = pref.getFloat("fontsize", 12);
         seekBar.setProgress((int) TextSize);
         textSize.setTextSize(TypedValue.COMPLEX_UNIT_PX, seekBar.getProgress());
         //-------------------------------------------------------------
@@ -156,9 +156,24 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         toolbar.setTitle("");
         toolbarText.setText(R.string.settings);
         //-------------------------------------------------------------
+        pref = getContext().getSharedPreferences(MY_PREFS, MODE_PRIVATE);
+        editor = getContext().getSharedPreferences(MY_PREFS, MODE_PRIVATE).edit();
 
-        masbahaSound.setChecked(pref.getBoolean("masbahaSound", Masbahasound));
-        masbahaVibrate.setChecked(pref.getBoolean("masbahaVibrate", Masbahavibrate));
+        if(pref !=null){
+            masbahaSound.setChecked(pref.getBoolean("masbahaSound", true));
+            masbahaVibrate.setChecked(pref.getBoolean("masbahaVibrate", true));
+        }else {
+            masbahaVibrate.setChecked(true);
+            Masbahavibrate = true;
+
+            masbahaSound.setChecked(true);
+            Masbahasound = true;
+
+            editor.putBoolean("masbahaSound", Masbahasound);
+            editor.putBoolean("masbahaVibrate", Masbahavibrate);
+            editor.commit();
+        }
+
 
 
         general.setOnClickListener(this);
@@ -386,61 +401,15 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                 }
             }
         });
-    /*    if (VibrationChecked == true) {
-
-            Masbahavibrate = true;
-        } else {
-            Masbahavibrate = false;
-        }
-
-        if (SoundsChecked == true) {
-
-            Masbahasound = true;
-        } else {
-            Masbahasound = false;
-        }*/
 
 
-
-    /*    sounds = new TextView[]{sound1, sound2, sound3, sound4};
-
-        for( i =0; i<sounds.length;i++){
-            sounds[i].setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                sounds[i].setTextColor(getResources().getColor(R.color.colorAccent));
-                sounds[i].setBackgroundColor(getResources().getColor(R.color.textColor));
-
-
-                if (sounds[i] == sound1){
-                    mediaSound1.start();
-                    defualtSound = mediaSound1;
-
-                }else if(sounds[i] == sound2){
-                    mediaSound2.start();
-                    defualtSound = mediaSound2;
-
-                }else if(sounds[i] == sound3){
-                    mediaSound3.start();
-                    defualtSound = mediaSound3;
-
-                }else if(sounds[i] == sound4){
-                    mediaSound4.start();
-                    defualtSound = mediaSound4;
-                }
-            }
-        });
-
-
-        }*/
 
         sound1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 changeMasbahaTextView(sound1, sound4, sound2, sound3);
                 mediaSound1.start();
-
+             //   editor.putInt("chozenSound", R.id.sound1)
 
                 if (pref.getBoolean("masbahaSound", Masbahasound)) {
                     defualtSound = mediaSound1;
