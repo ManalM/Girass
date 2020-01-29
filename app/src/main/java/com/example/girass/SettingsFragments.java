@@ -56,7 +56,8 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 
     private Toolbar toolbar;
     private TextView toolbarText;
-    LinearLayout general, masbaha, notification, share, rate, about;
+    LinearLayout general, masbaha, notification, share, rate, about,
+            notificationLinear;
     private Dialog dialog, aboutDialog, detailsDialog;
     private CardView generalCard, masbahaCard;
     private Switch activate, morning, evening, sleep, wakeup, reminder, masbahaSound, masbahaVibrate, generalSound, generalVibrate;
@@ -66,7 +67,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
             sound1, sound2, sound3, sound4,
             font1, font2, font3,
             luncherMasbaha, lucherfav, luncherZikr,
-            textSize;
+            textSize , fontType;
     private ImageView background_img, www_img, email_img, phone_img, twitter_img, dozo; // the image
     private ImageView generalArrow, masbahaArrow;
 
@@ -141,11 +142,11 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
      //defualtFont =    Typeface.createFromFile("font/tajawal_regular");
         //-------------------------------------------------------------
         textSize = (TextView) rootView.findViewById(R.id.text_size);
-
+        fontType = (TextView) rootView.findViewById(R.id.FontType);
         textSize.setTypeface(defualtFont);
         seekBar = rootView.findViewById(R.id.seek_bar);
 
-
+        fontType.setTypeface(defualtFont);
        TextSize =15;
         seekBar.setProgress((int) TextSize);
         textSize.setTextSize(TypedValue.COMPLEX_UNIT_PX, seekBar.getProgress());
@@ -410,6 +411,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                 }else{
                   //  defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajawal_regular.ttf");
                 }
+                fontType.setTypeface(defualtFont);
                 editor.putString("defaultFont", "regular");
                 editor.commit();
             }
@@ -425,6 +427,8 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                 }else{
              //       defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajawal_light.ttf");
                 }
+                fontType.setTypeface(defualtFont);
+
                 editor.putString("defaultFont", "light");
                 editor.commit();
             }
@@ -442,6 +446,8 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                 }else{
                  //   defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajwal_bold.ttf");
                 }
+                fontType.setTypeface(defualtFont);
+
                 editor.putString("defaultFont", "bold");
                 editor.commit();
 
@@ -598,6 +604,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         wakeup = (Switch) dialog.findViewById(R.id.wakeup);
         reminder = (Switch) dialog.findViewById(R.id.reminder);
 
+        notificationLinear = (LinearLayout) dialog.findViewById(R.id.linear_notification);
         close = (ImageButton) dialog.findViewById(R.id.close);
         String[] VerityTimeArray = {
 
@@ -633,10 +640,25 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         final int SixHoers = 21600;
         final int HalfDay = 43200;
 
-        if (activate.isActivated()) {
+
+        activate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                    notificationLinear.setVisibility(View.VISIBLE);
+                else
+                    notificationLinear.setVisibility(View.GONE);
+            }
+        });
 
 
-        }
+        morning.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+            }
+        });
+
         try {
             close.setOnClickListener(new View.OnClickListener() {
                 @Override
