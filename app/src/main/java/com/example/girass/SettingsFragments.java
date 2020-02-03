@@ -185,6 +185,13 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 
             TextSize = pref.getInt("fontSize",18);
 
+            if(pref.getBoolean("NotificationLinearVisibility",true)){
+               activate.setChecked(true);
+                notificationLinear.setVisibility(View.VISIBLE);
+            }else {
+                activate.setChecked(false);
+                notificationLinear.setVisibility(View.GONE);
+            }
         } else {
             masbahaVibrate.setChecked(true);
             Masbahavibrate = true;
@@ -203,6 +210,8 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 
             TextSize = 18;
 
+            activate.setChecked(true);
+            notificationLinear.setVisibility(View.VISIBLE);
             editor.putBoolean("masbahaSound", Masbahasound);
             editor.putBoolean("masbahaVibrate", Masbahavibrate);
             editor.putBoolean("generalSound", GeneralSound);
@@ -644,10 +653,15 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         activate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked)
+                if(isChecked) {
                     notificationLinear.setVisibility(View.VISIBLE);
-                else
+                    editor.putBoolean("NotificationLinearVisibility", true);
+                    editor.commit();
+                } else{
                     notificationLinear.setVisibility(View.GONE);
+                    editor.putBoolean("NotificationLinearVisibility", false);
+                    editor.commit();
+                }
             }
         });
 
