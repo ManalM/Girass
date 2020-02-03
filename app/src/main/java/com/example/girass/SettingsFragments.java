@@ -2,6 +2,7 @@ package com.example.girass;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -40,6 +41,7 @@ import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -47,7 +49,11 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.google.android.material.circularreveal.cardview.CircularRevealCardView;
 import com.google.android.material.internal.CircularBorderDrawable;
 
+import org.w3c.dom.Text;
+
+import java.util.Calendar;
 import java.util.List;
+import java.util.zip.Inflater;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -67,7 +73,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
             sound1, sound2, sound3, sound4,
             font1, font2, font3,
             luncherMasbaha, lucherfav, luncherZikr,
-            textSize , fontType;
+            textSize, fontType;
     private ImageView background_img, www_img, email_img, phone_img, twitter_img, dozo; // the image
     private ImageView generalArrow, masbahaArrow;
 
@@ -78,11 +84,15 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 
     public static MediaPlayer defualtSound;
     public static Typeface defualtFont;
-    public static int TextSize ;
-    public static Boolean Masbahavibrate, Masbahasound, GeneralSound , Generalvibrate ;
+    public static int TextSize;
+    public static Boolean Masbahavibrate, Masbahasound, GeneralSound, Generalvibrate, checked;
     //-------------------------------------------------------------
     public static SharedPreferences pref;
     public static SharedPreferences.Editor editor;
+    //----------------------------------------
+    String format;
+    Calendar now;
+    int hourOfDay, min;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -136,10 +146,10 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
        /* defualtSound = MediaPlayer.create(getContext(), R.raw.click);
          defualtFont =Typeface.createFromAsset(getContext().getAssets(),"tajawal_regular.ttf");//tajawal_regular*/
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            defualtFont =  getResources().getFont(R.font.tajawal_regular);
+            defualtFont = getResources().getFont(R.font.tajawal_regular);
         }
         //  defualtFont= Typeface.createFromFile("font/tajawal_regular");
-     //defualtFont =    Typeface.createFromFile("font/tajawal_regular");
+        //defualtFont =    Typeface.createFromFile("font/tajawal_regular");
         //-------------------------------------------------------------
         textSize = (TextView) rootView.findViewById(R.id.text_size);
         fontType = (TextView) rootView.findViewById(R.id.FontType);
@@ -147,11 +157,13 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         seekBar = rootView.findViewById(R.id.seek_bar);
 
         fontType.setTypeface(defualtFont);
-       TextSize =15;
+        TextSize = 15;
         seekBar.setProgress((int) TextSize);
         textSize.setTextSize(TypedValue.COMPLEX_UNIT_PX, seekBar.getProgress());
         //-------------------------------------------------------------
-
+        now = Calendar.getInstance();
+        hourOfDay = now.get(java.util.Calendar.HOUR_OF_DAY);
+        min = now.get(java.util.Calendar.MINUTE);
 
         /////////////////////////////////////////////
         /////////////     ToolBar       ////////////
@@ -173,25 +185,25 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
             masbahaVibrate.setChecked(pref.getBoolean("masbahaVibrate", true));
             generalSound.setChecked(pref.getBoolean("generalSound", true));
             generalVibrate.setChecked(pref.getBoolean("generalVibrate", true));
-            if(pref.getString("generalCardVisibility","visible").equals("visible"))
+            if (pref.getString("generalCardVisibility", "visible").equals("visible"))
                 generalCard.setVisibility(View.VISIBLE);
-            else if (pref.getString("generalCardVisibility","gone").equals("gone"))
+            else if (pref.getString("generalCardVisibility", "gone").equals("gone"))
                 generalCard.setVisibility(View.GONE);
 
-            if(pref.getString("masbahaCardVisibility","visible").equals("visible"))
+            if (pref.getString("masbahaCardVisibility", "visible").equals("visible"))
                 generalCard.setVisibility(View.VISIBLE);
-            else if (pref.getString("masbahaCardVisibility","gone").equals("gone"))
+            else if (pref.getString("masbahaCardVisibility", "gone").equals("gone"))
                 generalCard.setVisibility(View.GONE);
 
-            TextSize = pref.getInt("fontSize",18);
+            TextSize = pref.getInt("fontSize", 18);
 
-            if(pref.getBoolean("NotificationLinearVisibility",true)){
-               activate.setChecked(true);
+   /*         if (pref.getBoolean("NotificationLinearVisibility", true)) {
+                activate.setChecked(true);
                 notificationLinear.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 activate.setChecked(false);
                 notificationLinear.setVisibility(View.GONE);
-            }
+            }*/
         } else {
             masbahaVibrate.setChecked(true);
             Masbahavibrate = true;
@@ -210,15 +222,15 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 
             TextSize = 18;
 
-            activate.setChecked(true);
-            notificationLinear.setVisibility(View.VISIBLE);
+          /*  activate.setChecked(true);
+            notificationLinear.setVisibility(View.VISIBLE);*/
             editor.putBoolean("masbahaSound", Masbahasound);
             editor.putBoolean("masbahaVibrate", Masbahavibrate);
             editor.putBoolean("generalSound", GeneralSound);
             editor.putBoolean("generalVibrate", Generalvibrate);
-            editor.putString("generalCardVisibility","gone");
-            editor.putString("masbahaCardVisibility","gone");
-            editor.putInt("fontSize",TextSize);
+            editor.putString("generalCardVisibility", "gone");
+            editor.putString("masbahaCardVisibility", "gone");
+            editor.putInt("fontSize", TextSize);
             editor.apply();
         }
 
@@ -290,7 +302,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                 if (generalCard.getVisibility() == View.GONE) {
                     generalCard.setVisibility(View.VISIBLE);
                     Glide.with(getContext()).load(R.drawable.up_arrow).into(generalArrow);
-                    editor.putString("generalCardVisibility","visible");
+                    editor.putString("generalCardVisibility", "visible");
                     editor.commit();
 
                 } else {
@@ -298,7 +310,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 
                     generalCard.setVisibility(View.GONE);
                     Glide.with(getContext()).load(R.drawable.down_arrow).into(generalArrow);
-                    editor.putString("generalCardVisibility","gone");
+                    editor.putString("generalCardVisibility", "gone");
                     editor.commit();
                 }
 
@@ -308,14 +320,14 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                 if (masbahaCard.getVisibility() == View.GONE) {
                     masbahaCard.setVisibility(View.VISIBLE);
                     Glide.with(getContext()).load(R.drawable.up_arrow).into(masbahaArrow);
-                    editor.putString("masbahaCardVisibility","visible");
+                    editor.putString("masbahaCardVisibility", "visible");
                     editor.commit();
                     MasbahaSetting();
 
                 } else {
                     masbahaCard.setVisibility(View.GONE);
                     Glide.with(getContext()).load(R.drawable.down_arrow).into(masbahaArrow);
-                    editor.putString("masbahaCardVisibility","gone");
+                    editor.putString("masbahaCardVisibility", "gone");
                     editor.commit();
                     MasbahaSetting();
 
@@ -414,11 +426,11 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
             public void onClick(View v) {
                 //  defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajawal_regular");
                 changeGeneralTextView(font1, font2, font3);
-             //   defualtFont = Typeface.createFromAsset(getContext().getAssets(),"tajawal_regular.ttf");
+                //   defualtFont = Typeface.createFromAsset(getContext().getAssets(),"tajawal_regular.ttf");
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    defualtFont= getResources().getFont(R.font.tajawal_regular);
-                }else{
-                  //  defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajawal_regular.ttf");
+                    defualtFont = getResources().getFont(R.font.tajawal_regular);
+                } else {
+                    //  defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajawal_regular.ttf");
                 }
                 fontType.setTypeface(defualtFont);
                 editor.putString("defaultFont", "regular");
@@ -432,9 +444,9 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 
                 //  defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajawal_light");
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    defualtFont= getResources().getFont(R.font.tajawal_light);
-                }else{
-             //       defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajawal_light.ttf");
+                    defualtFont = getResources().getFont(R.font.tajawal_light);
+                } else {
+                    //       defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajawal_light.ttf");
                 }
                 fontType.setTypeface(defualtFont);
 
@@ -451,9 +463,9 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                 //     defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajwal_bold");
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    defualtFont= getResources().getFont(R.font.tajwal_bold);
-                }else{
-                 //   defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajwal_bold.ttf");
+                    defualtFont = getResources().getFont(R.font.tajwal_bold);
+                } else {
+                    //   defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajwal_bold.ttf");
                 }
                 fontType.setTypeface(defualtFont);
 
@@ -613,8 +625,34 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         wakeup = (Switch) dialog.findViewById(R.id.wakeup);
         reminder = (Switch) dialog.findViewById(R.id.reminder);
 
+        //--------------------general------------------
         notificationLinear = (LinearLayout) dialog.findViewById(R.id.linear_notification);
         close = (ImageButton) dialog.findViewById(R.id.close);
+
+//-----------------------sharedPreference----------------------
+
+        if (pref.getBoolean("NotificationLinearVisibility", true)) {
+            activate.setChecked(true);
+
+            checked = true;
+            notificationLinear.setVisibility(View.VISIBLE);
+            editor.putBoolean("NotificationLinearVisibility", checked);
+            editor.commit();
+        } else {
+            activate.setChecked(false);
+
+            checked = false;
+            notificationLinear.setVisibility(View.GONE);
+            editor.putBoolean("NotificationLinearVisibility", checked);
+            editor.commit();
+        }
+
+
+        setTextOfTime(morningTime);
+        setTextOfTime(eveningTime);
+        setTextOfTime(sleepTime);
+        setTextOfTime(wakeTime);
+
         String[] VerityTimeArray = {
 
                 "كل نصف ساعة",
@@ -653,13 +691,20 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         activate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked) {
+                if (isChecked) {
+                    checked = isChecked;
                     notificationLinear.setVisibility(View.VISIBLE);
-                    editor.putBoolean("NotificationLinearVisibility", true);
+                    setTextOfTime(morningTime);
+                    setTextOfTime(eveningTime);
+                    setTextOfTime(sleepTime);
+                    setTextOfTime(wakeTime);
+
+                    editor.putBoolean("NotificationLinearVisibility", checked);
                     editor.commit();
-                } else{
+                } else {
+                    checked = isChecked;
                     notificationLinear.setVisibility(View.GONE);
-                    editor.putBoolean("NotificationLinearVisibility", false);
+                    editor.putBoolean("NotificationLinearVisibility", checked);
                     editor.commit();
                 }
             }
@@ -683,7 +728,146 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         } catch (Exception e) {
             Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+//----------------------------show time dialog------------------
+        morningTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pickerTime( morningTime);
+            }
+        });
+
+        eveningTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pickerTime(eveningTime);
+
+            }
+        });
+        sleepTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pickerTime(sleepTime);
+
+            }
+        });
+        wakeTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pickerTime(wakeTime);
+
+            }
+        });
+
         dialog.show();
+    }
+
+    private void setTextOfTime(TextView t) {
+        if(pref != null ){
+           t.setText(pref.getString("hourOf"+t.getText(),"00")+":"+pref.getString("minOf"+t.getText(),"00")+" "+pref.getString("formatOf" + t.getText(),"AM"));
+        }else{
+
+            if (now.HOUR_OF_DAY == 0) {
+
+                hourOfDay += 12;
+
+                format = "AM";
+            } else if (now.HOUR_OF_DAY == 12) {
+
+                format = "PM";
+
+            } else if (now.HOUR_OF_DAY  > 12) {
+
+               hourOfDay -= 12;
+
+                format = "PM";
+
+            } else {
+
+                format = "AM";
+            }
+            min=now.MINUTE;
+            t.setText(hourOfDay+":"+min+" "+format);
+            editor.putString("hourOf"+t.getText(),String.valueOf(hourOfDay));
+            editor.putString("minOf"+t.getText(),String.valueOf(min));
+            editor.putString("formatOf" + t.getText(),format);
+            editor.apply();
+        }
+    }
+
+    private void pickerTime( TextView t) {
+
+   /*     Dialog  Timedialog;
+     *//*   LayoutInflater inflater =LayoutInflater.from(getContext());
+
+         View v=inflater.inflate(R.layout.time_picker,)*//*
+
+        Timedialog = new Dialog(getContext());
+        Timedialog.setContentView(R.layout.time_picker);
+
+        Timedialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));*/
+        final TextView textView = t;
+
+   //     TimePicker timePicker = Timedialog.findViewById(R.id.spinner_time_picker);
+
+
+        TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+
+                //---------------------timePicker--------------
+
+                if (hour == 0) {
+
+                    hour += 12;
+
+                    format = "AM";
+                } else if (hour == 12) {
+
+                    format = "PM";
+
+                } else if (hour > 12) {
+
+                    hour -= 12;
+
+                    format = "PM";
+
+                } else {
+
+                    format = "AM";
+                }
+
+                editor.putString("hourOf" + textView.getText(), String.valueOf(hour));
+                editor.putString("minOf" + textView.getText(), String.valueOf(minute));
+                editor.putString("formatOf" + textView.getText(), format);
+                editor.commit();
+
+            }
+        };
+
+        final TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), onTimeSetListener, hourOfDay, min, false);
+
+
+        timePickerDialog.setContentView(R.layout.time_picker);
+        timePickerDialog.show();
+        ImageView cancel = timePickerDialog.findViewById(R.id.cancel_time_picker);
+        ImageView correct =timePickerDialog.findViewById(R.id.correct_time_picker);
+      /*  cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                timePickerDialog.dismiss();
+            }
+        });
+        correct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+              timePickerDialog.dismiss();
+              textView.setText(pref.getInt("hourOf" + textView.getText(), 00) + ":" + pref.getInt("minOf" + textView.getText(), 00) + " " + pref.getString("formatOf" + textView.getText(), "AM"));
+
+            }
+        });*/
+        textView.setText(pref.getString("hourOf" + textView.getText(), "00") + ":" + pref.getString("minOf" + textView.getText(), "00") + " " + pref.getString("formatOf" + textView.getText(), "AM"));
     }
 
     private void shareApp() {
