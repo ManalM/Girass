@@ -125,16 +125,19 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         generalSound = (Switch) rootView.findViewById(R.id.general_sounds);
         generalVibrate = (Switch) rootView.findViewById(R.id.general_vibrate);
         //------------------------ Fonts -------------------------------
-
+// TODO: rectangle corner design
         font1 = (TextView) rootView.findViewById(R.id.font1);
         font2 = (TextView) rootView.findViewById(R.id.font2);
         font3 = (TextView) rootView.findViewById(R.id.font3);
         //-------------------------------------------------------------
+        // TODO: rectangle corner design
+
         lucherfav = (TextView) rootView.findViewById(R.id.luncher_fav);
         luncherMasbaha = (TextView) rootView.findViewById(R.id.luncher_masbaha);
 
         luncherZikr = (TextView) rootView.findViewById(R.id.luncher_zikr);
         //------------------------- Sounds -------------------------------
+// TODO: rectangle corner design
 
         sound1 = (TextView) rootView.findViewById(R.id.sound1);
         sound2 = (TextView) rootView.findViewById(R.id.sound2);
@@ -618,6 +621,8 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         reminderTime = dialog.findViewById(R.id.reminder_time);
 
         //--------------------Switch------------
+        // TODO: text of switches and organise layout
+        // TODO: text gravity right
         activate = (Switch) dialog.findViewById(R.id.activate);
         evening = (Switch) dialog.findViewById(R.id.evening);
         morning = (Switch) dialog.findViewById(R.id.morning);

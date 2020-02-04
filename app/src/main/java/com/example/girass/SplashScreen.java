@@ -28,7 +28,7 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen);
-
+// TODO: background size of the splash screen
         star = findViewById(R.id.star);
         name = findViewById(R.id.name);
         label1 = findViewById(R.id.label1);

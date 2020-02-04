@@ -30,6 +30,9 @@ import java.util.List;
 public class Notes extends AppCompatActivity {
 
 
+    //TODO: organise layout list_item
+
+    //--------------------Drafts-----------------------------
     LinearLayout bgimg;
     private Bitmap nav; // the image in the Bitmap format
     private Bitmap background; // background in the Bitmap format

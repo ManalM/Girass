@@ -48,6 +48,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.viewHolder> {
     @Override
     public Adapter.viewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater mInflater = LayoutInflater.from(mContext);
+    /*    TODO: ZIKR_LIST_ITEM LAYOUT */
+
         View view = mInflater.inflate(R.layout.zikr_list_item, parent, false);
         return new Adapter.viewHolder(view, mListener);
     }
