@@ -15,6 +15,12 @@
         >
 
 
+        <ImageButton
+            android:id="@+id/close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_cancel_black_24dp" />
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -26,12 +32,6 @@
             android:textColor="@color/colorAccent"
             android:textStyle="bold" />
 
-        <ImageButton
-            android:id="@+id/close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:src="@drawable/ic_cancel_black_24dp" />
 
 
     </LinearLayout>
@@ -103,7 +103,7 @@
                 android:id="@+id/morning_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="5:00 AM"
+                android:text=""
                 android:fontFamily="@font/tajawal_regular"
 
                 android:textAlignment="center"
@@ -159,7 +159,7 @@
                 android:id="@+id/evening_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="5:00 AM"
+                android:text=""
                 android:fontFamily="@font/tajawal_regular"
 
                 android:textAlignment="center"
@@ -216,7 +216,7 @@
                 android:id="@+id/wakeup_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="5:00 AM"
+                android:text=""
                 android:fontFamily="@font/tajawal_regular"
 
                 android:textAlignment="center"
@@ -273,7 +273,7 @@
                 android:id="@+id/sleep_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="5:00 AM"
+                android:text=""
                 android:fontFamily="@font/tajawal_regular"
 
                 android:textAlignment="center"
@@ -327,7 +327,7 @@
                 android:id="@+id/reminder_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="5:00 AM"
+                android:text=""
                 android:fontFamily="@font/tajawal_regular"
 
                 android:textAlignment="center"

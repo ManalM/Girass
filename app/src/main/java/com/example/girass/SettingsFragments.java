@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -53,7 +54,10 @@ import org.w3c.dom.Text;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.zip.Inflater;
+
+import hotchemi.stringpicker.StringPicker;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -93,12 +97,36 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
     String format;
     Calendar now;
     int hourOfDay, min;
+    int hour, minute;
+    final String[] VerityTimeArray = {
+
+            "كل نصف ساعة",
+            "كل ساعة",
+            "كل ساعتين",
+            "كل ثلاث ساعات",
+            "كل أربع ساعات",
+            "كل خمس ساعات",
+            "كل ستة ساعات",
+            "كل ١٢ ساعة",
+
+    };
+
+    static String chozenReminderTime;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_settings_fragments, container, false);
+
+        Locale locale = new Locale("ar");
+        Configuration configuration = getContext().getResources().getConfiguration();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            configuration.setLocale(locale);
+            configuration.setLayoutDirection(locale);
+
+            getContext().createConfigurationContext(configuration);
+        }
 
 
         /////////////////////////////////////////////////
@@ -116,6 +144,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         about = (LinearLayout) rootView.findViewById(R.id.about);
         //--------------------- Cards ---------------------------------
 
+        //TODO:text of switches
         generalCard = (CardView) rootView.findViewById(R.id.general_card);
         masbahaCard = (CardView) rootView.findViewById(R.id.masbaha_card);
         generalArrow = (ImageView) rootView.findViewById(R.id.general_arrow);
@@ -156,17 +185,19 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         //-------------------------------------------------------------
         textSize = (TextView) rootView.findViewById(R.id.text_size);
         fontType = (TextView) rootView.findViewById(R.id.FontType);
+        //TODO:the range of the textSize
         textSize.setTypeface(defualtFont);
         seekBar = rootView.findViewById(R.id.seek_bar);
 
         fontType.setTypeface(defualtFont);
         TextSize = 15;
+        //TODO: color of the seekbar
         seekBar.setProgress((int) TextSize);
         textSize.setTextSize(TypedValue.COMPLEX_UNIT_PX, seekBar.getProgress());
         //-------------------------------------------------------------
         now = Calendar.getInstance();
-        hourOfDay = now.get(java.util.Calendar.HOUR_OF_DAY);
-        min = now.get(java.util.Calendar.MINUTE);
+        hourOfDay = now.get(Calendar.HOUR_OF_DAY);
+        min = now.get(Calendar.MINUTE);
 
         /////////////////////////////////////////////
         /////////////     ToolBar       ////////////
@@ -653,23 +684,12 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         }
 
 
-        setTextOfTime(morningTime);
-        setTextOfTime(eveningTime);
-        setTextOfTime(sleepTime);
-        setTextOfTime(wakeTime);
-
-        String[] VerityTimeArray = {
-
-                "كل نصف ساعة",
-                "كل ساعة",
-                "كل ساعتين",
-                "كل ثلاث ساعات",
-                "كل أربع ساعات",
-                "كل خمس ساعات",
-                "كل ستة ساعات",
-                "كل ١٢ ساعة",
-
-        };
+        setTextOfTime("morning");
+        setTextOfTime("evening");
+        setTextOfTime("sleep");
+        setTextOfTime("wakeup");
+        setTextOfReminder();
+//-------------------------------------------------------------------------
 
 
         int[] VerityIntervalArray = {1800,
@@ -699,11 +719,11 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                 if (isChecked) {
                     checked = isChecked;
                     notificationLinear.setVisibility(View.VISIBLE);
-                    setTextOfTime(morningTime);
-                    setTextOfTime(eveningTime);
-                    setTextOfTime(sleepTime);
-                    setTextOfTime(wakeTime);
-
+                    setTextOfTime("morning");
+                    setTextOfTime("evening");
+                    setTextOfTime("sleep");
+                    setTextOfTime("wakeup");
+                    setTextOfReminder();
                     editor.putBoolean("NotificationLinearVisibility", checked);
                     editor.commit();
                 } else {
@@ -719,6 +739,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         morning.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
 
             }
         });
@@ -737,142 +758,239 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         morningTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pickerTime( morningTime);
+                pickerTime("morning");
             }
         });
 
         eveningTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pickerTime(eveningTime);
+                pickerTime("evening");
 
             }
         });
         sleepTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pickerTime(sleepTime);
+                pickerTime("sleep");
 
             }
         });
         wakeTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pickerTime(wakeTime);
+                pickerTime("wakeup");
 
             }
         });
-
+        reminderTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseReminderTime();
+            }
+        });
         dialog.show();
     }
 
-    private void setTextOfTime(TextView t) {
-        if(pref != null ){
-           t.setText(pref.getString("hourOf"+t.getText(),"00")+":"+pref.getString("minOf"+t.getText(),"00")+" "+pref.getString("formatOf" + t.getText(),"AM"));
-        }else{
-
-            if (now.HOUR_OF_DAY == 0) {
-
-                hourOfDay += 12;
-
-                format = "AM";
-            } else if (now.HOUR_OF_DAY == 12) {
-
-                format = "PM";
-
-            } else if (now.HOUR_OF_DAY  > 12) {
-
-               hourOfDay -= 12;
-
-                format = "PM";
-
-            } else {
-
-                format = "AM";
-            }
-            min=now.MINUTE;
-            t.setText(hourOfDay+":"+min+" "+format);
-            editor.putString("hourOf"+t.getText(),String.valueOf(hourOfDay));
-            editor.putString("minOf"+t.getText(),String.valueOf(min));
-            editor.putString("formatOf" + t.getText(),format);
-            editor.apply();
-        }
+    private void setTextOfReminder() {
+        reminderTime.setText(pref.getString("chozenReminderTime", VerityTimeArray[0].toString()));
     }
 
-    private void pickerTime( TextView t) {
-
-   /*     Dialog  Timedialog;
-     *//*   LayoutInflater inflater =LayoutInflater.from(getContext());
-
-         View v=inflater.inflate(R.layout.time_picker,)*//*
-
-        Timedialog = new Dialog(getContext());
-        Timedialog.setContentView(R.layout.time_picker);
-
-        Timedialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));*/
-        final TextView textView = t;
-
-   //     TimePicker timePicker = Timedialog.findViewById(R.id.spinner_time_picker);
+    private void chooseReminderTime() {
+        final Dialog reminderDialog = new Dialog(getContext());
+        reminderDialog.setContentView(R.layout.reminder_time);
+        reminderDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
 
-        TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+        ImageView cancel = reminderDialog.findViewById(R.id.cancel_reminder_picker);
+        ImageView correct = reminderDialog.findViewById(R.id.correct_reminder_picker);
+        final StringPicker stringPicker = (StringPicker) reminderDialog.findViewById(R.id.string_picker);
 
-                //---------------------timePicker--------------
+        stringPicker.setValues(VerityTimeArray);
 
-                if (hour == 0) {
-
-                    hour += 12;
-
-                    format = "AM";
-                } else if (hour == 12) {
-
-                    format = "PM";
-
-                } else if (hour > 12) {
-
-                    hour -= 12;
-
-                    format = "PM";
-
-                } else {
-
-                    format = "AM";
-                }
-
-                editor.putString("hourOf" + textView.getText(), String.valueOf(hour));
-                editor.putString("minOf" + textView.getText(), String.valueOf(minute));
-                editor.putString("formatOf" + textView.getText(), format);
-                editor.commit();
-
-            }
-        };
-
-        final TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), onTimeSetListener, hourOfDay, min, false);
-
-
-        timePickerDialog.setContentView(R.layout.time_picker);
-        timePickerDialog.show();
-        ImageView cancel = timePickerDialog.findViewById(R.id.cancel_time_picker);
-        ImageView correct =timePickerDialog.findViewById(R.id.correct_time_picker);
-      /*  cancel.setOnClickListener(new View.OnClickListener() {
+        cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                timePickerDialog.dismiss();
+                reminderDialog.dismiss();
+            }
+        });
+
+        correct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reminderDialog.dismiss();
+                chozenReminderTime = stringPicker.getCurrentValue();
+                reminderTime.setText(chozenReminderTime);
+                editor.putString("chozenReminderTime", chozenReminderTime);
+                editor.commit();
+            }
+        });
+        reminderDialog.show();
+    }
+
+    private void setTextOfTime(String textView) {
+        if (now.HOUR_OF_DAY == 0) {
+
+            hourOfDay += 12;
+
+            format = "AM";
+        } else if (now.HOUR_OF_DAY == 12) {
+
+            format = "PM";
+
+        } else if (now.HOUR_OF_DAY > 12) {
+
+            hourOfDay -= 12;
+
+            format = "PM";
+
+        } else {
+
+            format = "AM";
+        }
+        min = now.MINUTE;
+
+   /*     if (textView.equals("morning"))
+            morningTime.setText((pref.getInt("hourOf" + textView, hourOfDay) + ":" + pref.getInt("minOf" + textView, min) + " " + pref.getString("formatOf" + textView, format)));
+        else if (textView.equals("evening"))
+            eveningTime.setText((pref.getInt("hourOf" + textView, hourOfDay) + ":" + pref.getInt("minOf" + textView, min) + " " + pref.getString("formatOf" + textView, format)));
+        else if (textView.equals("sleep"))
+            sleepTime.setText((pref.getInt("hourOf" + textView, hourOfDay) + ":" + pref.getInt("minOf" + textView, min) + " " + pref.getString("formatOf" + textView, format)));
+        else if (textView.equals("wakeup"))
+            wakeTime.setText((pref.getInt("hourOf" + textView, hourOfDay) + ":" + pref.getInt("minOf" + textView, min) + " " + pref.getString("formatOf" + textView, format)));
+*/
+        switch (textView) {
+            case "morning":
+                if (pref.getInt("minOf" + textView, min) <10 || pref.getInt("minOf" + textView, min) == 0 ) {
+                    morningTime.setText((pref.getInt("hourOf" + textView, hourOfDay) + ":0" + pref.getInt("minOf" + textView, min) + " " + pref.getString("formatOf" + textView, format)));
+
+                } else
+                    morningTime.setText((pref.getInt("hourOf" + textView, hourOfDay) + ":" + pref.getInt("minOf" + textView, min) + " " + pref.getString("formatOf" + textView, format)));
+
+                break;
+            case "evening":
+                if (pref.getInt("minOf" + textView, min) <10 || pref.getInt("minOf" + textView, min) == 0 )
+                    eveningTime.setText((pref.getInt("hourOf" + textView, hourOfDay) + ":0" + pref.getInt("minOf" + textView, min) + " " + pref.getString("formatOf" + textView, format)));
+                else
+                    eveningTime.setText((pref.getInt("hourOf" + textView, hourOfDay) + ":" + pref.getInt("minOf" + textView, min) + " " + pref.getString("formatOf" + textView, format)));
+
+                break;
+            case "sleep":
+
+                if (pref.getInt("minOf" + textView, min) <10 || pref.getInt("minOf" + textView, min) == 0 )
+                    sleepTime.setText((pref.getInt("hourOf" + textView, hourOfDay) + ":0" + pref.getInt("minOf" + textView, min) + " " + pref.getString("formatOf" + textView, format)));
+
+                else
+                    sleepTime.setText((pref.getInt("hourOf" + textView, hourOfDay) + ":" + pref.getInt("minOf" + textView, min) + " " + pref.getString("formatOf" + textView, format)));
+
+                break;
+            case "wakeup":
+                if(pref.getInt("minOf" + textView, min) <10 || pref.getInt("minOf" + textView, min) == 0 )
+                    wakeTime.setText((pref.getInt("hourOf" + textView, hourOfDay) + ":0" + pref.getInt("minOf" + textView, min) + " " + pref.getString("formatOf" + textView, format)));
+                else
+                    wakeTime.setText((pref.getInt("hourOf" + textView, hourOfDay) + ":" + pref.getInt("minOf" + textView, min) + " " + pref.getString("formatOf" + textView, format)));
+                break;
+        }
+
+    }
+
+    private void pickerTime(String s) {
+/// set the correct and cancel button
+        //TODO: make dialog  Layout_alignParentBottom and width match_parent
+        final Dialog timedialog;
+
+
+        timedialog = new Dialog(getContext());
+        timedialog.setContentView(R.layout.time_picker);
+
+        timedialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        ImageView cancel = timedialog.findViewById(R.id.cancel_time_picker);
+        ImageView correct = timedialog.findViewById(R.id.correct_time_picker);
+        final TimePicker timePicker = timedialog.findViewById(R.id.spinner_time_picker);
+        timePicker.setIs24HourView(false);
+        final String textView = s;
+
+
+        //     TimePicker timePicker = Timedialog.findViewById(R.id.spinner_time_picker);
+
+        timedialog.show();
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                timedialog.dismiss();
             }
         });
         correct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                timedialog.dismiss();
+                if (Build.VERSION.SDK_INT >= 23) {
+                    hour = timePicker.getHour();
+                    minute = timePicker.getMinute();
+                } else {
+                    hour = timePicker.getCurrentHour();
+                    minute = timePicker.getCurrentMinute();
+                }
 
-              timePickerDialog.dismiss();
-              textView.setText(pref.getInt("hourOf" + textView.getText(), 00) + ":" + pref.getInt("minOf" + textView.getText(), 00) + " " + pref.getString("formatOf" + textView.getText(), "AM"));
+                if (hour > 12) {
+                    format = "PM";
+                    hour = hour - 12;
+                } else if (hour == 0) {
+                    hour += 12;
+                    format = "AM";
+                } else if (hour == 12) {
+                    format = "PM";
+                } else {
+                    format = "AM";
+                }
+
+
+                editor.putInt("hourOf" + textView, hour);
+                editor.putInt("minOf" + textView, minute);
+                editor.putString("formatOf" + textView, format);
+                editor.commit();
+
+                switch (textView) {
+                    case "morning":
+                        if (minute < 10 || minute == 0) {
+                            morningTime.setText((pref.getInt("hourOf" + textView, 00) + ":0" + pref.getInt("minOf" + textView, 00) + " " + pref.getString("formatOf" + textView, "AM")));
+
+                        } else
+                            morningTime.setText((pref.getInt("hourOf" + textView, 00) + ":" + pref.getInt("minOf" + textView, 00) + " " + pref.getString("formatOf" + textView, "AM")));
+
+                        break;
+                    case "evening":
+                        if (minute < 10 || minute == 0)
+                            eveningTime.setText((pref.getInt("hourOf" + textView, 00) + ":0" + pref.getInt("minOf" + textView, 00) + " " + pref.getString("formatOf" + textView, "AM")));
+                        else
+                            eveningTime.setText((pref.getInt("hourOf" + textView, 00) + ":" + pref.getInt("minOf" + textView, 00) + " " + pref.getString("formatOf" + textView, "AM")));
+
+                        break;
+                    case "sleep":
+
+                        if (minute < 10 || minute == 0)
+                            sleepTime.setText((pref.getInt("hourOf" + textView, 00) + ":0" + pref.getInt("minOf" + textView, 00) + " " + pref.getString("formatOf" + textView, "AM")));
+
+                        else
+                            sleepTime.setText((pref.getInt("hourOf" + textView, 00) + ":" + pref.getInt("minOf" + textView, 00) + " " + pref.getString("formatOf" + textView, "AM")));
+
+                        break;
+                    case "wakeup":
+                        if (minute < 10 || minute == 0)
+                            wakeTime.setText((pref.getInt("hourOf" + textView, 00) + ":0" + pref.getInt("minOf" + textView, 00) + " " + pref.getString("formatOf" + textView, "AM")));
+                        else
+                            wakeTime.setText((pref.getInt("hourOf" + textView, 00) + ":" + pref.getInt("minOf" + textView, 00) + " " + pref.getString("formatOf" + textView, "AM")));
+
+                        break;
+                }
 
             }
-        });*/
-        textView.setText(pref.getString("hourOf" + textView.getText(), "00") + ":" + pref.getString("minOf" + textView.getText(), "00") + " " + pref.getString("formatOf" + textView.getText(), "AM"));
+        });
+        //   textView.setText(pref.getInt("hourOf" + textView.getText(), 00) + ":" + pref.getInt("minOf" + textView.getText(), 00) + " " + pref.getString("formatOf" + textView.getText(), "AM"));
     }
 
     private void shareApp() {
@@ -899,6 +1017,8 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 
 
         aboutDialog = new Dialog(getContext());
+        // TODo: make dialog fill page
+
         aboutDialog.setContentView(R.layout.about_dialog);
         aboutDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 

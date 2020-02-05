@@ -3,17 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#fff"
+
     android:layout_alignParentBottom="true"
-    android:orientation="vertical">
+  >
 
     <LinearLayout
-        android:id="@+id/time_picker_linear_layout"
+        android:id="@+id/picker_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/correct_time_picker"
+            android:id="@+id/correct_reminder_picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -31,7 +32,7 @@
             android:textStyle="bold" />
 
         <ImageView
-            android:id="@+id/cancel_time_picker"
+            android:id="@+id/cancel_reminder_picker"
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,12 +40,10 @@
             android:layout_margin="10dp"
             android:src="@drawable/cancel_dialog" />
     </LinearLayout>
-
-    <TimePicker
-        android:id="@+id/spinner_time_picker"
+    <hotchemi.stringpicker.StringPicker
+        android:id="@+id/string_picker"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/time_picker_linear_layout"
         android:layout_alignParentBottom="true"
-        android:timePickerMode="spinner" />
+        android:layout_below="@id/picker_linear_layout"
+        android:layout_height="wrap_content" />
 </RelativeLayout>
