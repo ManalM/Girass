@@ -65,7 +65,7 @@ public class ZikrDetails extends Fragment {
             defualt = MediaPlayer.create(getContext(), pref.getInt("defaultSound", R.raw.click));
             doIPlaySound = pref.getBoolean("masbahaSound", true);
             doIVibrate = pref.getBoolean("masbahaVibrate", true);
-
+//TODO: font doesnt change
             if(pref.getString("defaultFont","regular").equals("regular"))
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     defaultFont= getResources().getFont(R.font.tajawal_regular);
