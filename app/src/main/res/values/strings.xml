@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Girass</string>
+    <string name="app_name">غِرَاس الجَنّة</string>
 
     <!-- Splash Screen-->
 
@@ -18,7 +18,7 @@
     <!-- Settings List  -->
     <string name="general_setting">إِعْدَادَات عَامَّة</string>
     <string name="masbaha_setting">إٍعْدَادَات المَسْبَحَة</string>
-    <string name="notification">التّــنْـبِـيـهَــات</string>
+    <string name="notification">التّــنْـبِـيـهَـــــات</string>
     <string name="share">نَشْر التّطبيق</string>
     <string name="rate">تَقْيٍيم التّطبيق</string>
     <string name="about">حَوْل التّطبيق</string>
@@ -35,6 +35,11 @@
     <string name="hour">السّـاعة:</string>
     <string name="send_reminder">إرسال تنبيه :</string>
     <string name="choose_notification_time">اِختر وقت التنبيه</string>
+    <string name="notification_title">لاتنس ذكر اللّه</string>
+    <string name="morning_notification">حان وقت أذكار الصباح</string>
+    <string name="evening_notification">حان وقت أذكار المساء</string>
+    <string name="sleep_notification">حان وقت أذكار النوم</string>
+    <string name="wakeup_notification">حان وقت أذكار الاستيقاظ من النوم</string>
 
     <!-- about Settings   -->
 
