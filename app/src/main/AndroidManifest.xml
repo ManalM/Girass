@@ -30,7 +30,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name=".Notify"/>
+        <receiver android:name=".Notify" android:exported="true">
+        <intent-filter>
+            <action android:name="com.example.app.START_SERVICE" />
+        </intent-filter>
+        <intent-filter>
+            <action android:name="com.example.app.STOP_SERVICE" />
+        </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

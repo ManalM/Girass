@@ -14,7 +14,7 @@ import androidx.core.app.NotificationManagerCompat;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
-class Notify extends BroadcastReceiver {
+public class Notify extends BroadcastReceiver {
     private final static String default_notification_channel_id = "default";
     public static final String CHANNEL_1_ID = "channel1";
     NotificationManager mNotificationManager;

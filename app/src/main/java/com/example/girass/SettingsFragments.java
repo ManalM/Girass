@@ -1049,8 +1049,8 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
             PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 0, myIntent, 0);
             Calendar calendar = Calendar.getInstance();
             // calendar.set(Calendar. SECOND , 0 ) ;
-            calendar.set(Calendar.MINUTE, pref.getInt("hourOf" + s, hourOfDay));
-            calendar.set(Calendar.HOUR, pref.getInt("minOf" + s, min));
+            calendar.set(Calendar.HOUR, pref.getInt("hourOf" + s, hourOfDay));
+            calendar.set(Calendar.MINUTE, pref.getInt("minOf" + s, min));
             if (pref.getString("formatOf" + s, format).equals("AM"))
                 calendar.set(Calendar.AM_PM, Calendar.AM);
             else if (pref.getString("formatOf" + s, format).equals("PM"))
