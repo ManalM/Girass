@@ -70,7 +70,10 @@
                     android:layout_marginBottom="10dp"
                     android:fontFamily="@font/tajawal_regular"
                     android:text="تشغيل الاهتزازات"
+                    android:thumbTint="@color/colorPrimaryDark"
+                    android:trackTint="@color/colorPrimaryDark"
                     android:theme="@style/Theme.MyTheme"
+                    android:checked="true"
                     android:textColor="@color/textColor" />
 
                 <Switch
@@ -80,7 +83,11 @@
                     android:layout_marginBottom="10dp"
                     android:fontFamily="@font/tajawal_regular"
                     android:text="تشغيل الأصوات"
-                    android:textColor="@color/textColor" />
+                    android:textColor="@color/textColor"
+                    android:thumb="@drawable/thumb_selector"
+                    app:track="@drawable/track_selector"
+
+                    />
 
                 <LinearLayout
                     android:layout_width="match_parent"
