@@ -1,29 +1,25 @@
 package com.example.girass;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.widget.Toast;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
-import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class Notify extends BroadcastReceiver {
-    private final static String default_notification_channel_id = "default";
-    public static final String CHANNEL_1_ID = "channel1";
-    NotificationManager mNotificationManager;
+
+    int id;
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        String title = intent.getStringExtra("title");
-        String content = intent.getStringExtra("content");
-        Intent notificationIntent = new Intent(context, MainActivity.class);
+/*        String title = intent.getStringExtra("title");
+        String content = intent.getStringExtra("content");*/
+       /* Intent notificationIntent = new Intent(context, MainActivity.class);
         notificationIntent.putExtra("fromNotification", true);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pendingIntent;
@@ -36,8 +32,11 @@ public class Notify extends BroadcastReceiver {
         mBuilder.setAutoCancel(true);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        notificationManager.notify(200, mBuilder.build());
+        notificationManager.notify(200, mBuilder.build());*/
+        id = PreferenceManager.getDefaultSharedPreferences(context).getInt("arrayListLength", 10);
 
-
+        NotificationHelper notificationHelper = new NotificationHelper(context);
+        NotificationCompat.Builder nb = notificationHelper.getChannelNotification();
+        notificationHelper.getManager().notify(id, nb.build());
     }
 }

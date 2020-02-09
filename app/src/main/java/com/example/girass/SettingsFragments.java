@@ -58,6 +58,7 @@ import com.google.android.material.internal.CircularBorderDrawable;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -70,7 +71,7 @@ import static android.content.Context.ALARM_SERVICE;
 import static android.content.Context.MODE_PRIVATE;
 
 
-public class SettingsFragments extends Fragment implements View.OnClickListener {
+public class SettingsFragments extends Fragment implements View.OnClickListener, TimePicker.OnTimeChangedListener {
 
     private Toolbar toolbar;
     private TextView toolbarText;
@@ -240,14 +241,16 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         generalSound.setChecked(pref.getBoolean("generalSound", true));
         generalVibrate.setChecked(pref.getBoolean("generalVibrate", true));
 
-        if (pref.getString("generalCardVisibility", "visible").equals("visible"))
+        if (pref.getString("generalCardVisibility", "visible").equals("visible")) {
             generalCard.setVisibility(View.VISIBLE);
-        else if (pref.getString("generalCardVisibility", "gone").equals("gone"))
+            GenetalSetting();
+        } else if (pref.getString("generalCardVisibility", "gone").equals("gone"))
             generalCard.setVisibility(View.GONE);
 
-        if (pref.getString("masbahaCardVisibility", "visible").equals("visible"))
+        if (pref.getString("masbahaCardVisibility", "visible").equals("visible")) {
             masbahaCard.setVisibility(View.VISIBLE);
-        else if (pref.getString("masbahaCardVisibility", "gone").equals("gone"))
+            MasbahaSetting();
+        } else if (pref.getString("masbahaCardVisibility", "gone").equals("gone"))
             masbahaCard.setVisibility(View.GONE);
 
         TextSize = pref.getInt("fontSize", 18);
@@ -666,7 +669,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
      ******************************************/
     private void showDialog() {
 // notification part
-        createNotificationChannel();
+        //  createNotificationChannel();
         dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.notification_dialog);
 
@@ -696,22 +699,28 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 //-----------------------sharedPreference----------------------
 
         if (pref.getBoolean("NotificationLinearVisibility", true)) {
-            activate.setChecked(true);
-
             checked = true;
+           activate.setChecked(true);
+
+
             notificationLinear.setVisibility(View.VISIBLE);
             editor.putBoolean("NotificationLinearVisibility", checked);
             editor.commit();
         } else {
+            checked = false;
             activate.setChecked(false);
 
-            checked = false;
+
             notificationLinear.setVisibility(View.GONE);
             editor.putBoolean("NotificationLinearVisibility", checked);
             editor.commit();
         }
 
-
+        morning.setChecked(pref.getBoolean("morningSwitch", true));
+        evening.setChecked(pref.getBoolean("eveningSwitch", true));
+        sleep.setChecked(pref.getBoolean("sleepSwitch", true));
+        wakeup.setChecked(pref.getBoolean("wakeupSwitch", true));
+        reminder.setChecked(pref.getBoolean("reminderSwitch", true));
         setTextOfTime("morning");
         setTextOfTime("evening");
         setTextOfTime("sleep");
@@ -726,11 +735,6 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                 if (isChecked) {
                     checked = isChecked;
                     notificationLinear.setVisibility(View.VISIBLE);
-                    setTextOfTime("morning");
-                    setTextOfTime("evening");
-                    setTextOfTime("sleep");
-                    setTextOfTime("wakeup");
-                    setTextOfReminder();
                     editor.putBoolean("NotificationLinearVisibility", checked);
                     editor.commit();
                 } else {
@@ -749,30 +753,64 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
 
-                if (isChecked)
-                    createTimeNotification(morningTime.getText().toString(), R.string.morning_notification);
+                if (isChecked) {
+
+
+                        createTimeNotification("morning", "حان وقت أذكار الصباح", 1);
+
+                    Toast.makeText(getContext(), "time" + pref.getInt("hourOfMorning", hourOfDay) + ":" + pref.getInt("minOfMorning", hourOfDay), Toast.LENGTH_SHORT).show();
+
+                    editor.putBoolean("morningSwitch", true);
+                    editor.commit();
+                } else {
+                    cancelNotification(1);
+                    editor.putBoolean("morningSwitch", false);
+                    editor.commit();
+                }
             }
         });
 
         evening.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked)
-                    createTimeNotification(eveningTime.getText().toString(), R.string.evening_notification);
+                if (isChecked) {
+                    createTimeNotification("evening","حان وقت أذكار المساء", 2);
+                    Toast.makeText(getContext(), "time" + pref.getInt("hourOfEvening", hourOfDay) + ":" + pref.getInt("minOfEvening", hourOfDay), Toast.LENGTH_SHORT).show();
+
+                    editor.putBoolean("eveningSwitch", true);
+                    editor.commit();
+                } else {
+                    editor.putBoolean("eveningSwitch", false);
+                    editor.commit();
+                }
             }
         });
         sleep.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked)
-                    createTimeNotification(sleepTime.getText().toString(), R.string.sleep_notification);
+                if (isChecked) {
+                  //  createTimeNotification("sleep", R.string.sleep_notification, 3);
+
+                    editor.putBoolean("sleepSwitch", true);
+                    editor.commit();
+                } else {
+                    editor.putBoolean("sleepSwitch", false);
+                    editor.commit();
+                }
             }
         });
         wakeup.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked)
-                    createTimeNotification(wakeTime.getText().toString(), R.string.wakeup_notification);
+                if (isChecked) {
+                 //   createTimeNotification("wakeup", R.string.wakeup_notification, 4);
+
+                    editor.putBoolean("wakeupSwitch", true);
+                    editor.commit();
+                } else {
+                    editor.putBoolean("wakeupSwitch", false);
+                    editor.commit();
+                }
             }
         });
         reminder.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -781,6 +819,11 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 
                 if (isChecked) {
                     creatReminderNotification();
+                    editor.putBoolean("reminderSwitch", true);
+                    editor.commit();
+                } else {
+                    editor.putBoolean("reminderSwitch", false);
+                    editor.commit();
                 }
             }
         });
@@ -872,7 +915,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         reminderDialog.show();
     }
 
-    private void setTextOfTime(String textView) {
+    private void setTextOfTime(String s) {
         if (now.HOUR_OF_DAY == 0) {
 
             hourOfDay += 12;
@@ -903,36 +946,36 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         else if (textView.equals("wakeup"))
             wakeTime.setText((pref.getInt("hourOf" + textView, hourOfDay) + ":" + pref.getInt("minOf" + textView, min) + " " + pref.getString("formatOf" + textView, format)));
 */
-        switch (textView) {
+        switch (s) {
             case "morning":
-                if (pref.getInt("minOf" + textView, min) < 10 || pref.getInt("minOf" + textView, min) == 0) {
-                    morningTime.setText((pref.getInt("hourOf" + textView, hourOfDay) + ":0" + pref.getInt("minOf" + textView, min) + " " + pref.getString("formatOf" + textView, format)));
+                if (pref.getInt("minOfMorning", min) < 10 || pref.getInt("minOfMorning", min) == 0) {
+                    morningTime.setText((pref.getInt("hourOfMorning", hourOfDay) + ":0" + pref.getInt("minOfMorning", min) + " " + pref.getString("formatOfMorning", format)));
 
                 } else
-                    morningTime.setText((pref.getInt("hourOf" + textView, hourOfDay) + ":" + pref.getInt("minOf" + textView, min) + " " + pref.getString("formatOf" + textView, format)));
+                    morningTime.setText((pref.getInt("hourOfMorning", hourOfDay) + ":" + pref.getInt("minOfMorning", min) + " " + pref.getString("formatOfMorning", format)));
 
                 break;
             case "evening":
-                if (pref.getInt("minOf" + textView, min) < 10 || pref.getInt("minOf" + textView, min) == 0)
-                    eveningTime.setText((pref.getInt("hourOf" + textView, hourOfDay) + ":0" + pref.getInt("minOf" + textView, min) + " " + pref.getString("formatOf" + textView, format)));
+                if (pref.getInt("minOfEvening", min) < 10 || pref.getInt("minOfEvening", min) == 0)
+                    eveningTime.setText((pref.getInt("hourOfEvening", hourOfDay) + ":0" + pref.getInt("minOfEvening", min) + " " + pref.getString("formatOfEvening", format)));
                 else
-                    eveningTime.setText((pref.getInt("hourOf" + textView, hourOfDay) + ":" + pref.getInt("minOf" + textView, min) + " " + pref.getString("formatOf" + textView, format)));
+                    eveningTime.setText((pref.getInt("hourOfEvening", hourOfDay) + ":" + pref.getInt("minOfEvening", min) + " " + pref.getString("formatOfEvening", format)));
 
                 break;
             case "sleep":
 
-                if (pref.getInt("minOf" + textView, min) < 10 || pref.getInt("minOf" + textView, min) == 0)
-                    sleepTime.setText((pref.getInt("hourOf" + textView, hourOfDay) + ":0" + pref.getInt("minOf" + textView, min) + " " + pref.getString("formatOf" + textView, format)));
+                if (pref.getInt("minOfSleep", min) < 10 || pref.getInt("minOfSleep", min) == 0)
+                    sleepTime.setText((pref.getInt("hourOfSleep", hourOfDay) + ":0" + pref.getInt("minOfSleep", min) + " " + pref.getString("formatOfSleep", format)));
 
                 else
-                    sleepTime.setText((pref.getInt("hourOf" + textView, hourOfDay) + ":" + pref.getInt("minOf" + textView, min) + " " + pref.getString("formatOf" + textView, format)));
+                    sleepTime.setText((pref.getInt("hourOfSleep", hourOfDay) + ":" + pref.getInt("minOfSleep", min) + " " + pref.getString("formatOfSleep", format)));
 
                 break;
             case "wakeup":
-                if (pref.getInt("minOf" + textView, min) < 10 || pref.getInt("minOf" + textView, min) == 0)
-                    wakeTime.setText((pref.getInt("hourOf" + textView, hourOfDay) + ":0" + pref.getInt("minOf" + textView, min) + " " + pref.getString("formatOf" + textView, format)));
+                if (pref.getInt("minOfWakeup", min) < 10 || pref.getInt("minOfWakeup", min) == 0)
+                    wakeTime.setText((pref.getInt("hourOfWakeup", hourOfDay) + ":0" + pref.getInt("minOfWakeup", min) + " " + pref.getString("formatOfWakeup", format)));
                 else
-                    wakeTime.setText((pref.getInt("hourOf" + textView, hourOfDay) + ":" + pref.getInt("minOf" + textView, min) + " " + pref.getString("formatOf" + textView, format)));
+                    wakeTime.setText((pref.getInt("hourOfWakeup", hourOfDay) + ":" + pref.getInt("minOfWakeup", min) + " " + pref.getString("formatOfWakeup", format)));
                 break;
         }
 
@@ -948,13 +991,13 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         timedialog.setContentView(R.layout.time_picker);
 
         timedialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        CardView cardView =timedialog.findViewById(R.id.time_picker_card);
+        CardView cardView = timedialog.findViewById(R.id.time_picker_card);
         cardView.setRadius(10);
-                ImageView cancel = timedialog.findViewById(R.id.cancel_time_picker);
+        ImageView cancel = timedialog.findViewById(R.id.cancel_time_picker);
         ImageView correct = timedialog.findViewById(R.id.correct_time_picker);
         final TimePicker timePicker = timedialog.findViewById(R.id.spinner_time_picker);
         timePicker.setIs24HourView(false);
-        final String textView = s;
+        final String textview = s;
 
 
         //     TimePicker timePicker = Timedialog.findViewById(R.id.spinner_time_picker);
@@ -994,74 +1037,151 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                     format = "AM";
                 }
 
-
+/*
                 editor.putInt("hourOf" + textView, hour);
                 editor.putInt("minOf" + textView, minute);
                 editor.putString("formatOf" + textView, format);
-                editor.commit();
+                editor.commit();*/
 
-                switch (textView) {
+                switch (textview) {
                     case "morning":
+                        editor.putInt("hourOfMorning", hour);
+                        editor.putInt("minOfMorning", minute);
+                        editor.putString("formatOfMorning", format);
+                        editor.commit();
                         if (minute < 10 || minute == 0) {
-                            morningTime.setText((pref.getInt("hourOf" + textView, 00) + ":0" + pref.getInt("minOf" + textView, 00) + " " + pref.getString("formatOf" + textView, "AM")));
+                            morningTime.setText((pref.getInt("hourOfMorning", 00) + ":0" + pref.getInt("minOfMorning", 00) + " " + pref.getString("formatOfMorning", "AM")));
 
                         } else
-                            morningTime.setText((pref.getInt("hourOf" + textView, 00) + ":" + pref.getInt("minOf" + textView, 00) + " " + pref.getString("formatOf" + textView, "AM")));
+                            morningTime.setText((pref.getInt("hourOfMorning", 00) + ":" + pref.getInt("minOfMorning", 00) + " " + pref.getString("formatOfMorning", "AM")));
 
                         break;
                     case "evening":
+                        editor.putInt("hourOfEvening", hour);
+                        editor.putInt("minOfEvening", minute);
+                        editor.putString("formatOfEvening", format);
+                        editor.commit();
                         if (minute < 10 || minute == 0)
-                            eveningTime.setText((pref.getInt("hourOf" + textView, 00) + ":0" + pref.getInt("minOf" + textView, 00) + " " + pref.getString("formatOf" + textView, "AM")));
+                            eveningTime.setText((pref.getInt("hourOfEvening", 00) + ":0" + pref.getInt("minOfEvening", 00) + " " + pref.getString("formatOfEvening", "AM")));
                         else
-                            eveningTime.setText((pref.getInt("hourOf" + textView, 00) + ":" + pref.getInt("minOf" + textView, 00) + " " + pref.getString("formatOf" + textView, "AM")));
+                            eveningTime.setText((pref.getInt("hourOfEvening", 00) + ":" + pref.getInt("minOfEvening", 00) + " " + pref.getString("formatOfEvening", "AM")));
 
                         break;
                     case "sleep":
-
+                        editor.putInt("hourOfSleep", hour);
+                        editor.putInt("minOfSleep", minute);
+                        editor.putString("formatOfSleep", format);
+                        editor.commit();
                         if (minute < 10 || minute == 0)
-                            sleepTime.setText((pref.getInt("hourOf" + textView, 00) + ":0" + pref.getInt("minOf" + textView, 00) + " " + pref.getString("formatOf" + textView, "AM")));
+                            sleepTime.setText((pref.getInt("hourOfSleep", 00) + ":0" + pref.getInt("minOfSleep", 00) + " " + pref.getString("formatOfSleep", "AM")));
 
                         else
-                            sleepTime.setText((pref.getInt("hourOf" + textView, 00) + ":" + pref.getInt("minOf" + textView, 00) + " " + pref.getString("formatOf" + textView, "AM")));
+                            sleepTime.setText((pref.getInt("hourOfSleep", 00) + ":" + pref.getInt("minOfSleep", 00) + " " + pref.getString("formatOfSleep", "AM")));
 
                         break;
                     case "wakeup":
+                        editor.putInt("hourOfWakeup", hour);
+                        editor.putInt("minOfWakeup", minute);
+                        editor.putString("formatOfWakeup", format);
+                        editor.commit();
                         if (minute < 10 || minute == 0)
-                            wakeTime.setText((pref.getInt("hourOf" + textView, 00) + ":0" + pref.getInt("minOf" + textView, 00) + " " + pref.getString("formatOf" + textView, "AM")));
+                            wakeTime.setText((pref.getInt("hourOfWakeup", 00) + ":0" + pref.getInt("minOfWakeup", 00) + " " + pref.getString("formatOfWakeup", "AM")));
                         else
-                            wakeTime.setText((pref.getInt("hourOf" + textView, 00) + ":" + pref.getInt("minOf" + textView, 00) + " " + pref.getString("formatOf" + textView, "AM")));
+                            wakeTime.setText((pref.getInt("hourOfWakeup", 00) + ":" + pref.getInt("minOfWakeup", 00) + " " + pref.getString("formatOfWakeup", "AM")));
 
                         break;
                 }
 
             }
         });
+
         //   textView.setText(pref.getInt("hourOf" + textView.getText(), 00) + ":" + pref.getInt("minOf" + textView.getText(), 00) + " " + pref.getString("formatOf" + textView.getText(), "AM"));
     }
 
-    public void createTimeNotification(String s, int content) {
-        Intent myIntent = new Intent(getContext(), Notify.class);
-        myIntent.putExtra("title", R.string.notification_title);
-        myIntent.putExtra("content", String.valueOf(content));
+    public void createTimeNotification(String s, String content, int requestCode) {
+        // String s , int content
+
+
+
+        Calendar calendar = Calendar.getInstance();
+        switch (s) {
+            case "morning":
+
+        /*        editor.putString("contentOfMorning",content);
+                editor.apply();*/
+
+                calendar.set(Calendar.HOUR, pref.getInt("hourOfMorning", hourOfDay));
+                calendar.set(Calendar.MINUTE, pref.getInt("minOfMorning", min));
+                if (pref.getString("formatOfMorning", format).equals("AM"))
+                    calendar.set(Calendar.AM_PM, Calendar.AM);
+                else if (pref.getString("formatOfMorning", format).equals("PM"))
+                    calendar.set(Calendar.AM_PM, Calendar.PM);
+
+                break;
+            case "evening":
+
+                calendar.set(Calendar.HOUR, pref.getInt("hourOfEvening", hourOfDay));
+                calendar.set(Calendar.MINUTE, pref.getInt("minOfEvening", min));
+                if (pref.getString("formatOfEvening", format).equals("AM"))
+                    calendar.set(Calendar.AM_PM, Calendar.AM);
+                else if (pref.getString("formatOfEvening", format).equals("PM"))
+                    calendar.set(Calendar.AM_PM, Calendar.PM);
+
+                break;
+            case "sleep":
+                calendar.set(Calendar.HOUR, pref.getInt("hourOfSleep", hourOfDay));
+                calendar.set(Calendar.MINUTE, pref.getInt("minOfSleep", min));
+                if (pref.getString("formatOfSleep", format).equals("AM"))
+                    calendar.set(Calendar.AM_PM, Calendar.AM);
+                else if (pref.getString("formatOfSleep", format).equals("PM"))
+                    calendar.set(Calendar.AM_PM, Calendar.PM);
+
+                break;
+            case "wakeup":
+                calendar.set(Calendar.HOUR, pref.getInt("hourOfWakeup", hourOfDay));
+                calendar.set(Calendar.MINUTE, pref.getInt("minOfWakeup", min));
+                if (pref.getString("formatOfWakeup", format).equals("AM"))
+                    calendar.set(Calendar.AM_PM, Calendar.AM);
+                else if (pref.getString("formatOfWakeup", format).equals("PM"))
+                    calendar.set(Calendar.AM_PM, Calendar.PM);
+
+                break;
+        }
 
         try {
             AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 0, myIntent, 0);
-            Calendar calendar = Calendar.getInstance();
-            // calendar.set(Calendar. SECOND , 0 ) ;
-            calendar.set(Calendar.HOUR, pref.getInt("hourOf" + s, hourOfDay));
-            calendar.set(Calendar.MINUTE, pref.getInt("minOf" + s, min));
-            if (pref.getString("formatOf" + s, format).equals("AM"))
-                calendar.set(Calendar.AM_PM, Calendar.AM);
-            else if (pref.getString("formatOf" + s, format).equals("PM"))
-                calendar.set(Calendar.AM_PM, Calendar.PM);
+            ArrayList<PendingIntent> intentArray = new ArrayList<PendingIntent>();
 
-            //   calendar.add(Calendar. DAY_OF_MONTH , 1 ) ;
-            Toast.makeText(getContext(), "time is" + calendar.getTimeInMillis(), Toast.LENGTH_SHORT).show();
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 1000 * 60 * 60 * 24, pendingIntent);
+            for (int i = 0; i<=4;i++){
+                Intent myIntent = new Intent(getContext(), Notify.class);
+                myIntent.putExtra("content",content);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(),i, myIntent, 0);
+
+
+                Toast.makeText(getContext(), "time is" + calendar.getTimeInMillis(), Toast.LENGTH_SHORT).show();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+                }
+                intentArray.add(pendingIntent);
+
+                editor.putInt("arrayListLength",intentArray.size());
+                editor.commit();
+            }
+
+
+
         } catch (NullPointerException e) {
             Toast.makeText(getContext(), "Error" + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void cancelNotification(int requestCode) {
+        AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(getContext(), Notify.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), requestCode, intent, 0);
+
+        alarmManager.cancel(pendingIntent);
     }
 
     private void creatReminderNotification() {
@@ -1071,12 +1191,11 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         String randomReminderZikr = h[new Random().nextInt(h.length)];
         Toast.makeText(getContext(), randomReminderZikr, Toast.LENGTH_SHORT).show();
         Intent myIntent = new Intent(getContext(), Notify.class);
-        myIntent.putExtra("title", R.string.notification_title);
         myIntent.putExtra("content", randomReminderZikr);
 
         try {
             AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 0, myIntent, 0);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 1, myIntent, 0);
 
             long interval = VerityIntervalArray[0];
             for (int i = 0; i < VerityTimeArray.length; i++) {
@@ -1090,6 +1209,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
             Toast.makeText(getContext(), "Error" + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
+
 
     private void createNotificationChannel() {
 
@@ -1304,4 +1424,17 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
     }
 
 
+    @Override
+    public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+      /*  Calendar calendar = Calendar.getInstance();
+        // calendar.set(Calendar. SECOND , 0 ) ;
+        calendar.set(Calendar.HOUR, hourOfDay);
+        calendar.set(Calendar.MINUTE, minute);
+       *//* if (pref.getString("formatOf" + s, format).equals("AM"))
+            calendar.set(Calendar.AM_PM, Calendar.AM);
+        else if (pref.getString("formatOf" + s, format).equals("PM"))
+            calendar.set(Calendar.AM_PM, Calendar.PM);*//*
+
+        createTimeNotification(calendar);*/
+    }
 }
