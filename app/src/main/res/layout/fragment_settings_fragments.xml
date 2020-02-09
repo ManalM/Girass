@@ -320,29 +320,60 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_margin="10dp"
+                    android:fontFamily="@font/tajawal_regular"
+                    android:layout_alignParentRight="true"
+                    android:text="تشغيل الاهتزازات"
+                    android:textColor="@color/textColor"
+                    android:textSize="18sp" />
                 <Switch
                     android:id="@+id/masbaha_vibrate"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:checked="true"
+                    android:layout_alignParentLeft="true"
+
                     android:fontFamily="@font/tajawal_regular"
                     android:switchMinWidth="45dp"
-                    android:text="تشغيل الاهتزازات"
                     android:textColor="@color/textColor" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_margin="10dp"
+                    android:fontFamily="@font/tajawal_regular"
+                    android:layout_alignParentRight="true"
+                    android:text="تشغيل الأصــوات"
+                    android:textColor="@color/textColor"
+                    android:textSize="18sp" />
                 <Switch
                     android:id="@+id/masbaha_sounds"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:checked="true"
-                    android:fontFamily="@font/tajawal_regular"
+                    android:layout_alignParentLeft="true"
                     android:switchMinWidth="45dp"
-                    android:text="تشغيل الأصوات"
                     android:textColor="@color/textColor" />
-
+                </RelativeLayout>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
