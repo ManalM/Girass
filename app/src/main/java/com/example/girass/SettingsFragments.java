@@ -40,6 +40,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -1278,6 +1279,9 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
 
         aboutDialog.setContentView(R.layout.about_dialog);
         aboutDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        aboutDialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.MATCH_PARENT);
+
 
         aboutClose = aboutDialog.findViewById(R.id.about_close);
         phone = aboutDialog.findViewById(R.id.phone);
