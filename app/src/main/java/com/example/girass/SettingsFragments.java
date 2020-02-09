@@ -28,6 +28,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
@@ -55,6 +56,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.google.android.material.circularreveal.cardview.CircularRevealCardView;
 import com.google.android.material.internal.CircularBorderDrawable;
+import com.suke.widget.SwitchButton;
 
 import org.w3c.dom.Text;
 
@@ -79,8 +81,9 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
             notificationLinear;
     private Dialog dialog, aboutDialog, detailsDialog;
     private CardView generalCard, masbahaCard;
-    private Switch activate, morning, evening, sleep, wakeup, reminder, masbahaSound, masbahaVibrate, generalSound, generalVibrate;
+    private Switch activate, morning, evening, sleep, wakeup, reminder, masbahaSound, masbahaVibrate;
     private ImageButton aboutApp, close, aboutClose;
+    private SwitchButton generalSound, generalVibrate;
     private TextView www, phone, twitter, email, desc,
             morningTime, eveningTime, sleepTime, wakeTime, reminderTime,
             sound1, sound2, sound3, sound4,
@@ -173,8 +176,8 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
         masbahaArrow = (ImageView) rootView.findViewById(R.id.masbaha_arrow);
         masbahaSound = (Switch) rootView.findViewById(R.id.masbaha_sounds);
         masbahaVibrate = (Switch) rootView.findViewById(R.id.masbaha_vibrate);
-        generalSound = (Switch) rootView.findViewById(R.id.general_sounds);
-        generalVibrate = (Switch) rootView.findViewById(R.id.general_vibrate);
+        generalSound = rootView.findViewById(R.id.general_sounds);
+        generalVibrate =  rootView.findViewById(R.id.general_vibrate);
         //------------------------ Fonts -------------------------------
 // TODO: rectangle corner design
         font1 = (TextView) rootView.findViewById(R.id.font1);
@@ -349,10 +352,9 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
     private void GenetalSetting() {
 
 
-        generalVibrate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        generalVibrate.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+            public void onCheckedChanged(SwitchButton view, boolean isChecked) {
                 if (isChecked) {
                     Generalvibrate = true;
                     editor.putBoolean("generalVibrate", Generalvibrate);
@@ -362,12 +364,13 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
                     editor.putBoolean("generalVibrate", Generalvibrate);
                     editor.commit();
                 }
+
             }
         });
 
-        generalSound.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        generalSound.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onCheckedChanged(SwitchButton view, boolean isChecked) {
                 if (isChecked) {
 
                     GeneralSound = true;
@@ -382,6 +385,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
                     editor.putBoolean("generalSound", GeneralSound);
                     editor.commit();
                 }
+
             }
         });
 
