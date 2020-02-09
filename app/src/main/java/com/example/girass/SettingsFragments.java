@@ -37,9 +37,11 @@ import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
@@ -994,6 +996,14 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
 
         timedialog = new Dialog(getContext());
         timedialog.setContentView(R.layout.time_picker);
+        Window window = timedialog.getWindow();
+        WindowManager.LayoutParams wlp = window.getAttributes();
+        wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
+
+
+        wlp.gravity = Gravity.BOTTOM;
+        wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        window.setAttributes(wlp);
 
         timedialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         CardView cardView = timedialog.findViewById(R.id.time_picker_card);
