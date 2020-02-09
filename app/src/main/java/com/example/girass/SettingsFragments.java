@@ -996,18 +996,21 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
 
         timedialog = new Dialog(getContext());
         timedialog.setContentView(R.layout.time_picker);
+
         Window window = timedialog.getWindow();
         WindowManager.LayoutParams wlp = window.getAttributes();
-        wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
 
-
+        //wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
         wlp.gravity = Gravity.BOTTOM;
         wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-        window.setAttributes(wlp);
 
-        timedialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        window.setAttributes(wlp);
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+/*
         CardView cardView = timedialog.findViewById(R.id.time_picker_card);
         cardView.setRadius(10);
+*/
         ImageView cancel = timedialog.findViewById(R.id.cancel_time_picker);
         ImageView correct = timedialog.findViewById(R.id.correct_time_picker);
         final TimePicker timePicker = timedialog.findViewById(R.id.spinner_time_picker);
