@@ -1158,7 +1158,6 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(),i, myIntent, 0);
 
 
-                Toast.makeText(getContext(), "time is" + calendar.getTimeInMillis(), Toast.LENGTH_SHORT).show();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
                     alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
