@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -125,6 +125,7 @@
                     />
                 </RelativeLayout>
                 <LinearLayout
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -164,56 +165,60 @@
                     android:textSize="18sp"
                     android:textColor="@color/textColor" />
 
-                <TableLayout
+                <com.addisonelliott.segmentedbutton.SegmentedButtonGroup
+                    android:id="@+id/segment_font"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:layout_margin="10dp"
-                    android:background="@drawable/card_background"
+                    android:elevation="2dp"
 
-                    android:stretchColumns="*"
+                    android:background="@color/colorAccent"
+                    app:borderColor="@color/textColor"
+                    app:borderWidth="2dp"
+                    app:divider="@color/textColor"
+                    app:dividerPadding="10dp"
+                    app:dividerWidth="2dp"
+                    app:position="0"
+                    app:radius="10dp"
+                    app:ripple="true"
+                    app:rippleColor="@color/textColor"
+                    app:selectedBackground="@color/textColor">
 
-                    >
+                    <com.addisonelliott.segmentedbutton.SegmentedButton
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
 
-                    <TableRow android:layout_width="0dp"
+                        android:padding="10dp"
+                        app:selectedTextColor="@color/colorAccent"
+                        app:text="تٍجْوال"
+                        app:textColor="@color/textColor" />
 
+                    <com.addisonelliott.segmentedbutton.SegmentedButton
 
-                        >
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
 
-                        <TextView
-                            android:id="@+id/font1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="1dp"
-                            android:background="@color/colorAccent"
-                            android:fontFamily="@font/tajawal_regular"
-                            android:gravity="center"
-                            android:text="تٍجْوال"
-                            android:textColor="@color/textColor" />
+                        android:padding="10dp"
+                        app:selectedTextColor="@color/colorAccent"
+                        app:text="دِمَشْـقِي "
+                        app:textColor="@color/textColor" />
 
-                        <TextView
-                            android:id="@+id/font2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="1dp"
-                            android:background="#fff"
-                            android:fontFamily="@font/tajawal_light"
-                            android:gravity="center"
-                            android:text="دِمَشْـقِي "
-                            android:textColor="@color/textColor" />
+                    <com.addisonelliott.segmentedbutton.SegmentedButton
 
-                        <TextView
-                            android:id="@+id/font3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="1dp"
-                            android:background="#fff"
-                            android:fontFamily="@font/tajwal_bold"
-                            android:gravity="center"
-                            android:text="نَــسْـخْ "
-                            android:textColor="@color/textColor" />
-                    </TableRow>
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
 
-                </TableLayout>
+                        android:padding="10dp"
+                        app:selectedTextColor="@color/colorAccent"
+                        app:text="نَــسْـخْ"
+                        app:textColor="@color/textColor" />
+
+                </com.addisonelliott.segmentedbutton.SegmentedButtonGroup>
+
 
                 <TextView
                     android:layout_width="match_parent"
@@ -224,55 +229,60 @@
                     android:textSize="18sp"
                     android:textColor="@color/textColor" />
 
-                <TableLayout
+                <com.addisonelliott.segmentedbutton.SegmentedButtonGroup
+                    android:id="@+id/segment_luncher"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:layout_margin="10dp"
-                    android:background="@drawable/card_background"
-                    android:stretchColumns="*"
+                    android:elevation="2dp"
 
-                    >
+                    android:background="@color/colorAccent"
+                    app:borderColor="@color/textColor"
+                    app:borderWidth="2dp"
+                    app:divider="@color/textColor"
+                    app:dividerPadding="10dp"
+                    app:dividerWidth="2dp"
+                    app:position="0"
+                    app:radius="10dp"
+                    app:ripple="true"
+                    app:rippleColor="@color/textColor"
+                    app:selectedBackground="@color/textColor">
 
-                    <TableRow android:layout_width="0dp"
+                    <com.addisonelliott.segmentedbutton.SegmentedButton
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
 
+                        android:padding="10dp"
+                        app:selectedTextColor="@color/colorAccent"
+                        app:text="الأذكار"
+                        app:textColor="@color/textColor" />
 
-                        >
+                    <com.addisonelliott.segmentedbutton.SegmentedButton
 
-                        <TextView
-                            android:id="@+id/luncher_zikr"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="1dp"
-                            android:background="#fff"
-                            android:fontFamily="@font/tajawal_regular"
-                            android:gravity="center"
-                            android:text="الأذكار"
-                            android:textColor="@color/textColor" />
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
 
-                        <TextView
-                            android:id="@+id/luncher_fav"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="1dp"
-                            android:background="#fff"
-                            android:fontFamily="@font/tajawal_regular"
-                            android:gravity="center"
-                            android:text="المفضّلة "
-                            android:textColor="@color/textColor" />
+                        android:padding="10dp"
+                        app:selectedTextColor="@color/colorAccent"
+                        app:text="المفضّلة "
+                        app:textColor="@color/textColor" />
 
-                        <TextView
-                            android:id="@+id/luncher_masbaha"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="1dp"
-                            android:background="#fff"
-                            android:fontFamily="@font/tajawal_regular"
-                            android:gravity="center"
-                            android:text="المسبحة"
-                            android:textColor="@color/textColor" />
-                    </TableRow>
+                    <com.addisonelliott.segmentedbutton.SegmentedButton
 
-                </TableLayout>
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+
+                        android:padding="10dp"
+                        app:selectedTextColor="@color/colorAccent"
+                        app:text="المسبحة"
+                        app:textColor="@color/textColor" />
+
+                </com.addisonelliott.segmentedbutton.SegmentedButtonGroup>
+
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -321,7 +331,7 @@
             android:layout_margin="10dp"
             android:animateLayoutChanges="true"
             android:background="@color/colorAccent"
-            android:visibility="visible"
+            android:visibility="gone"
             app:cardCornerRadius="9dp">
 
             <LinearLayout
@@ -399,73 +409,140 @@
                     android:layout_margin="10dp"
                     android:fontFamily="@font/tajawal_regular"
                     android:text="أصوات المسبحة"
-
+                    android:textSize="18sp"
                     android:textColor="@color/textColor" />
 
-                <TableLayout
+                <com.addisonelliott.segmentedbutton.SegmentedButtonGroup
+                    android:id="@+id/segment_sound"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:layout_margin="10dp"
-                    android:background="@drawable/card_background"
-                    android:stretchColumns="*"
+                    android:elevation="2dp"
 
-                    >
+                    android:background="@color/colorAccent"
+                    app:borderColor="@color/textColor"
+                    app:borderWidth="2dp"
+                    app:divider="@color/textColor"
+                    app:dividerPadding="10dp"
+                    app:dividerWidth="2dp"
+                    app:position="0"
+                    app:radius="10dp"
+                    app:ripple="true"
+                    app:rippleColor="@color/textColor"
+                    app:selectedBackground="@color/textColor">
 
-                    <TableRow android:layout_width="0dp"
+                    <com.addisonelliott.segmentedbutton.SegmentedButton
+                        android:id="@+id/seg1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+
+                        android:padding="10dp"
+                        app:selectedTextColor="@color/colorAccent"
+                        app:text="صوت ۱"
+                        app:textColor="@color/textColor" />
+
+                    <com.addisonelliott.segmentedbutton.SegmentedButton
+                        android:id="@+id/seg3"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+
+                        android:padding="10dp"
+                        app:selectedTextColor="@color/colorAccent"
+                        app:text="صوت ۲"
+                        app:textColor="@color/textColor" />
+
+                    <com.addisonelliott.segmentedbutton.SegmentedButton
+                        android:id="@+id/seg4"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+
+                        android:padding="10dp"
+                        app:selectedTextColor="@color/colorAccent"
+                        app:text="صوت ۳"
+                        app:textColor="@color/textColor" />
+
+                    <com.addisonelliott.segmentedbutton.SegmentedButton
+                        android:id="@+id/seg2"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+
+                        android:padding="10dp"
+                        app:selectedTextColor="@color/colorAccent"
+                        app:text="صوت ٤"
+                        app:textColor="@color/textColor" />
+                </com.addisonelliott.segmentedbutton.SegmentedButtonGroup>
+
+                <!--
+                                <TableLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="10dp"
+                                    android:background="@drawable/card_background"
+                                    android:stretchColumns="*"
+
+                                    >
+
+                                    <TableRow android:layout_width="0dp"
 
 
-                        >
+                                        >
 
-                        <TextView
-                            android:id="@+id/sound1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="1dp"
-                            android:background="#fff"
-                            android:fontFamily="@font/tajawal_regular"
-                            android:gravity="center"
-                            android:text="صوت 1 "
+                                        <TextView
+                                            android:id="@+id/sound1"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_margin="1dp"
+                                            android:background="#fff"
+                                            android:fontFamily="@font/tajawal_regular"
+                                            android:gravity="center"
+                                            android:text="صوت 1 "
 
-                            android:textColor="@color/textColor" />
+                                            android:textColor="@color/textColor" />
 
-                        <TextView
-                            android:id="@+id/sound2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="1dp"
-                            android:background="#fff"
-                            android:fontFamily="@font/tajawal_regular"
-                            android:gravity="center"
-                            android:text="صوت 2"
+                                        <TextView
+                                            android:id="@+id/sound2"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_margin="1dp"
+                                            android:background="#fff"
+                                            android:fontFamily="@font/tajawal_regular"
+                                            android:gravity="center"
+                                            android:text="صوت 2"
 
-                            android:textColor="@color/textColor" />
+                                            android:textColor="@color/textColor" />
 
-                        <TextView
-                            android:id="@+id/sound3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="1dp"
-                            android:background="#fff"
-                            android:fontFamily="@font/tajawal_regular"
-                            android:gravity="center"
-                            android:text="صوت 3 "
+                                        <TextView
+                                            android:id="@+id/sound3"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_margin="1dp"
+                                            android:background="#fff"
+                                            android:fontFamily="@font/tajawal_regular"
+                                            android:gravity="center"
+                                            android:text="صوت 3 "
 
-                            android:textColor="@color/textColor" />
+                                            android:textColor="@color/textColor" />
 
-                        <TextView
-                            android:id="@+id/sound4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="1dp"
-                            android:background="#fff"
-                            android:fontFamily="@font/tajawal_regular"
-                            android:gravity="center"
-                            android:text="صوت 4 "
+                                        <TextView
+                                            android:id="@+id/sound4"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_margin="1dp"
+                                            android:background="#fff"
+                                            android:fontFamily="@font/tajawal_regular"
+                                            android:gravity="center"
+                                            android:text="صوت 4 "
 
-                            android:textColor="@color/textColor" />
-                    </TableRow>
+                                            android:textColor="@color/textColor" />
+                                    </TableRow>
 
-                </TableLayout>
+                                </TableLayout>
+                -->
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>

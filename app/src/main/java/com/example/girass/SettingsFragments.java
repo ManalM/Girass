@@ -55,6 +55,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.addisonelliott.segmentedbutton.SegmentedButton;
+import com.addisonelliott.segmentedbutton.SegmentedButtonGroup;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.google.android.material.circularreveal.cardview.CircularRevealCardView;
@@ -89,9 +91,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
     private SwitchButton generalSound, generalVibrate;
     private TextView www, phone, twitter, email, desc,
             morningTime, eveningTime, sleepTime, wakeTime, reminderTime,
-            sound1, sound2, sound3, sound4,
-            font1, font2, font3,
-            luncherMasbaha, lucherfav, luncherZikr,
+
             textSize, fontType;
     private ImageView background_img, www_img, email_img, phone_img, twitter_img, dozo; // the image
     private ImageView generalArrow, masbahaArrow;
@@ -139,14 +139,20 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
 
     static String chozenReminderTime;
 
+    SegmentedButtonGroup soundsGroup;
+    SegmentedButtonGroup fontsGroup, launcherGroup;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_settings_fragments, container, false);
+
         /*****************************************
          ****   make time picker in arabic   ****
          **************************************/
+
+
         Locale locale = new Locale("ar");
         Configuration configuration = getContext().getResources().getConfiguration();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -179,27 +185,8 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
         masbahaSound = rootView.findViewById(R.id.masbaha_sounds);
         masbahaVibrate = rootView.findViewById(R.id.masbaha_vibrate);
         generalSound = rootView.findViewById(R.id.general_sounds);
-        generalVibrate =  rootView.findViewById(R.id.general_vibrate);
-        //------------------------ Fonts -------------------------------
-// TODO: rectangle corner design
-        font1 = (TextView) rootView.findViewById(R.id.font1);
-        font2 = (TextView) rootView.findViewById(R.id.font2);
-        font3 = (TextView) rootView.findViewById(R.id.font3);
-        //-------------------------------------------------------------
-        // TODO: rectangle corner design
+        generalVibrate = rootView.findViewById(R.id.general_vibrate);
 
-        lucherfav = (TextView) rootView.findViewById(R.id.luncher_fav);
-        luncherMasbaha = (TextView) rootView.findViewById(R.id.luncher_masbaha);
-
-        luncherZikr = (TextView) rootView.findViewById(R.id.luncher_zikr);
-        //------------------------- Sounds -------------------------------
-// TODO: rectangle corner design
-
-        sound1 = (TextView) rootView.findViewById(R.id.sound1);
-        sound2 = (TextView) rootView.findViewById(R.id.sound2);
-        sound3 = (TextView) rootView.findViewById(R.id.sound3);
-        sound4 = (TextView) rootView.findViewById(R.id.sound4);
-        checkSound = MediaPlayer.create(getContext(), R.raw.correct);
         //--------------------- Defaults ------------------------------
 
        /* defualtSound = MediaPlayer.create(getContext(), R.raw.click);
@@ -220,6 +207,8 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
         TextSize = 15;
         seekBar.setProgress((int) TextSize);
         textSize.setTextSize(TypedValue.COMPLEX_UNIT_PX, seekBar.getProgress());
+
+        checkSound = MediaPlayer.create(getContext(), R.raw.correct);
         //-------------------------------------------------------------
         now = Calendar.getInstance();
         hourOfDay = now.get(Calendar.HOUR_OF_DAY);
@@ -247,20 +236,17 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
 
         if (pref.getString("generalCardVisibility", "visible").equals("visible")) {
             generalCard.setVisibility(View.VISIBLE);
-            GenetalSetting();
         } else if (pref.getString("generalCardVisibility", "gone").equals("gone"))
             generalCard.setVisibility(View.GONE);
 
         if (pref.getString("masbahaCardVisibility", "visible").equals("visible")) {
             masbahaCard.setVisibility(View.VISIBLE);
-            MasbahaSetting();
         } else if (pref.getString("masbahaCardVisibility", "gone").equals("gone"))
             masbahaCard.setVisibility(View.GONE);
 
         TextSize = pref.getInt("fontSize", 18);
 
 
-        changeTextViewsBackground();
 
         //-----------------------------------------------------------
 
@@ -270,87 +256,12 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
         share.setOnClickListener(this);
         rate.setOnClickListener(this);
         about.setOnClickListener(this);
-
-        return rootView;
-    }
-
-
-    @Override
-    public void onClick(View v) {
-
-
-        /*************************************
-         ****        buttons  function    ****
-         *************************************/
-
-
-        switch (v.getId()) {
-
-            case R.id.general_setting:
-                GenetalSetting();
-
-                if (generalCard.getVisibility() == View.GONE) {
-                    generalCard.setVisibility(View.VISIBLE);
-                    Glide.with(getContext()).load(R.drawable.up_arrow).into(generalArrow);
-                    editor.putString("generalCardVisibility", "visible");
-                    editor.commit();
-
-                } else {
-                    GenetalSetting();
-
-                    generalCard.setVisibility(View.GONE);
-                    Glide.with(getContext()).load(R.drawable.down_arrow).into(generalArrow);
-                    editor.putString("generalCardVisibility", "gone");
-                    editor.commit();
-                }
-
-                break;
-
-            case R.id.masbaha_setting:
-                if (masbahaCard.getVisibility() == View.GONE) {
-                    masbahaCard.setVisibility(View.VISIBLE);
-                    Glide.with(getContext()).load(R.drawable.up_arrow).into(masbahaArrow);
-                    editor.putString("masbahaCardVisibility", "visible");
-                    editor.commit();
-                    MasbahaSetting();
-
-                } else {
-                    masbahaCard.setVisibility(View.GONE);
-                    Glide.with(getContext()).load(R.drawable.down_arrow).into(masbahaArrow);
-                    editor.putString("masbahaCardVisibility", "gone");
-                    editor.commit();
-                    MasbahaSetting();
-
-                }
-                break;
-            case R.id.notification:
-                showDialog();
-                break;
-            case R.id.share:
-                shareApp();
-                break;
-            case R.id.rate:
-                rateApp();
-                break;
-            case R.id.about:
-                try {
-
-                    // startActivity(new Intent(getContext(), Notes.class));
-                    aboutApp();
-                } catch (OutOfMemoryError e) {
-                    Toast.makeText(getContext(), "Error" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-
-                break;
-
-        }
-    }
-
-
-    /*************************************
-     ****    General settings funcs   ****
-     *************************************/
-    private void GenetalSetting() {
+        /*****************************************
+         ****                                 ****
+         *             General Settings          *
+         *                                       *
+         ****                                 ****
+         *****************************************/
 
 
         generalVibrate.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
@@ -392,35 +303,58 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
 
 
         //----------------Launcher Listener-----------------------------
-        luncherZikr.setOnClickListener(new View.OnClickListener() {
+
+        launcherGroup = (SegmentedButtonGroup) rootView.findViewById(R.id.segment_luncher);
+        launcherGroup.setPosition(pref.getInt("selectedLauncher", 0), false);
+        launcherGroup.setOnPositionChangedListener(new SegmentedButtonGroup.OnPositionChangedListener() {
             @Override
-            public void onClick(View v) {
-                changeGeneralTextView(luncherZikr, lucherfav, luncherMasbaha);
-                Toast.makeText(getContext(), "Zikr", Toast.LENGTH_SHORT).show();
-                editor.putString("launcher", "Zikr");
+            public void onPositionChanged(int position) {
+                if (position == 0)
+                    editor.putString("launcher", "Zikr");
+                else if (position == 1)
+                    editor.putString("launcher", "Masbaha");
+                else if (position == 2)
+                    editor.putString("launcher", "Fav");
+
+                editor.putInt("selectedLauncher", position);
                 editor.commit();
             }
         });
 
-        luncherMasbaha.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeGeneralTextView(luncherMasbaha, lucherfav, luncherZikr);
-                editor.putString("launcher", "Masbaha");
-                editor.commit();
-            }
-        });
-
-        lucherfav.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeGeneralTextView(lucherfav, luncherZikr, luncherMasbaha);
-                editor.putString("launcher", "Fav");
-                editor.commit();
-            }
-        });
         //---------------Fonts Listener---------------------------
-        font1.setOnClickListener(new View.OnClickListener() {
+        fontsGroup = (SegmentedButtonGroup) rootView.findViewById(R.id.segment_font);
+        fontsGroup.setPosition(pref.getInt("selectedFont", 0), false);
+        fontsGroup.setOnPositionChangedListener(new SegmentedButtonGroup.OnPositionChangedListener() {
+            @Override
+            public void onPositionChanged(int position) {
+                if (position == 0) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        defualtFont = getResources().getFont(R.font.tajawal_regular);
+                    }
+                    fontType.setTypeface(defualtFont);
+                    editor.putString("defaultFont", "regular");
+                } else if (position == 1) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        defualtFont = getResources().getFont(R.font.tajawal_light);
+                    }
+                    fontType.setTypeface(defualtFont);
+
+                    editor.putString("defaultFont", "light");
+                } else if (position == 2) {
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        defualtFont = getResources().getFont(R.font.tajwal_bold);
+                    }
+                    fontType.setTypeface(defualtFont);
+
+                    editor.putString("defaultFont", "bold");
+                }
+                editor.putInt("selectedFont", position);
+
+                editor.commit();
+            }
+        });
+      /*  font1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //  defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajawal_regular");
@@ -428,8 +362,6 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
                 //   defualtFont = Typeface.createFromAsset(getContext().getAssets(),"tajawal_regular.ttf");
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     defualtFont = getResources().getFont(R.font.tajawal_regular);
-                } else {
-                    //  defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajawal_regular.ttf");
                 }
                 fontType.setTypeface(defualtFont);
                 editor.putString("defaultFont", "regular");
@@ -444,8 +376,6 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
                 //  defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajawal_light");
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     defualtFont = getResources().getFont(R.font.tajawal_light);
-                } else {
-                    //       defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajawal_light.ttf");
                 }
                 fontType.setTypeface(defualtFont);
 
@@ -463,8 +393,6 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     defualtFont = getResources().getFont(R.font.tajwal_bold);
-                } else {
-                    //   defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajwal_bold.ttf");
                 }
                 fontType.setTypeface(defualtFont);
 
@@ -472,7 +400,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
                 editor.commit();
 
             }
-        });
+        });*/
         //----------------------------------------------------
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -494,68 +422,13 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
 
             }
         });
-    }
 
-    private void changeGeneralTextView(TextView clickble, TextView other1, TextView other2) {
-        clickble.setTextColor(getResources().getColor(R.color.colorAccent));
-        clickble.setBackgroundColor(getResources().getColor(R.color.textColor));
-
-        other1.setTextColor(getResources().getColor(R.color.textColor));
-        other1.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-
-        other2.setTextColor(getResources().getColor(R.color.textColor));
-        other2.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-
-    }
-
-    private void changeTextViewsBackground() {
-
-
-        //----------------------- Masbaha--------------------
-        if (pref.getInt("defaultSound", 0) == R.raw.click2)
-            changeMasbahaTextView(sound1, sound2, sound3, sound4);
-        else if (pref.getInt("defaultSound", 0) == R.raw.pop)
-            changeMasbahaTextView(sound2, sound1, sound3, sound4);
-        else if (pref.getInt("defaultSound", 0) == R.raw.click)
-            changeMasbahaTextView(sound3, sound1, sound1, sound4);
-
-        else if (pref.getInt("defaultSound", 0) == R.raw.menu2)
-            changeMasbahaTextView(sound4, sound1, sound3, sound1);
-
-        // -----------------------General fonts ---------------------------
-
-        if (pref.getString("defaultFont", "bold").equals("bold"))
-            changeGeneralTextView(font3, font2, font1);
-
-        else if (pref.getString("defaultFont", "light").equals("light"))
-            changeGeneralTextView(font2, font1, font3);
-
-        else if (pref.getString("defaultFont", "regular").equals("regular"))
-            changeGeneralTextView(font1, font2, font3);
-
-        // -----------------------General launcher ---------------------------
-
-        if (pref.getString("launcher", "Zikr").equals("Zikr"))
-            changeGeneralTextView(luncherZikr, lucherfav, luncherMasbaha);
-        else if (pref.getString("launcher", "Masbaha").equals("Masbaha"))
-            changeGeneralTextView(luncherMasbaha, lucherfav, luncherZikr);
-
-        else if (pref.getString("launcher", "Fav").equals("Fav"))
-            changeGeneralTextView(lucherfav, luncherMasbaha, luncherZikr);
-
-    }
-
-    /*************************************
-     ****    Masbaha settings funcs   ****
-     *************************************/
-    private void MasbahaSetting() {
-        mediaSound1 = MediaPlayer.create(getContext(), R.raw.click2);
-        mediaSound2 = MediaPlayer.create(getContext(), R.raw.pop);
-        mediaSound3 = MediaPlayer.create(getContext(), R.raw.click);
-        mediaSound4 = MediaPlayer.create(getContext(), R.raw.menu2);
-
-/*        boolean VibrationChecked = masbahaVibrate.isChecked();
-        boolean SoundsChecked = masbahaSound.isChecked();*/
+        /*****************************************
+         ****                                 ****
+         *             Masbaha Settings          *
+         *                                       *
+         ****                                 ****
+         *****************************************/
         masbahaVibrate.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(SwitchButton view, boolean isChecked) {
@@ -594,80 +467,141 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
             }
         });
 
+        mediaSound1 = MediaPlayer.create(getContext(), R.raw.click2);
+        mediaSound2 = MediaPlayer.create(getContext(), R.raw.pop);
+        mediaSound3 = MediaPlayer.create(getContext(), R.raw.click);
+        mediaSound4 = MediaPlayer.create(getContext(), R.raw.menu2);
 
-        sound1.setOnClickListener(new View.OnClickListener() {
+        soundsGroup = (SegmentedButtonGroup) rootView.findViewById(R.id.segment_sound);
+        soundsGroup.setPosition(pref.getInt("selectedSound", 0), false);
+        soundsGroup.setOnPositionChangedListener(new SegmentedButtonGroup.OnPositionChangedListener() {
             @Override
-            public void onClick(View v) {
-                changeMasbahaTextView(sound1, sound4, sound2, sound3);
-                mediaSound1.start();
+            public void onPositionChanged(int position) {
 
-                if (pref.getBoolean("masbahaSound", true)) {
-                    defualtSound = mediaSound1;
-                    editor.putInt("defaultSound", R.raw.click2);
-                    editor.commit();
+                if (position == 0) {
+                    mediaSound1.start();
+
+
+                    if (pref.getBoolean("masbahaSound", true)) {
+                        defualtSound = mediaSound1;
+                        editor.putInt("defaultSound", R.raw.click2);
+                    }
+
+                } else if (position == 1) {
+                    mediaSound2.start();
+
+                    if (pref.getBoolean("masbahaSound", true)) {
+                        defualtSound = mediaSound2;
+                        editor.putInt("defaultSound", R.raw.pop);
+
+                    }
+
+                } else if (position == 2) {
+                    editor.putInt("selectedSound", position);
+
+                    mediaSound3.start();
+                    if (pref.getBoolean("masbahaSound", true)) {
+                        defualtSound = mediaSound3;
+                        editor.putInt("defaultSound", R.raw.click);
+
+                    }
+
+                } else if (position == 3) {
+
+
+                    mediaSound4.start();
+                    if (pref.getBoolean("masbahaSound", true)) {
+                        defualtSound = mediaSound4;
+                        editor.putInt("defaultSound", R.raw.menu2);
+
+                    }
+
                 }
-
+                editor.putInt("selectedSound", position);
+                editor.commit();
             }
         });
 
-        sound2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeMasbahaTextView(sound2, sound1, sound4, sound3);
-
-                mediaSound2.start();
-                if (pref.getBoolean("masbahaSound", true)) {
-                    defualtSound = mediaSound2;
-                    editor.putInt("defaultSound", R.raw.pop);
-                    editor.commit();
-                }
-            }
-        });
-        sound3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeMasbahaTextView(sound3, sound1, sound2, sound4);
-
-                mediaSound3.start();
-                if (pref.getBoolean("masbahaSound", true)) {
-                    defualtSound = mediaSound3;
-                    editor.putInt("defaultSound", R.raw.click);
-                    editor.commit();
-                }
-            }
-        });
-
-        sound4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeMasbahaTextView(sound4, sound1, sound2, sound3);
-
-                mediaSound4.start();
-                if (pref.getBoolean("masbahaSound", true)) {
-                    defualtSound = mediaSound4;
-                    editor.putInt("defaultSound", R.raw.menu2);
-                    editor.commit();
-                }
-              /*  Bundle b = new Bundle();
-                b.putInt();*/
-            }
-        });
+        return rootView;
     }
 
-    private void changeMasbahaTextView(TextView clickble, TextView other1, TextView other2, TextView other3) {
-        clickble.setTextColor(getResources().getColor(R.color.colorAccent));
-        clickble.setBackgroundColor(getResources().getColor(R.color.textColor));
+
+    @Override
+    public void onClick(View v) {
 
 
-        other1.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-        other1.setTextColor(getResources().getColor(R.color.textColor));
+        /*************************************
+         ****        buttons  function    ****
+         *************************************/
 
-        other2.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-        other2.setTextColor(getResources().getColor(R.color.textColor));
 
-        other3.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-        other3.setTextColor(getResources().getColor(R.color.textColor));
+        switch (v.getId()) {
+
+            case R.id.general_setting:
+
+                if (generalCard.getVisibility() == View.GONE) {
+                    generalCard.setVisibility(View.VISIBLE);
+                    Glide.with(getContext()).load(R.drawable.up_arrow).into(generalArrow);
+                    editor.putString("generalCardVisibility", "visible");
+                    editor.commit();
+
+                } else {
+
+                    generalCard.setVisibility(View.GONE);
+                    Glide.with(getContext()).load(R.drawable.down_arrow).into(generalArrow);
+                    editor.putString("generalCardVisibility", "gone");
+                    editor.commit();
+                }
+
+                break;
+
+            case R.id.masbaha_setting:
+                if (masbahaCard.getVisibility() == View.GONE) {
+                    masbahaCard.setVisibility(View.VISIBLE);
+                    Glide.with(getContext()).load(R.drawable.up_arrow).into(masbahaArrow);
+                    editor.putString("masbahaCardVisibility", "visible");
+                    editor.commit();
+
+
+                } else {
+                    masbahaCard.setVisibility(View.GONE);
+                    Glide.with(getContext()).load(R.drawable.down_arrow).into(masbahaArrow);
+                    editor.putString("masbahaCardVisibility", "gone");
+                    editor.commit();
+
+
+                }
+                break;
+            case R.id.notification:
+                showDialog();
+                break;
+            case R.id.share:
+                shareApp();
+                break;
+            case R.id.rate:
+                rateApp();
+                break;
+            case R.id.about:
+                try {
+
+                    // startActivity(new Intent(getContext(), Notes.class));
+                    aboutApp();
+                } catch (OutOfMemoryError e) {
+                    Toast.makeText(getContext(), "Error" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+
+                break;
+
+        }
     }
+
+
+    /*************************************
+     ****    General settings funcs   ****
+     *************************************/
+
+
+
 
     /******************************************
      ****    notification settings funcs   ****
@@ -704,7 +638,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
 
         if (pref.getBoolean("NotificationLinearVisibility", true)) {
             checked = true;
-           activate.setChecked(true);
+            activate.setChecked(true);
 
 
             notificationLinear.setVisibility(View.VISIBLE);
@@ -759,7 +693,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
                 if (isChecked) {
 
 
-                        createTimeNotification("morning", "حان وقت أذكار الصباح", 1);
+                    createTimeNotification("morning", "حان وقت أذكار الصباح", 1);
 
                     Toast.makeText(getContext(), "time" + pref.getInt("hourOfMorning", hourOfDay) + ":" + pref.getInt("minOfMorning", hourOfDay), Toast.LENGTH_SHORT).show();
 
@@ -777,7 +711,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
             @Override
             public void onCheckedChanged(SwitchButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    createTimeNotification("evening","حان وقت أذكار المساء", 2);
+                    createTimeNotification("evening", "حان وقت أذكار المساء", 2);
                     Toast.makeText(getContext(), "time" + pref.getInt("hourOfEvening", hourOfDay) + ":" + pref.getInt("minOfEvening", hourOfDay), Toast.LENGTH_SHORT).show();
 
                     editor.putBoolean("eveningSwitch", true);
@@ -792,7 +726,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
             @Override
             public void onCheckedChanged(SwitchButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                  //  createTimeNotification("sleep", R.string.sleep_notification, 3);
+                    //  createTimeNotification("sleep", R.string.sleep_notification, 3);
 
                     editor.putBoolean("sleepSwitch", true);
                     editor.commit();
@@ -806,7 +740,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
             @Override
             public void onCheckedChanged(SwitchButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                 //   createTimeNotification("wakeup", R.string.wakeup_notification, 4);
+                    //   createTimeNotification("wakeup", R.string.wakeup_notification, 4);
 
                     editor.putBoolean("wakeupSwitch", true);
                     editor.commit();
@@ -1122,7 +1056,6 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
         // String s , int content
 
 
-
         Calendar calendar = Calendar.getInstance();
         switch (s) {
             case "morning":
@@ -1172,10 +1105,10 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
             AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);
             ArrayList<PendingIntent> intentArray = new ArrayList<PendingIntent>();
 
-            for (int i = 0; i<=4;i++){
+            for (int i = 0; i <= 4; i++) {
                 Intent myIntent = new Intent(getContext(), Notify.class);
-                myIntent.putExtra("content",content);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(),i, myIntent, 0);
+                myIntent.putExtra("content", content);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), i, myIntent, 0);
 
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -1184,10 +1117,9 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
                 }
                 intentArray.add(pendingIntent);
 
-                editor.putInt("arrayListLength",intentArray.size());
+                editor.putInt("arrayListLength", intentArray.size());
                 editor.commit();
             }
-
 
 
         } catch (NullPointerException e) {
@@ -1445,6 +1377,33 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
     }
 
 
+    /*
+        private void setSegmentedButtonGroup( CardView cardView){
+         //  linearLayout = cardView.findViewById(R.id.seg_linear);
+            segmentedButtonGroup = new SegmentedButtonGroup(getContext());
+
+            segmentedButtonGroup = cardView.findViewById(R.id.seg_g);
+            segmentedButton =cardView.findViewById(R.id.seg1);
+            segmentedButton1 = cardView.findViewById(R.id.seg2);
+            segmentedButton = new SegmentedButton(getContext());
+            segmentedButton1 = new SegmentedButton(getContext());
+            segmentedButtonGroup.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+
+            segmentedButtonGroup.setBackground(getResources().getColor(R.color.colorAccent));
+            segmentedButtonGroup.setRadius(20);
+            segmentedButtonGroup.setRipple(getResources().getColor(R.color.textColor));
+            segmentedButtonGroup.setSelectedBackground(getResources().getColor(R.color.textColor));
+            segmentedButtonGroup.setDivider(getResources().getColor(R.color.textColor),2, 20, 6);
+            segmentedButtonGroup.addView(segmentedButton);
+            segmentedButtonGroup.addView(segmentedButton1);
+            segmentedButtonGroup.setPosition(1,false);
+            if(segmentedButtonGroup.getParent() != null) {
+                ((ViewGroup)segmentedButtonGroup.getParent()).removeView(segmentedButtonGroup); // <- fix
+            }
+           cardView.addView(segmentedButtonGroup);
+        }
+    */
     @Override
     public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
       /*  Calendar calendar = Calendar.getInstance();
