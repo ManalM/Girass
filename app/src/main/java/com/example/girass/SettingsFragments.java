@@ -84,7 +84,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
             notificationLinear;
     private Dialog dialog, aboutDialog, detailsDialog;
     private CardView generalCard, masbahaCard;
-    private Switch activate, morning, evening, sleep, wakeup, reminder, masbahaSound, masbahaVibrate;
+    private SwitchButton activate, morning, evening, sleep, wakeup, reminder, masbahaSound, masbahaVibrate;
     private ImageButton aboutApp, close, aboutClose;
     private SwitchButton generalSound, generalVibrate;
     private TextView www, phone, twitter, email, desc,
@@ -172,13 +172,12 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
         about = (LinearLayout) rootView.findViewById(R.id.about);
         //--------------------- Cards ---------------------------------
 
-        //TODO:text of switches
         generalCard = (CardView) rootView.findViewById(R.id.general_card);
         masbahaCard = (CardView) rootView.findViewById(R.id.masbaha_card);
         generalArrow = (ImageView) rootView.findViewById(R.id.general_arrow);
         masbahaArrow = (ImageView) rootView.findViewById(R.id.masbaha_arrow);
-        masbahaSound = (Switch) rootView.findViewById(R.id.masbaha_sounds);
-        masbahaVibrate = (Switch) rootView.findViewById(R.id.masbaha_vibrate);
+        masbahaSound = rootView.findViewById(R.id.masbaha_sounds);
+        masbahaVibrate = rootView.findViewById(R.id.masbaha_vibrate);
         generalSound = rootView.findViewById(R.id.general_sounds);
         generalVibrate =  rootView.findViewById(R.id.general_vibrate);
         //------------------------ Fonts -------------------------------
@@ -219,7 +218,6 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
 
         fontType.setTypeface(defualtFont);
         TextSize = 15;
-        //TODO: color of the seekbar
         seekBar.setProgress((int) TextSize);
         textSize.setTextSize(TypedValue.COMPLEX_UNIT_PX, seekBar.getProgress());
         //-------------------------------------------------------------
@@ -558,10 +556,9 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
 
 /*        boolean VibrationChecked = masbahaVibrate.isChecked();
         boolean SoundsChecked = masbahaSound.isChecked();*/
-
-        masbahaVibrate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        masbahaVibrate.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onCheckedChanged(SwitchButton view, boolean isChecked) {
                 if (isChecked) {
 
                     Masbahavibrate = true;
@@ -577,9 +574,10 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
             }
         });
 
-        masbahaSound.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+        masbahaSound.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onCheckedChanged(SwitchButton view, boolean isChecked) {
                 if (isChecked) {
 
                     Masbahasound = true;
@@ -690,14 +688,13 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
         reminderTime = dialog.findViewById(R.id.reminder_time);
 
         //--------------------Switch------------
-        // TODO: text of switches and organise layout
-        // TODO: text gravity right
-        activate = (Switch) dialog.findViewById(R.id.activate);
-        evening = (Switch) dialog.findViewById(R.id.evening);
-        morning = (Switch) dialog.findViewById(R.id.morning);
-        sleep = (Switch) dialog.findViewById(R.id.sleep);
-        wakeup = (Switch) dialog.findViewById(R.id.wakeup);
-        reminder = (Switch) dialog.findViewById(R.id.reminder);
+
+        activate = dialog.findViewById(R.id.activate);
+        evening = dialog.findViewById(R.id.evening);
+        morning = dialog.findViewById(R.id.morning);
+        sleep = dialog.findViewById(R.id.sleep);
+        wakeup = dialog.findViewById(R.id.wakeup);
+        reminder = dialog.findViewById(R.id.reminder);
 
         //--------------------general------------------
         notificationLinear = (LinearLayout) dialog.findViewById(R.id.linear_notification);
@@ -736,9 +733,9 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
 //-------------------------------------------------------------------------
 
 
-        activate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        activate.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onCheckedChanged(SwitchButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     checked = isChecked;
                     notificationLinear.setVisibility(View.VISIBLE);
@@ -755,10 +752,9 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
 
 
         //-----------------------------Switched checked--------------------------
-        morning.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        morning.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+            public void onCheckedChanged(SwitchButton buttonView, boolean isChecked) {
 
                 if (isChecked) {
 
@@ -777,9 +773,9 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
             }
         });
 
-        evening.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        evening.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onCheckedChanged(SwitchButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     createTimeNotification("evening","حان وقت أذكار المساء", 2);
                     Toast.makeText(getContext(), "time" + pref.getInt("hourOfEvening", hourOfDay) + ":" + pref.getInt("minOfEvening", hourOfDay), Toast.LENGTH_SHORT).show();
@@ -792,9 +788,9 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
                 }
             }
         });
-        sleep.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        sleep.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onCheckedChanged(SwitchButton buttonView, boolean isChecked) {
                 if (isChecked) {
                   //  createTimeNotification("sleep", R.string.sleep_notification, 3);
 
@@ -806,9 +802,9 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
                 }
             }
         });
-        wakeup.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        wakeup.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onCheckedChanged(SwitchButton buttonView, boolean isChecked) {
                 if (isChecked) {
                  //   createTimeNotification("wakeup", R.string.wakeup_notification, 4);
 
@@ -820,9 +816,9 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
                 }
             }
         });
-        reminder.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        reminder.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onCheckedChanged(SwitchButton buttonView, boolean isChecked) {
 
                 if (isChecked) {
                     creatReminderNotification();
@@ -892,7 +888,14 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
         reminderDialog.setContentView(R.layout.reminder_time);
         reminderDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
+        Window window = reminderDialog.getWindow();
+        WindowManager.LayoutParams wlp = window.getAttributes();
 
+        wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        wlp.gravity = Gravity.BOTTOM;
+        wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+
+        window.setAttributes(wlp);
         ImageView cancel = reminderDialog.findViewById(R.id.cancel_reminder_picker);
         ImageView correct = reminderDialog.findViewById(R.id.correct_reminder_picker);
         final StringPicker stringPicker = (StringPicker) reminderDialog.findViewById(R.id.string_picker);
@@ -990,7 +993,6 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
 
     private void pickerTime(String s) {
 /// set the correct and cancel button
-        //TODO: make dialog  Layout_alignParentBottom and width match_parent
         final Dialog timedialog;
 
 
@@ -1000,7 +1002,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
         Window window = timedialog.getWindow();
         WindowManager.LayoutParams wlp = window.getAttributes();
 
-        //wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
         wlp.gravity = Gravity.BOTTOM;
         wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
 
@@ -1288,7 +1290,6 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
 
 
         aboutDialog = new Dialog(getContext());
-        // TODo: make dialog fill page
 
         aboutDialog.setContentView(R.layout.about_dialog);
         aboutDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

@@ -86,7 +86,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.viewHolder> {
                     textSize = pref.getInt("fontSize", 18);
 
 
-                    //TODO: font doesnt change
             if (pref.getString("defaultFont", "regular").equals("regular"))
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     defaultFont = Adapter.mContext.getResources().getFont(R.font.tajawal_regular);
