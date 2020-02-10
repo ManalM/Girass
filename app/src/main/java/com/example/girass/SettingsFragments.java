@@ -95,7 +95,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
             textSize, fontType;
     private ImageView background_img, www_img, email_img, phone_img, twitter_img, dozo; // the image
     private ImageView generalArrow, masbahaArrow;
-
+    //
     private SeekBar seekBar;
     //-------------------------------------------------------------
     private MediaPlayer mediaSound1, mediaSound2, mediaSound3, mediaSound4;
