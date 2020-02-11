@@ -132,15 +132,14 @@
 
                     <SeekBar
                         android:id="@+id/seek_bar"
-                        android:layout_width="wrap_content"
+                        android:layout_width="200dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:max="30"
+                        android:max="25"
                         android:min="18"
 
                         android:layout_margin="10dp"
                         android:theme="@style/Theme.MyTheme"
-                        android:progress="3" />
+                        android:progress="18" />
 
                     <TextView
 
@@ -148,7 +147,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-
+                        android:layout_weight="1"
                         android:fontFamily="@font/tajawal_regular"
                         android:text="حجم الخط"
                         android:textSize="18sp"

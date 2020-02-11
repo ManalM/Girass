@@ -163,12 +163,8 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
         }
 
 
-        /////////////////////////////////////////////////
-        /////////////  initiate variables  /////////////
-        ///////////////////////////////////////////////
+        /////-------------------initiate variables---------------
 
-
-        //-------------------------------------------------------------
 
         general = (LinearLayout) rootView.findViewById(R.id.general_setting);
         masbaha = (LinearLayout) rootView.findViewById(R.id.masbaha_setting);
@@ -189,34 +185,17 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
 
         //--------------------- Defaults ------------------------------
 
-       /* defualtSound = MediaPlayer.create(getContext(), R.raw.click);
-         defualtFont =Typeface.createFromAsset(getContext().getAssets(),"tajawal_regular.ttf");//tajawal_regular*/
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             defualtFont = getResources().getFont(R.font.tajawal_regular);
         }
-        //  defualtFont= Typeface.createFromFile("font/tajawal_regular");
-        //defualtFont =    Typeface.createFromFile("font/tajawal_regular");
-        //-------------------------------------------------------------
-        textSize = (TextView) rootView.findViewById(R.id.text_size);
-        fontType = (TextView) rootView.findViewById(R.id.FontType);
-        //TODO:the range of the textSize
-        textSize.setTypeface(defualtFont);
-        seekBar = rootView.findViewById(R.id.seek_bar);
 
-        fontType.setTypeface(defualtFont);
-        TextSize = 15;
-        seekBar.setProgress((int) TextSize);
-        textSize.setTextSize(TypedValue.COMPLEX_UNIT_PX, seekBar.getProgress());
 
-        checkSound = MediaPlayer.create(getContext(), R.raw.correct);
         //-------------------------------------------------------------
         now = Calendar.getInstance();
         hourOfDay = now.get(Calendar.HOUR_OF_DAY);
         min = now.get(Calendar.MINUTE);
 
-        /////////////////////////////////////////////
-        /////////////     ToolBar       ////////////
-        //////////////////////////////////////////
+        //-------------------------ToolBar--------------------
 
 
         toolbar = (Toolbar) rootView.findViewById(R.id.main_toolbar);
@@ -244,11 +223,25 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
         } else if (pref.getString("masbahaCardVisibility", "gone").equals("gone"))
             masbahaCard.setVisibility(View.GONE);
 
-        TextSize = pref.getInt("fontSize", 18);
 
+        //-------------------------------------------------------------
+        textSize = (TextView) rootView.findViewById(R.id.text_size);
+        fontType = (TextView) rootView.findViewById(R.id.FontType);
+        //TODO:the range of the textSize
+        textSize.setTypeface(defualtFont);
+        seekBar = rootView.findViewById(R.id.seek_bar);
 
+        fontType.setTypeface(defualtFont);
+        seekBar.setProgress((int) pref.getInt("fontSize", 18));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            seekBar.setMin(18);
+            seekBar.setMinimumHeight(22);
+        }
+        textSize.setTextSize(TypedValue.COMPLEX_UNIT_PX, pref.getInt("fontSize", 18));
+//pref.getInt("fontSize",18)
+        checkSound = MediaPlayer.create(getContext(), R.raw.correct);
 
-        //-----------------------------------------------------------
+        //--------------------Listeners------------------------------
 
         general.setOnClickListener(this);
         masbaha.setOnClickListener(this);
@@ -402,6 +395,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
             }
         });*/
         //----------------------------------------------------
+
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
