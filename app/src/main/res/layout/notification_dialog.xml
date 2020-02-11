@@ -20,6 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
+            android:padding="5dp"
             android:src="@drawable/ic_cancel_black_24dp" />
 
         <TextView
@@ -52,8 +53,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:layout_marginBottom="15dp"
-        android:background="#8AFFFFFF">
+        android:layout_marginBottom="20dp"
+        android:background="#ADFFFFFF">
 
 
         <TextView
@@ -72,12 +73,12 @@
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
             android:layout_alignParentLeft="true"
+            android:layout_margin="10dp"
             android:textColor="@color/textColor"
-            app:sb_checkline_color="@color/colorAccent"
             app:sb_checked="false"
             app:sb_checked_color="@color/colorPrimaryDark"
+            app:sb_checkline_color="@color/colorAccent"
             app:sb_uncheck_color="@color/colorPrimaryDark"
 
             />
@@ -91,10 +92,11 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#8AFFFFFF"
+            android:background="#ADFFFFFF"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -118,12 +120,12 @@
                     android:id="@+id/morning"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
                     android:layout_alignParentLeft="true"
+                    android:layout_margin="10dp"
                     android:textColor="@color/textColor"
-                    app:sb_checkline_color="@color/colorAccent"
                     app:sb_checked="false"
                     app:sb_checked_color="@color/colorPrimaryDark"
+                    app:sb_checkline_color="@color/colorAccent"
                     app:sb_uncheck_color="@color/colorPrimaryDark"
 
                     />
@@ -132,18 +134,18 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:focusable="true"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp">
+                android:layout_marginRight="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground">
 
                 <TextView
                     android:id="@+id/morning_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:layout_toStartOf="@+id/hour1"
                     android:layout_toLeftOf="@+id/hour1"
                     android:fontFamily="@font/tajawal_regular"
@@ -168,12 +170,11 @@
             </RelativeLayout>
         </LinearLayout>
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5.5dp"
-            android:background="#8AFFFFFF"
+            android:background="#ADFFFFFF"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -183,10 +184,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="10dp"
-                    android:layout_alignParentRight="true"
                     android:fontFamily="@font/tajawal_regular"
                     android:text="@string/evening_zikr"
                     android:textColor="@color/textColor"
@@ -196,12 +197,12 @@
                     android:id="@+id/evening"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
                     android:layout_alignParentLeft="true"
+                    android:layout_margin="10dp"
                     android:textColor="@color/textColor"
-                    app:sb_checkline_color="@color/colorAccent"
                     app:sb_checked="false"
                     app:sb_checked_color="@color/colorPrimaryDark"
+                    app:sb_checkline_color="@color/colorAccent"
                     app:sb_uncheck_color="@color/colorPrimaryDark"
 
                     />
@@ -211,18 +212,18 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:focusable="true"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp">
+                android:layout_marginRight="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground">
 
                 <TextView
                     android:id="@+id/evening_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:layout_toStartOf="@+id/hour2"
                     android:layout_toLeftOf="@+id/hour2"
                     android:fontFamily="@font/tajawal_regular"
@@ -251,8 +252,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5.5dp"
-            android:background="#8AFFFFFF"
+            android:layout_marginTop="2.5dp"
+            android:background="#ADFFFFFF"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -276,12 +277,12 @@
                     android:id="@+id/wakeup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
                     android:layout_alignParentLeft="true"
+                    android:layout_margin="10dp"
                     android:textColor="@color/textColor"
-                    app:sb_checkline_color="@color/colorAccent"
                     app:sb_checked="false"
                     app:sb_checked_color="@color/colorPrimaryDark"
+                    app:sb_checkline_color="@color/colorAccent"
                     app:sb_uncheck_color="@color/colorPrimaryDark"
 
                     />
@@ -291,18 +292,18 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:focusable="true"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp">
+                android:layout_marginRight="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground">
 
                 <TextView
                     android:id="@+id/wakeup_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:layout_toStartOf="@+id/hour3"
                     android:layout_toLeftOf="@+id/hour3"
                     android:fontFamily="@font/tajawal_regular"
@@ -331,9 +332,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5.5dp"
+            android:layout_marginTop="2.5dp"
             android:layout_marginBottom="10dp"
-            android:background="#8AFFFFFF"
+            android:background="#ADFFFFFF"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -357,12 +358,12 @@
                     android:id="@+id/sleep"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
                     android:layout_alignParentLeft="true"
+                    android:layout_margin="10dp"
                     android:textColor="@color/textColor"
-                    app:sb_checkline_color="@color/colorAccent"
                     app:sb_checked="false"
                     app:sb_checked_color="@color/colorPrimaryDark"
+                    app:sb_checkline_color="@color/colorAccent"
                     app:sb_uncheck_color="@color/colorPrimaryDark"
 
                     />
@@ -371,11 +372,11 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:focusable="true"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp">
+                android:layout_marginRight="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground">
 
                 <TextView
                     android:id="@+id/sleep_time"
@@ -411,8 +412,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:background="#8AFFFFFF"
+            android:layout_marginTop="10dp"
+            android:background="#ADFFFFFF"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -436,12 +437,12 @@
                     android:id="@+id/reminder"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
                     android:layout_alignParentLeft="true"
+                    android:layout_margin="10dp"
                     android:textColor="@color/textColor"
-                    app:sb_checkline_color="@color/colorAccent"
                     app:sb_checked="false"
                     app:sb_checked_color="@color/colorPrimaryDark"
+                    app:sb_checkline_color="@color/colorAccent"
                     app:sb_uncheck_color="@color/colorPrimaryDark" />
             </RelativeLayout>
 
@@ -449,22 +450,22 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:focusable="true"
-                android:clickable="true"
-                android:foreground="?android:attr/selectableItemBackground"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp">
+                android:layout_marginRight="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground">
 
                 <TextView
                     android:id="@+id/reminder_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:layout_toStartOf="@+id/reminder_select"
                     android:layout_toLeftOf="@+id/reminder_select"
                     android:fontFamily="@font/tajawal_regular"
                     android:text=""
-                    android:layout_marginRight="10dp"
-                    android:layout_marginLeft="10dp"
                     android:textAlignment="center"
                     android:textColor="@color/textColor"
                     android:textDirection="rtl" />

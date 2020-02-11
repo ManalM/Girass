@@ -1371,33 +1371,6 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
     }
 
 
-    /*
-        private void setSegmentedButtonGroup( CardView cardView){
-         //  linearLayout = cardView.findViewById(R.id.seg_linear);
-            segmentedButtonGroup = new SegmentedButtonGroup(getContext());
-
-            segmentedButtonGroup = cardView.findViewById(R.id.seg_g);
-            segmentedButton =cardView.findViewById(R.id.seg1);
-            segmentedButton1 = cardView.findViewById(R.id.seg2);
-            segmentedButton = new SegmentedButton(getContext());
-            segmentedButton1 = new SegmentedButton(getContext());
-            segmentedButtonGroup.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
-
-            segmentedButtonGroup.setBackground(getResources().getColor(R.color.colorAccent));
-            segmentedButtonGroup.setRadius(20);
-            segmentedButtonGroup.setRipple(getResources().getColor(R.color.textColor));
-            segmentedButtonGroup.setSelectedBackground(getResources().getColor(R.color.textColor));
-            segmentedButtonGroup.setDivider(getResources().getColor(R.color.textColor),2, 20, 6);
-            segmentedButtonGroup.addView(segmentedButton);
-            segmentedButtonGroup.addView(segmentedButton1);
-            segmentedButtonGroup.setPosition(1,false);
-            if(segmentedButtonGroup.getParent() != null) {
-                ((ViewGroup)segmentedButtonGroup.getParent()).removeView(segmentedButtonGroup); // <- fix
-            }
-           cardView.addView(segmentedButtonGroup);
-        }
-    */
     @Override
     public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
       /*  Calendar calendar = Calendar.getInstance();
