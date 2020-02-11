@@ -28,8 +28,10 @@ private static  String content;
     Boolean vibate, sound;
 
     Uri soundUri;
-    public NotificationHelper(Context base) {
+
+    public NotificationHelper(Context base, Intent intent) {
         super(base);
+        content = intent.getStringExtra("content");
         pref = PreferenceManager.getDefaultSharedPreferences(base);
         vibate = pref.getBoolean("generalVibrate", true);
         sound = pref.getBoolean("generalSound", true);
@@ -69,7 +71,7 @@ private static  String content;
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(getApplicationContext(), channelID)
                 .setContentTitle( "لاتنس ذكر اللّه")
-                .setContentText("اذكار")
+                        .setContentText(content)
                 .setGroup(group)
                 .setSmallIcon(R.drawable.logo);
 

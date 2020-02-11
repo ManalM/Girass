@@ -36,9 +36,9 @@ public class Notify extends BroadcastReceiver {
         //   id = PreferenceManager.getDefaultSharedPreferences(context).getInt("arrayListLength", 10);
 
 
-        NotificationHelper notificationHelper = new NotificationHelper(context);
+        NotificationHelper notificationHelper = new NotificationHelper(context, intent);
         NotificationCompat.Builder nb = notificationHelper.getChannelNotification();
-        notificationHelper.getManager().notify(100, nb.build());
+        notificationHelper.getManager().notify(4, nb.build());
 
     }
 }
