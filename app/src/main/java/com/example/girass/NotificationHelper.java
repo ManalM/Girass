@@ -81,6 +81,6 @@ private static  String content;
             builder.setSound(soundUri);
 
         return builder;
-                //.enableVibration(pref.getBoolean("generalVibrate", true));
+        //.enableVibration(pref.getBoolean("generalVibrate", true));
     }
 }

@@ -38,7 +38,7 @@ public class Notify extends BroadcastReceiver {
 
         NotificationHelper notificationHelper = new NotificationHelper(context, intent);
         NotificationCompat.Builder nb = notificationHelper.getChannelNotification();
-        notificationHelper.getManager().notify(4, nb.build());
+        notificationHelper.getManager().notify(300, nb.build());
 
     }
 }

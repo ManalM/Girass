@@ -701,13 +701,11 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
                 }
             }
         });
-
         evening.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(SwitchButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     createTimeNotification("evening", "حان وقت أذكار المساء", 2);
-                    Toast.makeText(getContext(), "time" + pref.getInt("hourOfEvening", hourOfDay) + ":" + pref.getInt("minOfEvening", hourOfDay), Toast.LENGTH_SHORT).show();
 
                     editor.putBoolean("eveningSwitch", true);
                     editor.commit();
@@ -721,7 +719,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
             @Override
             public void onCheckedChanged(SwitchButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    //  createTimeNotification("sleep", R.string.sleep_notification, 3);
+                    createTimeNotification("sleep", "حان وقت أذكار النوم", 3);
 
                     editor.putBoolean("sleepSwitch", true);
                     editor.commit();
@@ -735,7 +733,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
             @Override
             public void onCheckedChanged(SwitchButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    //   createTimeNotification("wakeup", R.string.wakeup_notification, 4);
+                    createTimeNotification("wakeup", "حان وقت أذكار الاستيقاظ من النوم", 4);
 
                     editor.putBoolean("wakeupSwitch", true);
                     editor.commit();
@@ -1121,7 +1119,6 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
             Toast.makeText(getContext(), "Error" + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
-
     private void cancelNotification(int requestCode) {
         AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(getContext(), Notify.class);
