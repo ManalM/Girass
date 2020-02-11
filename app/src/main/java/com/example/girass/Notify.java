@@ -18,11 +18,15 @@ public class Notify extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
+        int count = intent.getIntExtra("count", 1);
+
 
 
         NotificationHelper notificationHelper = new NotificationHelper(context, intent);
         NotificationCompat.Builder nb = notificationHelper.getChannelNotification();
-        notificationHelper.getManager().notify(300, nb.build());
+
+        // for (int i =1;i<=count;i++)
+        notificationHelper.getManager().notify(1, nb.build());
 
     }
 }

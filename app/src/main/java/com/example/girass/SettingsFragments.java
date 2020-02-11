@@ -141,7 +141,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
 
     SegmentedButtonGroup soundsGroup;
     SegmentedButtonGroup fontsGroup, launcherGroup;
-
+    int count = 1;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -692,8 +692,6 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
 
                     createTimeNotification("morning", "حان وقت أذكار الصباح", 1);
 
-                    Toast.makeText(getContext(), "time" + pref.getInt("hourOfMorning", hourOfDay) + ":" + pref.getInt("minOfMorning", hourOfDay), Toast.LENGTH_SHORT).show();
-
                     editor.putBoolean("morningSwitch", true);
                     editor.commit();
                 } else {
@@ -1053,6 +1051,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
     public void createTimeNotification(String s, String content, int requestCode) {
         // String s , int content
 
+        count++;
 
         Calendar calendar = Calendar.getInstance();
         switch (s) {
@@ -1099,6 +1098,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
                 break;
         }
 
+        calendar.set(Calendar.SECOND, 0);
         try {
             //   ArrayList<PendingIntent> intentArray = new ArrayList<PendingIntent>();
 
@@ -1106,6 +1106,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
             AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);
                 Intent myIntent = new Intent(getContext(), Notify.class);
                 myIntent.putExtra("content", content);
+            myIntent.putExtra("count", count);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), requestCode, myIntent, 0);
 
 
@@ -1125,8 +1126,10 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
         }
     }
     private void cancelNotification(int requestCode) {
+        count--;
         AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(getContext(), Notify.class);
+        intent.putExtra("count", count);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), requestCode, intent, 0);
 
         alarmManager.cancel(pendingIntent);
