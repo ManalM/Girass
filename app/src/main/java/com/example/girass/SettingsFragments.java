@@ -673,6 +673,8 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
                 } else {
                     checked = isChecked;
                     notificationLinear.setVisibility(View.GONE);
+                    for (int i = 1; i <= 4; i++)
+                        cancelNotification(i);
                     editor.putBoolean("NotificationLinearVisibility", checked);
                     editor.commit();
                 }
@@ -710,6 +712,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
                     editor.putBoolean("eveningSwitch", true);
                     editor.commit();
                 } else {
+                    cancelNotification(2);
                     editor.putBoolean("eveningSwitch", false);
                     editor.commit();
                 }
@@ -724,6 +727,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
                     editor.putBoolean("sleepSwitch", true);
                     editor.commit();
                 } else {
+                    cancelNotification(3);
                     editor.putBoolean("sleepSwitch", false);
                     editor.commit();
                 }
@@ -738,6 +742,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
                     editor.putBoolean("wakeupSwitch", true);
                     editor.commit();
                 } else {
+                    cancelNotification(4);
                     editor.putBoolean("wakeupSwitch", false);
                     editor.commit();
                 }
@@ -1147,37 +1152,9 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
                     interval = VerityIntervalArray[i] * 1000;
                 }
             }
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, hourOfDay, interval, pendingIntent);
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, 15000, interval, pendingIntent);
         } catch (NullPointerException e) {
             Toast.makeText(getContext(), "Error" + e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
-    private void createNotificationChannel() {
-
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel1 = new NotificationChannel(
-                    CHANNEL_1_ID,
-                    getContext().getString(R.string.app_name),
-                    NotificationManager.IMPORTANCE_HIGH
-            );
-            AudioAttributes attributes = new AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                    .build();
-            channel1.setDescription("This is Channel 1");
-            if (pref.getBoolean("generalSound", true) == true)
-                channel1.setSound(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getContext().getPackageName() + "/" + R.raw.correct2), attributes);
-
-            channel1.enableVibration(pref.getBoolean("generalVibrate", true));
-            NotificationManager manager = (NotificationManager) getContext()
-                    .getSystemService(Context.NOTIFICATION_SERVICE);
-
-            manager = getContext().getSystemService(NotificationManager.class);
-            manager.createNotificationChannel(channel1);
-        } else {
-            Toast.makeText(getContext(), "the sdk is less than this action: " + Build.VERSION.SDK_INT, Toast.LENGTH_SHORT).show();
         }
     }
 
