@@ -33,10 +33,12 @@ public class Notify extends BroadcastReceiver {
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         notificationManager.notify(200, mBuilder.build());*/
-        id = PreferenceManager.getDefaultSharedPreferences(context).getInt("arrayListLength", 10);
+        //   id = PreferenceManager.getDefaultSharedPreferences(context).getInt("arrayListLength", 10);
+
 
         NotificationHelper notificationHelper = new NotificationHelper(context);
         NotificationCompat.Builder nb = notificationHelper.getChannelNotification();
-        notificationHelper.getManager().notify(id, nb.build());
+        notificationHelper.getManager().notify(100, nb.build());
+
     }
 }

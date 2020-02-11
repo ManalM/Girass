@@ -649,6 +649,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
         }
 
         morning.setChecked(pref.getBoolean("morningSwitch", true));
+
         evening.setChecked(pref.getBoolean("eveningSwitch", true));
         sleep.setChecked(pref.getBoolean("sleepSwitch", true));
         wakeup.setChecked(pref.getBoolean("wakeupSwitch", true));
@@ -1096,24 +1097,24 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
         }
 
         try {
-            AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);
-            ArrayList<PendingIntent> intentArray = new ArrayList<PendingIntent>();
+            //   ArrayList<PendingIntent> intentArray = new ArrayList<PendingIntent>();
 
-            for (int i = 0; i <= 4; i++) {
+            //  for (int i = 0; i <= 4; i++) {
+            AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);
                 Intent myIntent = new Intent(getContext(), Notify.class);
                 myIntent.putExtra("content", content);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), i, myIntent, 0);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), requestCode, myIntent, 0);
 
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
                     alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
                 }
-                intentArray.add(pendingIntent);
+            // intentArray.add(pendingIntent);
 
-                editor.putInt("arrayListLength", intentArray.size());
-                editor.commit();
-            }
+                /*editor.putInt("arrayListLength", intentArray.size());
+                editor.commit();*/
+            //  }
 
 
         } catch (NullPointerException e) {
