@@ -11,7 +11,11 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.ArraySet;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,48 +26,78 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.zip.Inflater;
 
 public class AllZikr extends FragmentActivity {
     private Toolbar toolbar;
     private TextView toolbarText;
 
-   // protected static int num_pages=1;
+    // protected static int num_pages=1;
 
-
-    private ImageView backBtn;
+    public static SharedPreferences pref;
+    public static SharedPreferences.Editor editor;
+    private ImageView backBtn, like;
     private PagerAdapter pagerAdapter;
     private ViewPager mPager;
     public static String title;
     private BottomNavigationView bottomNavigationView;
-
+    Boolean isLiked = false;
+    Set<String> set;
+    String id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_zikr);
 
+        //-----------------------------------------------------------
         backBtn = findViewById(R.id.button);
         toolbar = (Toolbar) findViewById(R.id.bar);
         toolbarText = findViewById(R.id.toolbar_title);
+        like = findViewById(R.id.like);
         toolbar.setTitle("");
         backBtn.setImageResource(R.drawable.left_arrow);
-        bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
+       /* bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(navListener);*/
         //--------------------------------------------------------
 
         Intent intent = getIntent();
-         title = intent.getStringExtra("array");
+        title = intent.getStringExtra("array");
+        id = intent.getStringExtra("id");
         toolbarText.setText(title);
+
+        set = new HashSet<String>();
+
+        //------------------SharedPreference---------------------------
+        pref = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
+
         DataService dataService = new DataService();
         final HeadZikrObject[] headZikrObjects = dataService.GetAllAzkar();
+      /*  for (String s: pref.getStringSet("set",set))
+        {*/
+        if (pref.getStringSet("set", set).contains(id)) {
+            if (pref.getBoolean("liked", true) == false) {
+                Glide.with(this).load(R.drawable.fav_heart).into(like);
+
+            } else {
+                Glide.with(this).load(R.drawable.fill_heart).into(like);
+
+            }
+        } else {
+            Glide.with(this).load(R.drawable.fav_heart).into(like);
+            Toast.makeText(this, "not equal", Toast.LENGTH_SHORT).show();
+        }
+        //   }
 
         //--------------------------------------------------------
-
 
         mPager = (ViewPager) findViewById(R.id.view_pager);
         pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
@@ -76,21 +110,45 @@ public class AllZikr extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 onBackPressed();
-/*
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new AzkarFragment()).commit();
-*/
-                //startActivity(new Intent(AllZikr.this,AzkarFragment.class));
             }
         });
 
         //------------------------------------------------------------------
 
 
+        like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isLiked == false) {
+                    Glide.with(v).load(R.drawable.fill_heart).into(like);
+                    editor.putBoolean("liked", true);
+                    FavoriteFragment favoriteFragment = new FavoriteFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("title", title);
+                    favoriteFragment.setArguments(bundle);
+                    isLiked = true;
+                } else {
+                    Glide.with(v).load(R.drawable.fav_heart).into(like);
+                    isLiked = false;
+                    editor.putBoolean("liked", false);
+                }
+                editor.putString("id", id);
+
+                set.add(id);
+                editor.putStringSet("set", set);
+
+                editor.apply();
+            }
+        });
 
         mPager.setAdapter(pagerAdapter);
 
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 
 /*
@@ -106,7 +164,8 @@ public class AllZikr extends FragmentActivity {
         }
     }
 */
-private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+/*
+ private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         Fragment selectedFragment = null;
@@ -131,26 +190,19 @@ private BottomNavigationView.OnNavigationItemSelectedListener navListener = new 
         return true;
     }
 };
+*/
 
 }
 
 
- class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
-     DataService dataService = new DataService();
-     final HeadZikrObject[] headZikrObjects = dataService.GetAllAzkar();
-public static int num_pages;
-ZikrObject views;
-LinearLayout mLayoutInflater;
-     ArrayList<ZikrObject> arrayList = new ArrayList<>();
-/*     private Toolbar toolbar;
-     private TextView toolbarText;
+class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
+    DataService dataService = new DataService();
+    final HeadZikrObject[] headZikrObjects = dataService.GetAllAzkar();
+    public static int num_pages;
+    ZikrObject views;
+    LinearLayout mLayoutInflater;
+    ArrayList<ZikrObject> arrayList = new ArrayList<>();
 
-     // protected static int num_pages=1;
-
-
-     private ImageView backBtn;
-     String title;*/
-  //  int no_pages = AllZikr.num_pages;
     public ScreenSlidePagerAdapter(FragmentManager fm) {
         super(fm);
     }
@@ -184,42 +236,32 @@ LinearLayout mLayoutInflater;
      }*/
 
 
-     @Override
-     public int getItemPosition(Object object) {
+    @Override
+    public int getItemPosition(Object object) {
 /*         for(int index = 0 ; index < getCount() ; index++){
              if(object.equals(views.ID.equals(index))) {
                  return index;
              }
          }
          return POSITION_NONE;*/
-         arrayList = fetchArray();
-         Fragment fragment = (Fragment) object;
+        arrayList = fetchArray();
+        Fragment fragment = (Fragment) object;
 
-         int position = arrayList.indexOf(fragment);
-         if (position >= 0) {
-             return position;
-         } else {
-             return POSITION_NONE;
-         }
+        int position = arrayList.indexOf(fragment);
+        if (position >= 0) {
+            return position;
+        } else {
+            return POSITION_NONE;
+        }
 
-     }
+    }
 
-/*
-     @Override
-     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
 
-       //  Fragment f = (Fragment) object;
-    container.removeView((View) object);
-         super.destroyItem(container, position, object);
-     }
-*/
-
-     @Override
+    @Override
     public Fragment getItem(int position) {
 
 
-
-   return new ZikrDetails();
+        return new ZikrDetails();
 
     }
 
@@ -236,7 +278,7 @@ LinearLayout mLayoutInflater;
     }
 
     public ArrayList<ZikrObject> fetchArray() {
-         ArrayList<ZikrObject> a = new ArrayList<>();
+        ArrayList<ZikrObject> a = new ArrayList<>();
         for (int i = 0; i < headZikrObjects.length; i++) {
             if (headZikrObjects[i].TITLE.equals(AllZikr.title)) {
 
@@ -251,7 +293,7 @@ LinearLayout mLayoutInflater;
 
             }
         }
-    return a;
-     }
+        return a;
+    }
 }
 

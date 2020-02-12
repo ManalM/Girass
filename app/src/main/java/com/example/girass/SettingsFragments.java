@@ -1058,6 +1058,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
+                    ///TODO: try with Repeating func.
                     alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
                 }
             // intentArray.add(pendingIntent);

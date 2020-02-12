@@ -60,13 +60,14 @@ public class AzkarFragment extends Fragment {
         final HeadZikrObject[] headZikrObjects = dataService.GetAllAzkar();
 
         final String[] titles = new String[headZikrObjects.length];
-
+        final String[] IDs = new String[headZikrObjects.length];
      /*   for (int i = 0; i < headZikrObjects.length; i++) {
             titles[i] = headZikrObjects[i].TITLE;
         }*/
         int i = 0;
         while (i < headZikrObjects.length) {
             titles[i] = headZikrObjects[i].TITLE;
+            IDs[i] = headZikrObjects[i].ID;
             i++;
         }
 
@@ -84,6 +85,7 @@ public class AzkarFragment extends Fragment {
                 Intent detailsIntent = new Intent(getContext(), ZikrDetails.class);
                 detailsIntent.putExtra("array", titles[position]);
                 intent.putExtra("array", titles[position]);
+                intent.putExtra("id", IDs[position]);
                 startActivity(intent);
             }
         });

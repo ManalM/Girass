@@ -57,10 +57,10 @@
 
     <LinearLayout
         android:gravity="center"
-
+        android:layout_marginRight="30dp"
         android:layout_width="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_height="wrap_content">
 
         <ImageView
@@ -69,9 +69,9 @@
             android:layout_height="wrap_content"
 
             android:layout_marginBottom="10dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginLeft="30dp"
-            android:gravity="center"
+            android:layout_marginRight="60dp"
+
+            android:layout_gravity="center"
             android:src="@drawable/email1" />
 
         <RelativeLayout
