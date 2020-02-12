@@ -11,6 +11,14 @@
     android:id="@+id/main_toolbar">
 
     <TextView
+        android:id="@+id/edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:layout_gravity="end"
+        android:text=""
+        style="@style/Base.TextAppearance.Widget.AppCompat.Toolbar.Subtitle." />
+    <TextView
         android:id="@+id/toolbar_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -181,6 +181,7 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
         noOfTasih.setText(String.valueOf(theCount));
         noOfTasih.setTextSize(40);
         noOfTasih.setTextColor(getResources().getColor(R.color.colorAccent));
+        //TODO: textsize very big in some phones
         if (count == 0) {
 
             firstZikr.setText("");

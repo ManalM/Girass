@@ -6,19 +6,24 @@
     android:layout_height="match_parent"
     tools:context=".ZikrDetails">
 
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:orientation="vertical">
 
 
         <TextView
             android:id="@+id/zikr"
             android:layout_width="match_parent"
-            android:layout_height="280dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center|center_vertical"
             android:layout_margin="20dp"
+
             android:layout_weight="1"
             android:gravity="center|center_vertical"
             android:textColor="@color/textColor"
@@ -48,43 +53,46 @@
             android:textStyle="bold"/>
 
     </LinearLayout>
+    </ScrollView>
 
-    <RelativeLayout
-        android:layout_width="51dp"
-        android:layout_height="60dp"
+    <LinearLayout
+        android:gravity="center"
 
-        android:layout_alignParentLeft="true"
+        android:layout_width="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="57dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginBottom="51dp">
+        android:layout_alignParentLeft="true"
+        android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/repeat"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:id="@+id/click"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-            android:src="@drawable/repeat" />
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:gravity="center"
+            android:src="@drawable/email1" />
 
-        <TextView
-            android:id="@+id/time_repeat"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center" />
-    </RelativeLayout>
-    <ImageView
-        android:id="@+id/click"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="168dp"
-        android:layout_marginRight="168dp"
-        android:layout_marginBottom="42dp"
-        android:gravity="center"
-        android:src="@drawable/email1" />
+        <RelativeLayout
+            android:layout_width="51dp"
+            android:layout_height="60dp"
 
+            android:layout_marginBottom="10dp">
 
+            <ImageView
+                android:id="@+id/repeat"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
 
+                android:src="@drawable/repeat" />
+
+            <TextView
+                android:id="@+id/time_repeat"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center" />
+        </RelativeLayout>
+
+    </LinearLayout>
 </RelativeLayout>

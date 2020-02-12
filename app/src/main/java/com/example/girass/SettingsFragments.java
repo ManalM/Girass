@@ -227,7 +227,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
         //-------------------------------------------------------------
         textSize = (TextView) rootView.findViewById(R.id.text_size);
         fontType = (TextView) rootView.findViewById(R.id.FontType);
-        //TODO:the range of the textSize
+        //TODO:the range of the textSize seekbar value !=0
         textSize.setTypeface(defualtFont);
         seekBar = rootView.findViewById(R.id.seek_bar);
 
@@ -238,7 +238,6 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
             seekBar.setMinimumHeight(22);
         }
         textSize.setTextSize(TypedValue.COMPLEX_UNIT_PX, pref.getInt("fontSize", 18));
-//pref.getInt("fontSize",18)
         checkSound = MediaPlayer.create(getContext(), R.raw.correct);
 
         //--------------------Listeners------------------------------
@@ -347,53 +346,6 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
                 editor.commit();
             }
         });
-      /*  font1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //  defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajawal_regular");
-                changeGeneralTextView(font1, font2, font3);
-                //   defualtFont = Typeface.createFromAsset(getContext().getAssets(),"tajawal_regular.ttf");
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    defualtFont = getResources().getFont(R.font.tajawal_regular);
-                }
-                fontType.setTypeface(defualtFont);
-                editor.putString("defaultFont", "regular");
-                editor.commit();
-            }
-        });
-        font2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeGeneralTextView(font2, font1, font3);
-
-                //  defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajawal_light");
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    defualtFont = getResources().getFont(R.font.tajawal_light);
-                }
-                fontType.setTypeface(defualtFont);
-
-                editor.putString("defaultFont", "light");
-                editor.commit();
-            }
-        });
-        font3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeGeneralTextView(font3, font2, font1);
-
-                Toast.makeText(getContext(), "font3", Toast.LENGTH_SHORT).show();
-                //     defualtFont = Typeface.createFromAsset(getContext().getAssets(),"font/tajwal_bold");
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    defualtFont = getResources().getFont(R.font.tajwal_bold);
-                }
-                fontType.setTypeface(defualtFont);
-
-                editor.putString("defaultFont", "bold");
-                editor.commit();
-
-            }
-        });*/
         //----------------------------------------------------
 
 
@@ -922,7 +874,6 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
     }
 
     private void pickerTime(String s) {
-/// set the correct and cancel button
         final Dialog timedialog;
 
 
@@ -939,18 +890,13 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
         window.setAttributes(wlp);
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-/*
-        CardView cardView = timedialog.findViewById(R.id.time_picker_card);
-        cardView.setRadius(10);
-*/
+
         ImageView cancel = timedialog.findViewById(R.id.cancel_time_picker);
         ImageView correct = timedialog.findViewById(R.id.correct_time_picker);
         final TimePicker timePicker = timedialog.findViewById(R.id.spinner_time_picker);
         timePicker.setIs24HourView(false);
         final String textview = s;
 
-
-        //     TimePicker timePicker = Timedialog.findViewById(R.id.spinner_time_picker);
 
         timedialog.show();
 
@@ -1146,7 +1092,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
 
         try {
             AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 1, myIntent, 0);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 5, myIntent, 0);
 
             long interval = VerityIntervalArray[0];
             for (int i = 0; i < VerityTimeArray.length; i++) {
@@ -1259,6 +1205,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
                 }
             }
         });
+//TODO: test
 
         phone.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1312,7 +1259,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
             }
         });
 
-
+//TODO: test
         twitter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

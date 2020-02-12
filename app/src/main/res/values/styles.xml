@@ -9,12 +9,19 @@
     </style>
 
 <style name="Toolbar.TitleText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title" >
-    <item name="android:textSize">25sp</item>
-    <item name="android:textColor">@color/colorAccent </item>
+    <item name="android:textSize">22sp</item>
+    <item name="android:textColor">@color/colorAccent</item>
     <item name="android:fontFamily">@font/tajawal_regular</item>
+
 
 </style>
 
+    <style name="Base.TextAppearance.Widget.AppCompat.Toolbar.Subtitle." parent="Base.TextAppearance.Widget.AppCompat.Toolbar.Subtitle.">
+
+        <item name="android:textSize">15sp</item>
+    <item name="android:textColor">@color/colorAccent </item>
+    <item name="android:fontFamily">@font/tajawal_regular</item>
+</style>
     <style name="dialog_theme">
         <item name="android:windowBackground">@drawable/shadow</item>
     </style>

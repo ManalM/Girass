@@ -16,7 +16,7 @@ import android.widget.TextView;
 public class FavoriteFragment extends Fragment {
 
     private Toolbar toolbar;
-    private TextView toolbarText;
+    private TextView toolbarText, editText;
 
 
 
@@ -35,10 +35,10 @@ public class FavoriteFragment extends Fragment {
 
         toolbar = (Toolbar) rootView.findViewById(R.id.main_toolbar);
         toolbarText = rootView.findViewById(R.id.toolbar_title);
-
+        editText = rootView.findViewById(R.id.edit);
         toolbar.setTitle("");
         toolbarText.setText(R.string.fav);
-
+        editText.setText(R.string.Edit);
         return rootView;
     }
 

@@ -40,6 +40,7 @@ public class AllZikr extends FragmentActivity {
     private PagerAdapter pagerAdapter;
     private ViewPager mPager;
     public static String title;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,8 @@ public class AllZikr extends FragmentActivity {
         toolbarText = findViewById(R.id.toolbar_title);
         toolbar.setTitle("");
         backBtn.setImageResource(R.drawable.left_arrow);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
         //--------------------------------------------------------
 
         Intent intent = getIntent();
@@ -103,6 +106,31 @@ public class AllZikr extends FragmentActivity {
         }
     }
 */
+private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        Fragment selectedFragment = null;
+
+        switch (menuItem.getItemId()) {
+            case R.id.azkar:
+                selectedFragment = new AzkarFragment();
+                break;
+            case R.id.favorite:
+                selectedFragment = new FavoriteFragment();
+                break;
+            case R.id.settings:
+                selectedFragment = new SettingsFragments();
+                break;
+            case R.id.masbaha:
+                selectedFragment = new MasbahaFragment();
+                break;
+        }
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                selectedFragment).commit();
+        return true;
+    }
+};
 
 }
 

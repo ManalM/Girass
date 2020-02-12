@@ -36,7 +36,7 @@ private static  String content;
         vibate = pref.getBoolean("generalVibrate", true);
         sound = pref.getBoolean("generalSound", true);
 
-        soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/" + R.raw.menu);
+        soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/" + R.raw.correct2);
         /* *//*    Activity activity = (Activity) base;
         Intent intent = activity.getIntent();*//*
         //content = intent.getStringExtra("content");

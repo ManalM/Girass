@@ -8,7 +8,7 @@
 
 
     <FrameLayout
-        android:id="@+id/zikr_container"
+        android:id="@+id/zikr_container2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
@@ -17,15 +17,14 @@
         android:id="@+id/like_zikr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_margin="20dp"
 
         android:layout_alignParentRight="true"
-      android:layout_below="@id/zikr_container"
-        android:layout_above="@id/bottom_navigation"
+        android:layout_above="@id/bottom_navigation2"
         android:src="@drawable/fav_heart" />
     <com.google.android.material.bottomnavigation.BottomNavigationView
 
-        android:id="@+id/bottom_navigation"
+        android:id="@+id/bottom_navigation2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"

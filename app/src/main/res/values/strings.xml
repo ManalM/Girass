@@ -23,6 +23,8 @@
     <string name="rate">تَقْيٍيم التّطبيق</string>
     <string name="about">حَوْل التّطبيق</string>
 
+    <!-- Fav Layout-->
+    <string name="Edit">تعديل</string>
     <!-- Notification Settings   -->
 
     <string name="title">تنبيهات الأذكار</string>
