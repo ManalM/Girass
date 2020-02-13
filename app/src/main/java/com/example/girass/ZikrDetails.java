@@ -3,7 +3,12 @@ package com.example.girass;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -53,6 +58,15 @@ public class ZikrDetails extends Fragment {
         ///-------------------------------------------
         click = rootView.findViewById(R.id.click);
         repeat = rootView.findViewById(R.id.repeat);
+
+      /*  ShapeDrawable shapedrawable = new ShapeDrawable();
+        shapedrawable.setShape(new OvalShape());
+        shapedrawable.getPaint().setColor(Color.TRANSPARENT);
+        shapedrawable.getPaint().setStrokeWidth(10);
+        shapedrawable.getPaint().setStyle(Paint.Style.STROKE);
+        click.setBackground(shapedrawable);*/
+     /* GradientDrawable gradientDrawable = (GradientDrawable) click.getDrawable();
+      gradientDrawable.setStroke(10,Color.GRAY);*/
 //--------------------SharedPreference-----------------------------
 
         context = getActivity().getApplicationContext();
@@ -130,6 +144,7 @@ public class ZikrDetails extends Fragment {
                 break;
             }
         }
+
         return rootView;
     }
 

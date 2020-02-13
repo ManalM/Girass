@@ -553,8 +553,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
      ****    notification settings funcs   ****
      ******************************************/
     private void showDialog() {
-// notification part
-        //  createNotificationChannel();
+
         dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.notification_dialog);
 
@@ -1059,7 +1058,8 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
                     ///TODO: try with Repeating func.
-                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+                    //alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
                 }
             // intentArray.add(pendingIntent);
 

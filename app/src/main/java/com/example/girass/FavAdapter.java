@@ -14,13 +14,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.girass.Preference.SharedPreference;
+
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
+import java.util.List;
 
 public class FavAdapter extends RecyclerView.Adapter<FavAdapter.viewHolder> {
     private FavAdapter.OnItemClickListener mListener;
     public static Context mContext;
-    private ArrayList<String> arrayList;
+    private String[] arrayList;
 
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -30,9 +33,10 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.viewHolder> {
         mListener = listener;
     }
 
-    public FavAdapter(Context mContext, ArrayList<String> arrayList) {
+    public FavAdapter(Context mContext, String[] arrayList) {
         this.mContext = mContext;
         this.arrayList = arrayList;
+
     }
 
     @NonNull
@@ -48,12 +52,13 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.viewHolder> {
     @Override
     public void onBindViewHolder(@NonNull FavAdapter.viewHolder holder, int position) {
 
-        holder.title.setText(arrayList.get(position));
+        holder.title.setText(arrayList[position]);
     }
+
 
     @Override
     public int getItemCount() {
-        return arrayList.size();
+        return arrayList.length;
     }
 
     public class viewHolder extends RecyclerView.ViewHolder {

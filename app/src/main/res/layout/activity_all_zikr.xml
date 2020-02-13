@@ -7,17 +7,6 @@
     android:background="@drawable/zikr_bac"
     tools:context=".AllZikr">
 
-    <!--
-        <include
-            layout="@layout/activity_main"/>
-    -->
-    <!-- <FrameLayout
-         android:id="@+id/fragment_container1"
-         android:layout_width="match_parent"
-
-         android:layout_height="match_parent"
-         android:layout_above="@id/bottom_navigation1"/>-->
-
     <include
 
         android:id="@+id/bar"

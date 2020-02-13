@@ -63,16 +63,32 @@
         android:layout_alignParentRight="true"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/click"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
+        <RelativeLayout
             android:layout_marginBottom="10dp"
             android:layout_marginRight="60dp"
 
+
             android:layout_gravity="center"
-            android:src="@drawable/email1" />
+            android:layout_width="80dp"
+            android:layout_height="80dp">
+
+            <ImageView
+                android:id="@+id/click"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/counting_button" />
+
+            <TextView
+                android:textSize="15sp"
+                android:text="2"
+                android:textStyle="bold"
+                android:textColor="@color/textColor"
+                android:id="@+id/counting"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center" />
+        </RelativeLayout>
+
 
         <RelativeLayout
             android:layout_width="51dp"

@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -27,11 +28,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.girass.Preference.SharedPreference;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import org.json.JSONObject;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.zip.Inflater;
@@ -50,8 +56,10 @@ public class AllZikr extends FragmentActivity {
     public static String title;
     private BottomNavigationView bottomNavigationView;
     Boolean isLiked = false;
-    Set<String> set;
     String id;
+    final String mapKey = "map";
+    //SharedPreference sharedPreferences;
+    private Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,9 +81,9 @@ public class AllZikr extends FragmentActivity {
         id = intent.getStringExtra("id");
         toolbarText.setText(title);
 
-        set = new HashSet<String>();
 
         //------------------SharedPreference---------------------------
+        //sharedPreferences =  new SharedPreference(context);
         pref = PreferenceManager.getDefaultSharedPreferences(this);
         editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
 
@@ -83,18 +91,18 @@ public class AllZikr extends FragmentActivity {
         final HeadZikrObject[] headZikrObjects = dataService.GetAllAzkar();
       /*  for (String s: pref.getStringSet("set",set))
         {*/
-        if (pref.getStringSet("set", set).contains(id)) {
+        // if (pref.getStringSet("set", set).contains(id)) {
             if (pref.getBoolean("liked", true) == false) {
-                Glide.with(this).load(R.drawable.fav_heart).into(like);
+                like.setImageResource(R.drawable.fav_heart);
 
             } else {
-                Glide.with(this).load(R.drawable.fill_heart).into(like);
+                like.setImageResource(R.drawable.fill_heart);
 
             }
-        } else {
-            Glide.with(this).load(R.drawable.fav_heart).into(like);
+      /*  } else {
+            like.setImageResource(R.drawable.fav_heart);
             Toast.makeText(this, "not equal", Toast.LENGTH_SHORT).show();
-        }
+        }*/
         //   }
 
         //--------------------------------------------------------
@@ -120,24 +128,38 @@ public class AllZikr extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 if (isLiked == false) {
-                    Glide.with(v).load(R.drawable.fill_heart).into(like);
+                    like.setImageResource(R.drawable.fill_heart);
+                    Toast.makeText(AllZikr.this, title + id, Toast.LENGTH_SHORT).show();
+
+                    HashMap<String, String> hashMap = new HashMap<>();
+                    for (int i = 0; i < headZikrObjects.length; i++) {
+                        if (headZikrObjects[i].TITLE.equals(title) && headZikrObjects[i].ID.equals(id)) {
+                            hashMap.put(headZikrObjects[i].ID, headZikrObjects[i].TITLE);
+
+                            saveMap(hashMap);
+                            Toast.makeText(AllZikr.this, "added" + headZikrObjects[i].ID + headZikrObjects[i].TITLE, Toast.LENGTH_SHORT).show();
+                        }
+                    }
                     editor.putBoolean("liked", true);
-                    FavoriteFragment favoriteFragment = new FavoriteFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("title", title);
-                    favoriteFragment.setArguments(bundle);
                     isLiked = true;
                 } else {
-                    Glide.with(v).load(R.drawable.fav_heart).into(like);
+                    like.setImageResource(R.drawable.fav_heart);
+                    HashMap<String, String> hashMap = new HashMap<>();
+                    for (int i = 0; i < headZikrObjects.length; i++) {
+                        if (headZikrObjects[i].TITLE.equals(title) && headZikrObjects[i].ID.equals(id)) {
+                            hashMap.put(headZikrObjects[i].ID, headZikrObjects[i].TITLE);
+
+                            deleteMapItem();
+                            Toast.makeText(AllZikr.this, "deleted" + headZikrObjects[i].ID + headZikrObjects[i].TITLE, Toast.LENGTH_SHORT).show();
+                        }
+                    }
                     isLiked = false;
                     editor.putBoolean("liked", false);
                 }
                 editor.putString("id", id);
-
-                set.add(id);
-                editor.putStringSet("set", set);
-
                 editor.apply();
+
+
             }
         });
 
@@ -146,6 +168,28 @@ public class AllZikr extends FragmentActivity {
 
     }
 
+    private void saveMap(HashMap<String, String> inputMap) {
+
+        if (pref != null) {
+            JSONObject jsonObject = new JSONObject(inputMap);
+            String jsonString = jsonObject.toString();
+
+            editor.remove(mapKey).apply();
+            editor.putString(mapKey, jsonString);
+            editor.commit();
+        }
+    }
+
+    private void deleteMapItem() {
+
+        if (pref != null) {
+            editor.remove(mapKey).apply();
+
+            editor.clear();
+            editor.commit();
+        }
+
+    }
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
