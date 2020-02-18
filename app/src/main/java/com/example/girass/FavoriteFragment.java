@@ -60,7 +60,6 @@ public class FavoriteFragment extends Fragment {
         editText = rootView.findViewById(R.id.edit);
         toolbar.setTitle("");
         toolbarText.setText(R.string.fav);
-        editText.setText(R.string.Edit);
 
         //-------------------RecyclerView--------------
         list = rootView.findViewById(R.id.fav_list);
@@ -77,15 +76,25 @@ public class FavoriteFragment extends Fragment {
         list.setAdapter(adapter);
 //---------------------------------------------------------
 
+        if (favorites.length == 0) {
+            editText.setText(" ");
+
+        } else {
+            editText.setText(R.string.Edit);
+
+        }
+//---------------------------------------------------------
         DataService dataService = new DataService();
         final HeadZikrObject[] headZikrObjects = dataService.GetAllAzkar();
         final String[] IDs = new String[headZikrObjects.length];
 
         int i = 0;
         while (i < headZikrObjects.length) {
-            if (headZikrObjects[i].TITLE.equals(title))
-
+            //TODO:edit
+            if (headZikrObjects[i].TITLE.equals("")) {
                 id = headZikrObjects[i].ID;
+
+            }
             i++;
         }
         //-------------------On Item Clicked----------------------
@@ -93,10 +102,20 @@ public class FavoriteFragment extends Fragment {
         adapter.setOnItemClickListener(new FavAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Intent intent = new Intent(getContext(), AllZikr.class);
+     /*           Intent intent = new Intent(getContext(), AllZikr.class);
                 intent.putExtra("array", favorites[position]);
                 intent.putExtra("id", id);
-                startActivity(intent);
+                startActivity(intent);*/
+
+                AllZikr allZikr = new AllZikr();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, allZikr).commit();
+                Bundle bundle = new Bundle();
+                bundle.putString("array", favorites[position]);
+                bundle.putString("id", id);
+                bundle.putInt("tag", 2);
+
+                allZikr.setArguments(bundle);
+                //  new ZikrDetails().setArguments(bundle);
             }
         });
         return rootView;

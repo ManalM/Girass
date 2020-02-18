@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.res.TypedArrayUtils;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.girass.Preference.SharedPreference;
@@ -24,7 +25,8 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.viewHolder> {
     private FavAdapter.OnItemClickListener mListener;
     public static Context mContext;
     private String[] arrayList;
-
+    String mRecentlyDeletedItem;
+    int mRecentlyDeletedItemPosition;
     public interface OnItemClickListener {
         void onItemClick(int position);
     }

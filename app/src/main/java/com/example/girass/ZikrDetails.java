@@ -35,7 +35,6 @@ public class ZikrDetails extends Fragment {
     TextView zikr, narriated, timeToRepeat;
     ImageView click, repeat;
 
-    Context context;
     SharedPreferences pref;
     SharedPreferences.Editor editor;
     MediaPlayer defualt;
@@ -69,7 +68,6 @@ public class ZikrDetails extends Fragment {
       gradientDrawable.setStroke(10,Color.GRAY);*/
 //--------------------SharedPreference-----------------------------
 
-        context = getActivity().getApplicationContext();
 
         pref = PreferenceManager.getDefaultSharedPreferences(getContext());
         editor = PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
@@ -114,13 +112,16 @@ public class ZikrDetails extends Fragment {
         //-------------------------------------------------------
 
         //---------------------------------------------------------
-        Intent intent = getActivity().getIntent();
-        String title = intent.getStringExtra("array");
+        String title;
+    /*  Intent intent = getActivity().getIntent();
+        if(intent !=null)
+  title = intent.getStringExtra("array");*/
+        //  title = getArguments() != null ? getArguments().getString("array") : null;
         DataService dataService = new DataService();
         final HeadZikrObject[] headZikrObjects = dataService.GetAllAzkar();
         for (int i = 0; i < headZikrObjects.length; i++) {
 
-            if (headZikrObjects[i].TITLE.equals(title)) {
+            if (headZikrObjects[i].TITLE.equals(AllZikr.title)) {
 
                 //    HeadZikrObject h = headZikrObjects[i];
                 ZikrObject[] zikrObject = headZikrObjects[i].AllAzkar;
@@ -142,7 +143,8 @@ public class ZikrDetails extends Fragment {
 
 
                 break;
-            }
+            } else
+                zikr.setText("null");
         }
 
         return rootView;

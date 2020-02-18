@@ -4,8 +4,10 @@ package com.example.girass;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -80,14 +82,38 @@ public class AzkarFragment extends Fragment {
         mAdapterAzkar.setOnItemClickListener(new Adapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Intent intent = new Intent(getContext(), AllZikr.class);
+                AllZikr allZikr = new AllZikr();
+                Bundle bundle = new Bundle();
+                bundle.putString("array", titles[position]);
+                bundle.putString("id", String.valueOf(position + 1));
+                bundle.putInt("tag", 1);
+                allZikr.setArguments(bundle);
+
+                //----------------------------------------------------------------
+           /*     Intent detailsIntent = new Intent(getContext(), ZikrDetails.class);
+
+               detailsIntent.putExtra("array", titles[position]);*/
+
+                // ZikrDetails sendZikrDetails = new ZikrDetails();
+                //Bundle zikrBundle = new Bundle();
+                // zikrBundle.putString("array", titles[position]);
+                //   sendZikrDetails.setArguments(bundle);
+
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, allZikr).commit();
+
+              /*  ZikrDetails zikrDetails = new ZikrDetails();
+                Bundle bundle1 = new Bundle();
+                bundle1.putString("array1", titles[position]);
+                zikrDetails.setArguments(bundle1);
+
+             /*  Intent intent = new Intent(getContext(), AllZikr.class);
                 Intent detailsIntent = new Intent(getContext(), ZikrDetails.class);
-                detailsIntent.putExtra("array", titles[position]);
+              detailsIntent.putExtra("array", titles[position]);
                 intent.putExtra("array", titles[position]);
 
                 intent.putExtra("id", String.valueOf(position + 1));
 
-                startActivity(intent);
+                startActivity(intent);*/
             }
         });
 
@@ -97,4 +123,9 @@ public class AzkarFragment extends Fragment {
 
     }
 
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
 }

@@ -13,6 +13,8 @@ import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -57,6 +59,15 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
     Vibrator v;
     MediaPlayer pop, menu, click;
     Context context;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+
+            noOfTasih.setText(savedInstanceState.getString("number"));
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
@@ -385,5 +396,14 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
         dialog.show();
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //todo:not working
+        outState.putString("number", noOfTasih.getText().toString());
+        outState.putString("first", firstZikr.getText().toString());
+        outState.putString("sec", secZikr.getText().toString());
+        outState.putString("third", thirdZikr.getText().toString());
 
+    }
 }

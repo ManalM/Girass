@@ -1,6 +1,7 @@
 package com.example.girass;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -18,6 +19,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.ArraySet;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,10 +41,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.zip.Inflater;
 
-public class AllZikr extends FragmentActivity {
+public class AllZikr extends Fragment {
     private Toolbar toolbar;
     private TextView toolbarText;
 
@@ -54,51 +57,63 @@ public class AllZikr extends FragmentActivity {
     private PagerAdapter pagerAdapter;
     private ViewPager mPager;
     public static String title;
-    private BottomNavigationView bottomNavigationView;
     Boolean isLiked = false;
     String id;
     final String mapKey = "map";
     //SharedPreference sharedPreferences;
     private Context context;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_all_zikr);
+    int tag;
 
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.activity_all_zikr, container, false);
         //-----------------------------------------------------------
-        backBtn = findViewById(R.id.button);
-        toolbar = (Toolbar) findViewById(R.id.bar);
-        toolbarText = findViewById(R.id.toolbar_title);
-        like = findViewById(R.id.like);
+        backBtn = rootView.findViewById(R.id.button);
+        toolbar = (Toolbar) rootView.findViewById(R.id.bar);
+        toolbarText = rootView.findViewById(R.id.toolbar_title);
+        like = rootView.findViewById(R.id.like);
         toolbar.setTitle("");
         backBtn.setImageResource(R.drawable.left_arrow);
-       /* bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(navListener);*/
         //--------------------------------------------------------
 
-        Intent intent = getIntent();
-        title = intent.getStringExtra("array");
-        id = intent.getStringExtra("id");
+        title = getArguments().getString("array");
+        id = getArguments().getString("id");
+        tag = getArguments().getInt("tag");
+
         toolbarText.setText(title);
 
 
         //------------------SharedPreference---------------------------
         //sharedPreferences =  new SharedPreference(context);
-        pref = PreferenceManager.getDefaultSharedPreferences(this);
-        editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
+        pref = PreferenceManager.getDefaultSharedPreferences(getContext());
+        editor = PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
 
         DataService dataService = new DataService();
         final HeadZikrObject[] headZikrObjects = dataService.GetAllAzkar();
+        HashMap<String, String> hashMap = loadMap();
+//todo: make each item sparate from others , user can delete from the fav layout
+        String[] IDs = new String[hashMap.size()];
+        for (int i = 0; i < hashMap.size(); i++) {
+
+            if (hashMap.containsKey(id + 1)) {
+                if (pref.getBoolean("liked", true) == false) {
+                    like.setImageResource(R.drawable.fav_heart);
+
+                } else {
+                    like.setImageResource(R.drawable.fill_heart);
+
+                }
+            } else {
+                like.setImageResource(R.drawable.fav_heart);
+                Toast.makeText(getContext(), "hash map doesn't contain ID" + id, Toast.LENGTH_SHORT).show();
+            }
+
+        }
       /*  for (String s: pref.getStringSet("set",set))
         {*/
         // if (pref.getStringSet("set", set).contains(id)) {
-            if (pref.getBoolean("liked", true) == false) {
-                like.setImageResource(R.drawable.fav_heart);
 
-            } else {
-                like.setImageResource(R.drawable.fill_heart);
-
-            }
       /*  } else {
             like.setImageResource(R.drawable.fav_heart);
             Toast.makeText(this, "not equal", Toast.LENGTH_SHORT).show();
@@ -107,9 +122,8 @@ public class AllZikr extends FragmentActivity {
 
         //--------------------------------------------------------
 
-        mPager = (ViewPager) findViewById(R.id.view_pager);
-        pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
-
+        mPager = (ViewPager) rootView.findViewById(R.id.view_pager);
+        pagerAdapter = new ScreenSlidePagerAdapter(getChildFragmentManager());
         pagerAdapter.notifyDataSetChanged();
 
 
@@ -118,6 +132,8 @@ public class AllZikr extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 onBackPressed();
+                // Objects.requireNonNull(getActivity()).onBackPressed();
+
             }
         });
 
@@ -129,7 +145,7 @@ public class AllZikr extends FragmentActivity {
             public void onClick(View v) {
                 if (isLiked == false) {
                     like.setImageResource(R.drawable.fill_heart);
-                    Toast.makeText(AllZikr.this, title + id, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), title + id, Toast.LENGTH_SHORT).show();
 
                     HashMap<String, String> hashMap = new HashMap<>();
                     for (int i = 0; i < headZikrObjects.length; i++) {
@@ -137,7 +153,7 @@ public class AllZikr extends FragmentActivity {
                             hashMap.put(headZikrObjects[i].ID, headZikrObjects[i].TITLE);
 
                             saveMap(hashMap);
-                            Toast.makeText(AllZikr.this, "added" + headZikrObjects[i].ID + headZikrObjects[i].TITLE, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "added" + headZikrObjects[i].ID + headZikrObjects[i].TITLE, Toast.LENGTH_SHORT).show();
                         }
                     }
                     editor.putBoolean("liked", true);
@@ -150,7 +166,7 @@ public class AllZikr extends FragmentActivity {
                             hashMap.put(headZikrObjects[i].ID, headZikrObjects[i].TITLE);
 
                             deleteMapItem();
-                            Toast.makeText(AllZikr.this, "deleted" + headZikrObjects[i].ID + headZikrObjects[i].TITLE, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "deleted" + headZikrObjects[i].ID + headZikrObjects[i].TITLE, Toast.LENGTH_SHORT).show();
                         }
                     }
                     isLiked = false;
@@ -166,6 +182,7 @@ public class AllZikr extends FragmentActivity {
         mPager.setAdapter(pagerAdapter);
 
 
+        return rootView;
     }
 
     private void saveMap(HashMap<String, String> inputMap) {
@@ -190,51 +207,48 @@ public class AllZikr extends FragmentActivity {
         }
 
     }
+
+    private HashMap<String, String> loadMap() {
+        HashMap<String, String> outputMap = new HashMap<>();
+
+        try {
+            if (pref != null) {
+                String jsonString = pref.getString(mapKey, (new JSONObject()).toString());
+                JSONObject jsonObject = new JSONObject(jsonString);
+                Iterator<String> keysItr = jsonObject.keys();
+                while (keysItr.hasNext()) {
+                    String key = keysItr.next();
+                    outputMap.put(key, (String) jsonObject.get(key));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return outputMap;
+    }
+
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
     }
 
-/*
-    @Override
+
     public void onBackPressed() {
-        if (mPager.getCurrentItem() == 0) {
+  /*      if (mPager.getCurrentItem() == 0) {
             // If the user is currently looking at the first step, allow the system to handle the
             // Back button. This calls finish() on this activity and pops the back stack.
+
             super.onBackPressed();
         } else {
             // Otherwise, select the previous step.
             mPager.setCurrentItem(mPager.getCurrentItem() - 1);
-        }
-    }
-*/
-/*
- private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        Fragment selectedFragment = null;
+        }*/
+        if (tag == 1)
+            getFragmentManager().beginTransaction().replace(R.id.fragment_container, new AzkarFragment()).addToBackStack(null).commit();
+        else if (tag == 2)
+            getFragmentManager().beginTransaction().replace(R.id.fragment_container, new FavoriteFragment()).addToBackStack(null).commit();
 
-        switch (menuItem.getItemId()) {
-            case R.id.azkar:
-                selectedFragment = new AzkarFragment();
-                break;
-            case R.id.favorite:
-                selectedFragment = new FavoriteFragment();
-                break;
-            case R.id.settings:
-                selectedFragment = new SettingsFragments();
-                break;
-            case R.id.masbaha:
-                selectedFragment = new MasbahaFragment();
-                break;
-        }
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                selectedFragment).commit();
-        return true;
     }
-};
-*/
 
 }
 
@@ -309,14 +323,16 @@ class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
 
     }
 
+
     @Override
     public int getCount() {
 
         for (int i = 0; i < headZikrObjects.length; i++) {
 
-            num_pages = headZikrObjects[i].AllAzkar.length;
+            if (headZikrObjects[i].TITLE.equals(AllZikr.title))
+                num_pages = headZikrObjects[i].AllAzkar.length;
 
-            break;
+            //    break;
         }
         return num_pages;
     }
