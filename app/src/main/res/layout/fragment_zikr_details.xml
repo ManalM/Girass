@@ -9,7 +9,7 @@
     <ScrollView
         android:id="@+id/scroll"
         android:layout_width="match_parent"
-        android:visibility="invisible"
+        android:visibility="visible"
         android:layout_height="wrap_content">
     <LinearLayout
         android:id="@+id/linearLayout"

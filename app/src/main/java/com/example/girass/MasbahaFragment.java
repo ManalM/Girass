@@ -33,6 +33,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Set;
 
@@ -60,14 +61,6 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
     MediaPlayer pop, menu, click;
     Context context;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-
-            noOfTasih.setText(savedInstanceState.getString("number"));
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
@@ -132,6 +125,11 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
 
         subhaBtn.setOnClickListener(this);
 
+        if (savedInstanceState == null) {
+
+            Toast.makeText(context, "null", Toast.LENGTH_SHORT).show();
+        } else
+            noOfTasih.setText(String.valueOf(savedInstanceState.getInt("number")));
 
         return rootView;
     }
@@ -219,6 +217,8 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
 
         }
 
+        editor.putInt("count", theCount);
+        editor.apply();
     }
 
 
@@ -400,7 +400,7 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         //todo:not working
-        outState.putString("number", noOfTasih.getText().toString());
+        outState.putInt("number", theCount);
         outState.putString("first", firstZikr.getText().toString());
         outState.putString("sec", secZikr.getText().toString());
         outState.putString("third", thirdZikr.getText().toString());
