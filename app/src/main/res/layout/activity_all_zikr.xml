@@ -18,37 +18,58 @@
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-
         android:layout_above="@id/like"
         android:layout_below="@id/bar"
-
-
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
+
+    <me.relex.circleindicator.CircleIndicator
+        android:id="@+id/indicator"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_above="@id/like"
+
+        android:orientation="horizontal"
+        android:gravity="center"
+
+        />
+
+
+    <!--    <com.viewpagerindicator.CirclePageIndicator
+            android:id="@+id/indicator1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dip"
+            app:radius="12dp"
+            android:layout_above="@id/like"
+
+            app:fillColor="@color/header_bg_color"
+            app:strokeColor="@color/header_bg_color"/>-->
     <ImageView
         android:id="@+id/like"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
-        android:layout_margin="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
         android:src="@drawable/fav_heart" />
 
-<!--
-    <com.google.android.material.bottomnavigation.BottomNavigationView
+    <!--
+        <com.google.android.material.bottomnavigation.BottomNavigationView
 
-            android:id="@+id/bottom_navigation1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="bottom"
-            android:background="#01669E"
-            android:fitsSystemWindows="true"
-            app:itemIconTint="@drawable/bottom_nav_colors"
-            app:itemTextColor="@drawable/bottom_nav_colors"
+                android:id="@+id/bottom_navigation1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="bottom"
+                android:background="#01669E"
+                android:fitsSystemWindows="true"
+                app:itemIconTint="@drawable/bottom_nav_colors"
+                app:itemTextColor="@drawable/bottom_nav_colors"
 
-            app:labelVisibilityMode="labeled"
-            app:menu="@menu/menu" />
--->
+                app:labelVisibilityMode="labeled"
+                app:menu="@menu/menu" />
+    -->
 </RelativeLayout>

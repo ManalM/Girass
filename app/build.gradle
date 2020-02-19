@@ -34,13 +34,11 @@ dependencies {
     //noinspection GradleCompatible
     implementation "com.android.support:support-compat:28.0.0"
     implementation 'com.github.bumptech.glide:glide:4.11.0'
-
     implementation 'com.github.hotchemi:stringpicker:0.0.2'
     //noinspection GradleCompatible1
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.github.zcweng:switch-button:0.0.3@aar'
     implementation 'com.github.addisonelliott:SegmentedButton:3.1.6'
     implementation 'com.google.code.gson:gson:2.8.6'
-
-
+    implementation 'me.relex:circleindicator:2.1.4@aar'
 }

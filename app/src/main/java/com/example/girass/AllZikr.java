@@ -2,6 +2,7 @@ package com.example.girass;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -14,11 +15,13 @@ import androidx.viewpager.widget.ViewPager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.ArraySet;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,7 +48,10 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.zip.Inflater;
 
-public class AllZikr extends Fragment {
+import me.relex.circleindicator.CircleIndicator;
+import me.relex.circleindicator.Config;
+
+public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener {
     private Toolbar toolbar;
     private TextView toolbarText;
 
@@ -56,6 +62,7 @@ public class AllZikr extends Fragment {
     private ImageView backBtn, like;
     private PagerAdapter pagerAdapter;
     private ViewPager mPager;
+    private CircleIndicator circleIndicator;
     public static String title;
     Boolean isLiked = false;
     String id;
@@ -63,7 +70,9 @@ public class AllZikr extends Fragment {
     //SharedPreference sharedPreferences;
     private Context context;
     int tag;
+    int indicatorNumber;
 
+    @RequiresApi(api = Build.VERSION_CODES.P)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -125,8 +134,24 @@ public class AllZikr extends Fragment {
         mPager = (ViewPager) rootView.findViewById(R.id.view_pager);
         pagerAdapter = new ScreenSlidePagerAdapter(getChildFragmentManager());
         pagerAdapter.notifyDataSetChanged();
+        circleIndicator = rootView.findViewById(R.id.indicator);
+        circleIndicator.setViewPager(mPager);
 
 
+        pagerAdapter.registerDataSetObserver(circleIndicator.getDataSetObserver());
+
+        Config config = new Config.Builder()
+                .drawable(R.drawable.indicator_shape)
+                .build();
+        circleIndicator.initialize(config);
+        for (int i = 0; i < headZikrObjects.length; i++) {
+
+            if (headZikrObjects[i].TITLE.equals(AllZikr.title))
+                indicatorNumber = headZikrObjects[i].AllAzkar.length;
+
+        }
+        if (indicatorNumber > 1)
+            circleIndicator.createIndicators(indicatorNumber, 0);
         //------------------------------------------------------------------
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,7 +205,7 @@ public class AllZikr extends Fragment {
         });
 
         mPager.setAdapter(pagerAdapter);
-
+        mPager.addOnPageChangeListener(this);
 
         return rootView;
     }
@@ -250,6 +275,21 @@ public class AllZikr extends Fragment {
 
     }
 
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+
+        circleIndicator.animatePageSelected(position);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
 }
 
 
@@ -257,69 +297,27 @@ class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
     DataService dataService = new DataService();
     final HeadZikrObject[] headZikrObjects = dataService.GetAllAzkar();
     public static int num_pages;
-    ZikrObject views;
-    LinearLayout mLayoutInflater;
-    ArrayList<ZikrObject> arrayList = new ArrayList<>();
 
+    ZikrObject[] z;
     public ScreenSlidePagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
-/*     @NonNull
-     @Override
-     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-
-             View itemView = mLayoutInflater.inflate(R.layout.pager_item, container, false);
 
 
-         backBtn = itemView.findViewById(R.id.button);
-         toolbar = (Toolbar) itemView.findViewById(R.id.main_toolbar);
-         toolbarText = itemView.findViewById(R.id.toolbar_title);
-         toolbar.setTitle("");
-         backBtn.setImageResource(R.drawable.left_arrow);
-         //--------------------------------------------------------
-
-         Intent intent = null;
-         try {
-             intent = Intent.getIntent("");
-         } catch (URISyntaxException e) {
-             e.printStackTrace();
-         }
-         title = intent.getStringExtra("array");
-         toolbarText.setText(title);
-             container.addView(itemView);
-
-             return itemView;
-
-     }*/
-
-
-    @Override
-    public int getItemPosition(Object object) {
-/*         for(int index = 0 ; index < getCount() ; index++){
-             if(object.equals(views.ID.equals(index))) {
-                 return index;
-             }
-         }
-         return POSITION_NONE;*/
-        arrayList = fetchArray();
-        Fragment fragment = (Fragment) object;
-
-        int position = arrayList.indexOf(fragment);
-        if (position >= 0) {
-            return position;
-        } else {
-            return POSITION_NONE;
-        }
-
-    }
 
 
     @Override
     public Fragment getItem(int position) {
 
 
-        return new ZikrDetails();
+        for (int i = 0; i < headZikrObjects.length; i++) {
+
+            if (headZikrObjects[i].TITLE.equals(AllZikr.title))
+                z = headZikrObjects[i].AllAzkar;
+
+        }
+        return new ZikrDetails(z[position]);
 
     }
 
@@ -337,23 +335,5 @@ class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
         return num_pages;
     }
 
-    public ArrayList<ZikrObject> fetchArray() {
-        ArrayList<ZikrObject> a = new ArrayList<>();
-        for (int i = 0; i < headZikrObjects.length; i++) {
-            if (headZikrObjects[i].TITLE.equals(AllZikr.title)) {
-
-                ZikrObject[] zikrObject = headZikrObjects[i].AllAzkar;
-                for (int j = 0; j < zikrObject.length; j++) {
-
-
-                    a.add(zikrObject[j]);
-
-                }
-
-
-            }
-        }
-        return a;
-    }
 }
 

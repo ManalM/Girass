@@ -41,8 +41,14 @@ public class ZikrDetails extends Fragment {
     Boolean doIPlaySound, doIVibrate;
 
     Typeface defaultFont;
-
     int TextSize;
+    ZikrObject zikrObject;
+
+
+    //------------Constructor -----------------
+    public ZikrDetails(ZikrObject zikrObject) {
+        this.zikrObject = zikrObject;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,7 +63,7 @@ public class ZikrDetails extends Fragment {
         ///-------------------------------------------
         click = rootView.findViewById(R.id.click);
         repeat = rootView.findViewById(R.id.repeat);
-
+//----------------------------Click button---------------------------------
       /*  ShapeDrawable shapedrawable = new ShapeDrawable();
         shapedrawable.setShape(new OvalShape());
         shapedrawable.getPaint().setColor(Color.TRANSPARENT);
@@ -77,80 +83,49 @@ public class ZikrDetails extends Fragment {
             defualt = MediaPlayer.create(getContext(), pref.getInt("defaultSound", R.raw.click));
             doIPlaySound = pref.getBoolean("masbahaSound", true);
             doIVibrate = pref.getBoolean("masbahaVibrate", true);
-            if(pref.getString("defaultFont","regular").equals("regular"))
+            if (pref.getString("defaultFont", "regular").equals("regular"))
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    defaultFont= getResources().getFont(R.font.tajawal_regular);
-                }
-
-            else if (pref.getString("defaultFont","bold").equals("bold"))
+                    defaultFont = getResources().getFont(R.font.tajawal_regular);
+                } else if (pref.getString("defaultFont", "bold").equals("bold"))
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        defaultFont= getResources().getFont(R.font.tajwal_bold);
-                    }
-            else if(pref.getString("defaultFont","light").equals("light"))
+                        defaultFont = getResources().getFont(R.font.tajwal_bold);
+                    } else if (pref.getString("defaultFont", "light").equals("light"))
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            defaultFont= getResources().getFont(R.font.tajawal_light);
+                            defaultFont = getResources().getFont(R.font.tajawal_light);
                         }
-            TextSize  = pref.getInt("fontSize",18);
+            TextSize = pref.getInt("fontSize", 18);
 
         } else {
             defualt = MediaPlayer.create(getContext(), R.raw.click);
             doIVibrate = true;
             doIPlaySound = true;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                defaultFont= getResources().getFont(R.font.tajawal_regular);
+                defaultFont = getResources().getFont(R.font.tajawal_regular);
             }
             TextSize = 15;
             editor.putInt("defaultSound", R.raw.click);
             editor.putBoolean("masbahaSound", true);
             editor.putBoolean("masbahaVibrate", true);
             editor.putString("defaultFont", "regular");
-            editor.putInt("fontSize",TextSize);
+            editor.putInt("fontSize", TextSize);
             editor.commit();
         }
 
 
-        //-------------------------------------------------------
-
-        //---------------------------------------------------------
-        String title;
-    /*  Intent intent = getActivity().getIntent();
-        if(intent !=null)
-  title = intent.getStringExtra("array");*/
-        //  title = getArguments() != null ? getArguments().getString("array") : null;
-        DataService dataService = new DataService();
-        final HeadZikrObject[] headZikrObjects = dataService.GetAllAzkar();
-        for (int i = 0; i < headZikrObjects.length; i++) {
-
-            if (headZikrObjects[i].TITLE.equals(AllZikr.title)) {
-
-                //    HeadZikrObject h = headZikrObjects[i];
-                ZikrObject[] zikrObject = headZikrObjects[i].AllAzkar;
-
-                //      int index =new ZikrDetails().getId();
-                for (int j = 0; j < zikrObject.length; j++) {
+        //---------------------retrieve zikr------------------------
 
 
-                    //Toast.makeText(getContext(), "this is "+ new ZikrDetails().getId(), Toast.LENGTH_SHORT).show();
-
-                    zikr.setText(zikrObject[j].Details);
-                    narriated.setText(zikrObject[j].Narriated);
-                    timeToRepeat.setText(Integer.valueOf(zikrObject[j].TimesToRepeat).toString());
-
-                    //------------------------Settings ------------------
-
-                    textStyle();
-                }
+        zikr.setText(zikrObject.Details);
+        narriated.setText(zikrObject.Narriated);
+        timeToRepeat.setText(Integer.valueOf(zikrObject.TimesToRepeat).toString());
 
 
-                break;
-            } else
-                zikr.setText("null");
-        }
+        textStyle();
 
         return rootView;
     }
 
-    private void textStyle(){
+    private void textStyle() {
         zikr.setTypeface(defaultFont);
         narriated.setTypeface(defaultFont);
 
