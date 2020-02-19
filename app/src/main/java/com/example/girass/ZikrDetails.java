@@ -3,6 +3,8 @@ package com.example.girass;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -18,11 +20,14 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,18 +37,19 @@ import java.util.List;
 
 public class ZikrDetails extends Fragment {
 
-    TextView zikr, narriated, timeToRepeat;
-    ImageView click, repeat;
+    private TextView zikr, narriated, timeToRepeat, countingText;
+    private LinearLayout click;
+    private ImageView roundedButton;
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
+    private MediaPlayer defualt;
+    private Boolean doIPlaySound, doIVibrate;
 
-    SharedPreferences pref;
-    SharedPreferences.Editor editor;
-    MediaPlayer defualt;
-    Boolean doIPlaySound, doIVibrate;
+    private Typeface defaultFont;
+    private int TextSize, countNumber = 1;
+    private ZikrObject zikrObject;
 
-    Typeface defaultFont;
-    int TextSize;
-    ZikrObject zikrObject;
-
+    private Vibrator vibrator;
 
     //------------Constructor -----------------
     public ZikrDetails(ZikrObject zikrObject) {
@@ -60,10 +66,11 @@ public class ZikrDetails extends Fragment {
         zikr = rootView.findViewById(R.id.zikr);
         narriated = rootView.findViewById(R.id.narriated);
         timeToRepeat = rootView.findViewById(R.id.time_repeat);
-        ///-------------------------------------------
         click = rootView.findViewById(R.id.click);
-        repeat = rootView.findViewById(R.id.repeat);
-//----------------------------Click button---------------------------------
+        countingText = rootView.findViewById(R.id.counting);
+        roundedButton = rootView.findViewById(R.id.rounded_button);
+        vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+        //----------------------------Click button---------------------------------
       /*  ShapeDrawable shapedrawable = new ShapeDrawable();
         shapedrawable.setShape(new OvalShape());
         shapedrawable.getPaint().setColor(Color.TRANSPARENT);
@@ -121,7 +128,25 @@ public class ZikrDetails extends Fragment {
 
 
         textStyle();
+        int repeatingNumber = Integer.valueOf(zikrObject.TimesToRepeat);
 
+        click.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (countNumber <= repeatingNumber) {
+                    countingText.setText(String.valueOf(countNumber));
+                    countNumber++;
+                }
+                if (doIPlaySound)
+                    defualt.start();
+                if (doIVibrate)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        vibrator.vibrate(VibrationEffect.createOneShot(300, VibrationEffect.EFFECT_TICK));
+                    } else
+                        vibrator.vibrate(500);
+
+            }
+        });
         return rootView;
     }
 
