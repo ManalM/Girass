@@ -28,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,7 +45,7 @@ public class ZikrDetails extends Fragment {
     private SharedPreferences.Editor editor;
     private MediaPlayer defualt;
     private Boolean doIPlaySound, doIVibrate;
-
+    private ProgressBar progressBar;
     private Typeface defaultFont;
     private int TextSize, countNumber = 1;
     private ZikrObject zikrObject;
@@ -69,6 +70,7 @@ public class ZikrDetails extends Fragment {
         click = rootView.findViewById(R.id.click);
         countingText = rootView.findViewById(R.id.counting);
         roundedButton = rootView.findViewById(R.id.rounded_button);
+        progressBar = rootView.findViewById(R.id.progress);
         vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
         //----------------------------Click button---------------------------------
       /*  ShapeDrawable shapedrawable = new ShapeDrawable();
@@ -135,6 +137,10 @@ public class ZikrDetails extends Fragment {
             public void onClick(View v) {
                 if (countNumber <= repeatingNumber) {
                     countingText.setText(String.valueOf(countNumber));
+
+                    /*    todo:use progress bar
+                     */
+                    progressBar.setProgress(10);
                     countNumber++;
                 }
                 if (doIPlaySound)

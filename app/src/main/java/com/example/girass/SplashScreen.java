@@ -6,11 +6,15 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -20,13 +24,11 @@ public class SplashScreen extends AppCompatActivity {
     ImageView star, name;
     TextView label1, label2;
 
-    SharedPreferences pref;
-    SharedPreferences.Editor editor;
-    Fragment selected = null;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.splash_screen);
 // TODO: background size of the splash screen
         star = findViewById(R.id.star);
@@ -34,24 +36,6 @@ public class SplashScreen extends AppCompatActivity {
         label1 = findViewById(R.id.label1);
         label2 = findViewById(R.id.label2);
 
-
-        pref = PreferenceManager.getDefaultSharedPreferences(SplashScreen.this);
-
-        editor  = PreferenceManager.getDefaultSharedPreferences(SplashScreen.this).edit();
-        if (pref != null) {
-            if (pref.getString("launcher", "Zikr").equals("Zikr"))
-                selected = new AzkarFragment();
-            else if (pref.getString("launcher", "Masbaha").equals("Masbaha"))
-
-                selected = new MasbahaFragment();
-            else if (pref.getString("launcher", "Fav").equals("Fav"))
-
-                selected = new FavoriteFragment();
-        } else {
-            selected = new AzkarFragment();
-            editor.putString("launcher", "ZIkr");
-            editor.apply();
-        }
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -66,7 +50,8 @@ public class SplashScreen extends AppCompatActivity {
 
 
                 startActivity(new Intent(SplashScreen.this, MainActivity.class));
-
+               /* getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new AzkarFragment()).commit();*/
                 finish();
             }
         }, 1000);

@@ -45,6 +45,7 @@ public class FavoriteFragment extends Fragment {
     String[] favorites;
     final String mapKey = "map";
     String id = "";
+    ArrayList<String> favoritesList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,22 +68,25 @@ public class FavoriteFragment extends Fragment {
 
         //-------------------get Azkar------------------
 
-
-        favorites = new String[0];
+        // favorites = getArguments().getStringArray("titlesArray");
+       /* favorites = new String[0];
         HashMap<String, String> hashMap = loadMap();
         Collection<String> values = hashMap.values();
-        favorites = values.toArray(new String[hashMap.size()]);
-        FavAdapter adapter = new FavAdapter(getContext(), favorites);
-        list.setAdapter(adapter);
-//---------------------------------------------------------
+        favorites = values.toArray(new String[hashMap.size()]);*/
+    /*   AllZikr.  favoriteAzkar = new ArrayList<>();
+        Intent intent = getActivity().getIntent();
+        AllZikr.  favoriteAzkar = intent.getStringArrayListExtra("titleArray");
+        */
 
-        if (favorites.length == 0) {
+//----------------------subtitle of toolbar-----------------------
+
+      /*  if (AllZikr.favoriteAzkar.length == 0) {
             editText.setText(" ");
 
         } else {
             editText.setText(R.string.Edit);
 
-        }
+        }*/
 //---------------------------------------------------------
         DataService dataService = new DataService();
         final HeadZikrObject[] headZikrObjects = dataService.GetAllAzkar();
@@ -98,6 +102,14 @@ public class FavoriteFragment extends Fragment {
             i++;
         }
         //-------------------On Item Clicked----------------------
+        favorites = new String[10];
+        HashMap<String, String> hashMap = loadMap();
+        Collection<String> values = hashMap.values();
+        favorites = values.toArray(new String[hashMap.size()]);
+
+        FavAdapter adapter = new FavAdapter(getContext(), favorites);
+        list.setAdapter(adapter);
+
 
         adapter.setOnItemClickListener(new FavAdapter.OnItemClickListener() {
             @Override
@@ -118,6 +130,7 @@ public class FavoriteFragment extends Fragment {
                 //  new ZikrDetails().setArguments(bundle);
             }
         });
+
         return rootView;
     }
 

@@ -66,11 +66,15 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
     public static String title;
     Boolean isLiked = false;
     String id;
-    final String mapKey = "map";
+    private final String mapKey = "map";
     //SharedPreference sharedPreferences;
     private Context context;
-    int tag;
-    int indicatorNumber;
+    private int tag;
+    private int indicatorNumber;
+    public static ArrayList<String> favoriteAzkar;
+
+    private int favoriteSize = 0;
+    String ZikrId = "";
 
     @RequiresApi(api = Build.VERSION_CODES.P)
     @Nullable
@@ -84,6 +88,9 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
         like = rootView.findViewById(R.id.like);
         toolbar.setTitle("");
         backBtn.setImageResource(R.drawable.left_arrow);
+        //----------------------------------------------------------
+        DataService dataService = new DataService();
+        final HeadZikrObject[] headZikrObjects = dataService.GetAllAzkar();
         //--------------------------------------------------------
 
         title = getArguments().getString("array");
@@ -94,42 +101,27 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
 
 
         //------------------SharedPreference---------------------------
-        //sharedPreferences =  new SharedPreference(context);
         pref = PreferenceManager.getDefaultSharedPreferences(getContext());
         editor = PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
 
-        DataService dataService = new DataService();
-        final HeadZikrObject[] headZikrObjects = dataService.GetAllAzkar();
-        HashMap<String, String> hashMap = loadMap();
-//todo: make each item sparate from others , user can delete from the fav layout
-        String[] IDs = new String[hashMap.size()];
-        for (int i = 0; i < hashMap.size(); i++) {
 
-            if (hashMap.containsKey(id + 1)) {
-                if (pref.getBoolean("liked", true) == false) {
-                    like.setImageResource(R.drawable.fav_heart);
+        HashMap<String, String> retrieveMap = loadMap();
+        //todo:  user can delete from the fav layout
+        for (int i = 0; i < retrieveMap.size(); i++) {
 
-                } else {
-                    like.setImageResource(R.drawable.fill_heart);
+            if (retrieveMap.containsValue(title)) {
 
-                }
+                like.setImageResource(R.drawable.fill_heart);
+                isLiked = true;
             } else {
                 like.setImageResource(R.drawable.fav_heart);
-                Toast.makeText(getContext(), "hash map doesn't contain ID" + id, Toast.LENGTH_SHORT).show();
+                isLiked = false;
             }
 
         }
-      /*  for (String s: pref.getStringSet("set",set))
-        {*/
-        // if (pref.getStringSet("set", set).contains(id)) {
+        editor.putBoolean("like", isLiked);
 
-      /*  } else {
-            like.setImageResource(R.drawable.fav_heart);
-            Toast.makeText(this, "not equal", Toast.LENGTH_SHORT).show();
-        }*/
-        //   }
-
-        //--------------------------------------------------------
+        //----------------------viewPager and indicator---------------------
 
         mPager = (ViewPager) rootView.findViewById(R.id.view_pager);
         pagerAdapter = new ScreenSlidePagerAdapter(getChildFragmentManager());
@@ -162,47 +154,41 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
             }
         });
 
-        //------------------------------------------------------------------
+        //------------------------add to fav-----------------------------------
 
 
+        HashMap<String, String> azkar = new HashMap<>();
+        favoriteAzkar = new ArrayList<>();
         like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isLiked == false) {
-                    like.setImageResource(R.drawable.fill_heart);
-                    Toast.makeText(getContext(), title + id, Toast.LENGTH_SHORT).show();
 
-                    HashMap<String, String> hashMap = new HashMap<>();
-                    for (int i = 0; i < headZikrObjects.length; i++) {
-                        if (headZikrObjects[i].TITLE.equals(title) && headZikrObjects[i].ID.equals(id)) {
-                            hashMap.put(headZikrObjects[i].ID, headZikrObjects[i].TITLE);
 
-                            saveMap(hashMap);
-                            Toast.makeText(getContext(), "added" + headZikrObjects[i].ID + headZikrObjects[i].TITLE, Toast.LENGTH_SHORT).show();
+                for (int i = 0; i < headZikrObjects.length; i++) {
+                    if (headZikrObjects[i].TITLE.equals(title)) {
+                        ZikrId = headZikrObjects[i].ID;
+
+                        if (!retrieveMap.containsValue(title)) {
+
+                            like.setImageResource(R.drawable.fill_heart);
+                            azkar.put(ZikrId, title);
+
+                            Toast.makeText(getContext(), "added", Toast.LENGTH_SHORT).show();
+                            saveMap(azkar);
+
+                        } else {
+                            Toast.makeText(getContext(), "deleted", Toast.LENGTH_SHORT).show();
+                            like.setImageResource(R.drawable.fav_heart);
+                            azkar.remove(ZikrId);
+                            saveMap(azkar);
+                            // deleteMapItem();
+
                         }
                     }
-                    editor.putBoolean("liked", true);
-                    isLiked = true;
-                } else {
-                    like.setImageResource(R.drawable.fav_heart);
-                    HashMap<String, String> hashMap = new HashMap<>();
-                    for (int i = 0; i < headZikrObjects.length; i++) {
-                        if (headZikrObjects[i].TITLE.equals(title) && headZikrObjects[i].ID.equals(id)) {
-                            hashMap.put(headZikrObjects[i].ID, headZikrObjects[i].TITLE);
-
-                            deleteMapItem();
-                            Toast.makeText(getContext(), "deleted" + headZikrObjects[i].ID + headZikrObjects[i].TITLE, Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                    isLiked = false;
-                    editor.putBoolean("liked", false);
                 }
-                editor.putString("id", id);
-                editor.apply();
-
-
             }
         });
+
 
         mPager.setAdapter(pagerAdapter);
         mPager.addOnPageChangeListener(this);
@@ -210,12 +196,13 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
         return rootView;
     }
 
+
     private void saveMap(HashMap<String, String> inputMap) {
 
         if (pref != null) {
             JSONObject jsonObject = new JSONObject(inputMap);
             String jsonString = jsonObject.toString();
-
+            Toast.makeText(getContext(), jsonString, Toast.LENGTH_SHORT).show();
             editor.remove(mapKey).apply();
             editor.putString(mapKey, jsonString);
             editor.commit();
@@ -299,12 +286,10 @@ class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
     public static int num_pages;
 
     ZikrObject[] z;
+
     public ScreenSlidePagerAdapter(FragmentManager fm) {
         super(fm);
     }
-
-
-
 
 
     @Override

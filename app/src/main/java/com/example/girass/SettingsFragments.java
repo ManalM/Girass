@@ -227,7 +227,6 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
         //-------------------------------------------------------------
         textSize = (TextView) rootView.findViewById(R.id.text_size);
         fontType = (TextView) rootView.findViewById(R.id.FontType);
-        //TODO:the range of the textSize seekbar value !=0
         textSize.setTypeface(defualtFont);
         seekBar = rootView.findViewById(R.id.seek_bar);
 
@@ -304,9 +303,9 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
                 if (position == 0)
                     editor.putString("launcher", "Zikr");
                 else if (position == 1)
-                    editor.putString("launcher", "Masbaha");
-                else if (position == 2)
                     editor.putString("launcher", "Fav");
+                else if (position == 2)
+                    editor.putString("launcher", "Masbaha");
 
                 editor.putInt("selectedLauncher", position);
                 editor.commit();
@@ -1213,7 +1212,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setTitle(R.string.call_title);
-
+//todo: buttons dont appear
                 builder.setMessage(R.string.call_message);
                 builder.setPositiveButton("اتصال", new DialogInterface.OnClickListener() {
                     @Override
