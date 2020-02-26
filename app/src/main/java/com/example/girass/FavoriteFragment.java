@@ -41,11 +41,11 @@ public class FavoriteFragment extends Fragment {
     public static SharedPreferences.Editor editor;
 
     //---------------------
-    SharedPreference sharedPreference;
-    String[] favorites;
-    final String mapKey = "map";
+
+    private String[] favorites;
+    private final String mapKey = "map";
     String id = "";
-    ArrayList<String> favoritesList;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,41 +68,6 @@ public class FavoriteFragment extends Fragment {
 
         //-------------------get Azkar------------------
 
-        // favorites = getArguments().getStringArray("titlesArray");
-       /* favorites = new String[0];
-        HashMap<String, String> hashMap = loadMap();
-        Collection<String> values = hashMap.values();
-        favorites = values.toArray(new String[hashMap.size()]);*/
-    /*   AllZikr.  favoriteAzkar = new ArrayList<>();
-        Intent intent = getActivity().getIntent();
-        AllZikr.  favoriteAzkar = intent.getStringArrayListExtra("titleArray");
-        */
-
-//----------------------subtitle of toolbar-----------------------
-
-      /*  if (AllZikr.favoriteAzkar.length == 0) {
-            editText.setText(" ");
-
-        } else {
-            editText.setText(R.string.Edit);
-
-        }*/
-//---------------------------------------------------------
-        DataService dataService = new DataService();
-        final HeadZikrObject[] headZikrObjects = dataService.GetAllAzkar();
-        final String[] IDs = new String[headZikrObjects.length];
-
-        int i = 0;
-        while (i < headZikrObjects.length) {
-            //TODO:edit
-            if (headZikrObjects[i].TITLE.equals("")) {
-                id = headZikrObjects[i].ID;
-
-            }
-            i++;
-        }
-        //-------------------On Item Clicked----------------------
-        favorites = new String[10];
         HashMap<String, String> hashMap = loadMap();
         Collection<String> values = hashMap.values();
         favorites = values.toArray(new String[hashMap.size()]);
@@ -110,24 +75,33 @@ public class FavoriteFragment extends Fragment {
         FavAdapter adapter = new FavAdapter(getContext(), favorites);
         list.setAdapter(adapter);
 
+//----------------------subtitle of toolbar-----------------------
+
+        if (favorites.length == 0) {
+            editText.setText(" ");
+
+        } else {
+            editText.setText(R.string.Edit);
+
+        }
+
+        //-------------------On Item Clicked----------------------
+
+
 
         adapter.setOnItemClickListener(new FavAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-     /*           Intent intent = new Intent(getContext(), AllZikr.class);
-                intent.putExtra("array", favorites[position]);
-                intent.putExtra("id", id);
-                startActivity(intent);*/
+
 
                 AllZikr allZikr = new AllZikr();
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, allZikr).commit();
                 Bundle bundle = new Bundle();
                 bundle.putString("array", favorites[position]);
-                bundle.putString("id", id);
+
                 bundle.putInt("tag", 2);
 
                 allZikr.setArguments(bundle);
-                //  new ZikrDetails().setArguments(bundle);
             }
         });
 

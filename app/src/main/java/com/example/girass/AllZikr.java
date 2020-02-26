@@ -54,8 +54,7 @@ import me.relex.circleindicator.Config;
 public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener {
     private Toolbar toolbar;
     private TextView toolbarText;
-
-    // protected static int num_pages=1;
+    ;
 
     public static SharedPreferences pref;
     public static SharedPreferences.Editor editor;
@@ -65,15 +64,14 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
     private CircleIndicator circleIndicator;
     public static String title;
     Boolean isLiked = false;
-    String id;
+
     private final String mapKey = "map";
-    //SharedPreference sharedPreferences;
-    private Context context;
+
     private int tag;
     private int indicatorNumber;
     public static ArrayList<String> favoriteAzkar;
 
-    private int favoriteSize = 0;
+
     String ZikrId = "";
 
     @RequiresApi(api = Build.VERSION_CODES.P)
@@ -94,7 +92,6 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
         //--------------------------------------------------------
 
         title = getArguments().getString("array");
-        id = getArguments().getString("id");
         tag = getArguments().getInt("tag");
 
         toolbarText.setText(title);
@@ -103,13 +100,12 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
         //------------------SharedPreference---------------------------
         pref = PreferenceManager.getDefaultSharedPreferences(getContext());
         editor = PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
+        HashMap<String, String> azkar = loadMap();
 
 
-        HashMap<String, String> retrieveMap = loadMap();
-        //todo:  user can delete from the fav layout
-        for (int i = 0; i < retrieveMap.size(); i++) {
+        for (int i = 0; i < azkar.size(); i++) {
 
-            if (retrieveMap.containsValue(title)) {
+            if (azkar.containsValue(title)) {
 
                 like.setImageResource(R.drawable.fill_heart);
                 isLiked = true;
@@ -149,15 +145,12 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
             @Override
             public void onClick(View v) {
                 onBackPressed();
-                // Objects.requireNonNull(getActivity()).onBackPressed();
-
             }
         });
 
         //------------------------add to fav-----------------------------------
 
 
-        HashMap<String, String> azkar = new HashMap<>();
         favoriteAzkar = new ArrayList<>();
         like.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,24 +161,25 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
                     if (headZikrObjects[i].TITLE.equals(title)) {
                         ZikrId = headZikrObjects[i].ID;
 
-                        if (!retrieveMap.containsValue(title)) {
+                        if (!azkar.containsValue(title)) {
 
                             like.setImageResource(R.drawable.fill_heart);
                             azkar.put(ZikrId, title);
 
                             Toast.makeText(getContext(), "added", Toast.LENGTH_SHORT).show();
-                            saveMap(azkar);
+
 
                         } else {
                             Toast.makeText(getContext(), "deleted", Toast.LENGTH_SHORT).show();
                             like.setImageResource(R.drawable.fav_heart);
                             azkar.remove(ZikrId);
-                            saveMap(azkar);
+                            //  saveMap(azkar);
                             // deleteMapItem();
 
                         }
                     }
                 }
+                saveMap(azkar);
             }
         });
 
@@ -246,15 +240,6 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
 
 
     public void onBackPressed() {
-  /*      if (mPager.getCurrentItem() == 0) {
-            // If the user is currently looking at the first step, allow the system to handle the
-            // Back button. This calls finish() on this activity and pops the back stack.
-
-            super.onBackPressed();
-        } else {
-            // Otherwise, select the previous step.
-            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
-        }*/
         if (tag == 1)
             getFragmentManager().beginTransaction().replace(R.id.fragment_container, new AzkarFragment()).addToBackStack(null).commit();
         else if (tag == 2)
