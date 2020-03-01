@@ -10,6 +10,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.preference.PreferenceManager;
@@ -48,6 +49,8 @@ public class FavoriteFragment extends Fragment implements OnStartDragListener {
     private ItemTouchHelper mItemTouchHelper;
     public static HashMap<String, String> hashMap;
 
+
+    static int currentVisiblePosition;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -160,10 +163,6 @@ public class FavoriteFragment extends Fragment implements OnStartDragListener {
     }
 
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
 
     private HashMap<String, String> loadMap() {
         HashMap<String, String> outputMap = new HashMap<>();
@@ -199,5 +198,21 @@ public class FavoriteFragment extends Fragment implements OnStartDragListener {
     public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
         mItemTouchHelper.startDrag(viewHolder);
 
+    }
+
+    //------- save state ---------------
+    @Override
+    public void onPause() {
+        super.onPause();
+        currentVisiblePosition = 0;
+        currentVisiblePosition = ((LinearLayoutManager) list.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        ((LinearLayoutManager) list.getLayoutManager()).scrollToPosition(currentVisiblePosition);
+        currentVisiblePosition = 0;
     }
 }

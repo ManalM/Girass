@@ -6,9 +6,12 @@ import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import android.os.Handler;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 
 import android.view.View;
@@ -17,6 +20,7 @@ import android.view.ViewGroup;
 
 import android.widget.ImageButton;
 
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.widget.SearchView;
@@ -33,8 +37,15 @@ public class AzkarFragment extends Fragment implements SearchView.OnQueryTextLis
     private Toolbar toolbar;
     private ArrayList<String> titles;
     private LinearLayout searchBar;
+    private ImageView arrow;
     private Adapter mAdapterAzkar;
-
+    private RecyclerView listView;
+    private final String KEY_RECYCLER_STATE = "list_state";
+    private Bundle mBundleRecyclerViewState;
+    private Parcelable mListState;
+    private LinearLayout linearLayout;
+    GridLayoutManager linearLayoutManager;
+    static int currentVisiblePosition;
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -47,9 +58,10 @@ public class AzkarFragment extends Fragment implements SearchView.OnQueryTextLis
         ImageButton searchBtn = rootView.findViewById(R.id.button);
         searchBar = rootView.findViewById(R.id.search_view1);
         SearchView searchView = rootView.findViewById(R.id.searchText);
+        arrow = rootView.findViewById(R.id.search_arrow);
         //---------------------------------------------------
-
-
+        linearLayout = rootView.findViewById(R.id.recyclerView_layout);
+        linearLayoutManager = new GridLayoutManager(getContext(), 1);
         toolbar = (Toolbar) rootView.findViewById(R.id.main_toolbar);
         TextView toolbarText = rootView.findViewById(R.id.toolbar_title);
 
@@ -63,7 +75,7 @@ public class AzkarFragment extends Fragment implements SearchView.OnQueryTextLis
         /////////////  List Azkar //////////////////
         ///////////////////////////////////////////
 
-        RecyclerView listView = rootView.findViewById(R.id.list);
+        listView = rootView.findViewById(R.id.list);
         DataService dataService = new DataService();
         final HeadZikrObject[] headZikrObjects = dataService.GetAllAzkar();
 
@@ -93,6 +105,22 @@ public class AzkarFragment extends Fragment implements SearchView.OnQueryTextLis
             }
         });
 
+        arrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toolbar.setVisibility(View.VISIBLE);
+                searchBar.setVisibility(View.GONE);
+                int i = 0;
+                while (i < headZikrObjects.length) {
+                    titles.add(headZikrObjects[i].TITLE);
+                    i++;
+                }
+            }
+        });
+
+      /*  Fragment f = new Fragment();
+        SavedState savestate = getFragmentManager().saveFragmentInstanceState(f);
+        f.setInitialSavedState(savestate);*/
         return rootView;
 
 
@@ -128,4 +156,23 @@ public class AzkarFragment extends Fragment implements SearchView.OnQueryTextLis
 
 
     }
+
+    //------- save state ---------------
+    @Override
+    public void onPause() {
+        super.onPause();
+        mBundleRecyclerViewState = new Bundle();
+
+        currentVisiblePosition = 0;
+        currentVisiblePosition = ((LinearLayoutManager) listView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        ((LinearLayoutManager) listView.getLayoutManager()).scrollToPosition(currentVisiblePosition);
+        currentVisiblePosition = 0;
+    }
+
 }

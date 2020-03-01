@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
             editor.putString("launcher", "ZIkr");
             editor.apply();
         }
+
+
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 selectedFragment).commit();
         bottomNavigationView.setSelectedItemId(id);

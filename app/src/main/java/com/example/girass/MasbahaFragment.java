@@ -59,7 +59,7 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
     MediaPlayer pop, menu, click;
     Context context;
 
-
+    Bundle mBundleRecyclerViewState;
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
@@ -123,11 +123,12 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
 
         subhaBtn.setOnClickListener(this);
 
-        if (savedInstanceState == null) {
+/*        if (savedInstanceState == null) {
 
             Toast.makeText(context, "null", Toast.LENGTH_SHORT).show();
         } else
-            noOfTasih.setText(String.valueOf(savedInstanceState.getInt("number")));
+            noOfTasih.setText(String.valueOf(savedInstanceState.getInt("number")));*/
+        mBundleRecyclerViewState = new Bundle();
 
         return rootView;
     }
@@ -394,14 +395,33 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
         dialog.show();
     }
 
+    /*   @Override
+       public void onSaveInstanceState(@NonNull Bundle outState) {
+           super.onSaveInstanceState(outState);
+           //todo:not working
+           outState.putInt("number", theCount);
+           outState.putString("first", firstZikr.getText().toString());
+           outState.putString("sec", secZikr.getText().toString());
+           outState.putString("third", thirdZikr.getText().toString());
+
+       }*/
+//todo:not working
     @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        //todo:not working
-        outState.putInt("number", theCount);
-        outState.putString("first", firstZikr.getText().toString());
-        outState.putString("sec", secZikr.getText().toString());
-        outState.putString("third", thirdZikr.getText().toString());
+    public void onResume() {
+        super.onResume();
+        firstZikr.setText(mBundleRecyclerViewState.getString("first"));
+        secZikr.setText(mBundleRecyclerViewState.getString("sec"));
+        thirdZikr.setText(mBundleRecyclerViewState.getString("third"));
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mBundleRecyclerViewState.putString("first", firstZikr.getText().toString());
+        mBundleRecyclerViewState.putString("sec", secZikr.getText().toString());
+
+        mBundleRecyclerViewState.putString("third", thirdZikr.getText().toString());
 
     }
 }
