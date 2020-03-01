@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fav_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="15dp"
-
+    android:layout_margin="10dp"
     app:cardCornerRadius="20dp">
 
+
     <LinearLayout
+
         android:layout_width="match_parent"
+
+
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
@@ -19,9 +21,9 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:rotation="180"
             android:layout_marginLeft="5dp"
             android:background="@android:color/transparent"
+            android:rotation="180"
             android:src="@drawable/zikr_star" />
 
 
@@ -39,13 +41,11 @@
 
 
         <ImageButton
-            android:layout_marginRight="5dp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="end"
+            android:layout_marginRight="5dp"
             android:background="@android:color/transparent"
             android:src="@drawable/zikr_star" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>
-
-

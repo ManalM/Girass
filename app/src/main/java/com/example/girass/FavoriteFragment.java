@@ -4,15 +4,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +24,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.girass.Preference.SharedPreference;
+import com.example.girass.adapters.SimpleItemTouchHelperCallback;
+import com.example.girass.adapters.SwipeAdapter;
+import com.example.girass.helpers.OnStartDragListener;
 
 import org.json.JSONObject;
 
@@ -30,12 +37,11 @@ import java.util.Iterator;
 import java.util.List;
 
 
-public class FavoriteFragment extends Fragment {
+public class FavoriteFragment extends Fragment implements OnStartDragListener {
 
     private Toolbar toolbar;
     private TextView toolbarText, editText;
 
-    private String title;
     private RecyclerView list;
     public static SharedPreferences pref;
     public static SharedPreferences.Editor editor;
@@ -45,7 +51,8 @@ public class FavoriteFragment extends Fragment {
     private String[] favorites;
     private final String mapKey = "map";
     String id = "";
-
+    private ItemTouchHelper mItemTouchHelper;
+    public static HashMap<String, String> hashMap;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,14 +75,15 @@ public class FavoriteFragment extends Fragment {
 
         //-------------------get Azkar------------------
 
-        HashMap<String, String> hashMap = loadMap();
+        hashMap = loadMap();
         Collection<String> values = hashMap.values();
         favorites = values.toArray(new String[hashMap.size()]);
 
         FavAdapter adapter = new FavAdapter(getContext(), favorites);
         list.setAdapter(adapter);
 
-//----------------------subtitle of toolbar-----------------------
+
+        //----------------------subtitle of toolbar-----------------------
 
         if (favorites.length == 0) {
             editText.setText(" ");
@@ -86,7 +94,6 @@ public class FavoriteFragment extends Fragment {
         }
 
         //-------------------On Item Clicked----------------------
-
 
 
         adapter.setOnItemClickListener(new FavAdapter.OnItemClickListener() {
@@ -105,8 +112,59 @@ public class FavoriteFragment extends Fragment {
             }
         });
 
+        //----------------------edit text listener----------------------
+
+        editText.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View v) {
+
+                if (list.getAdapter() == adapter) {
+                    editText.setText(R.string.agree);
+                    ArrayList<String> arrayList = new ArrayList<>();
+
+                    for (int i = 0; i < favorites.length; i++) {
+                        arrayList.add(favorites[i]);
+                    }
+
+                    SwipeAdapter swipeAdapter = new SwipeAdapter(getContext(), arrayList, FavoriteFragment.this::onStartDrag);
+
+                    ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(swipeAdapter);
+                    mItemTouchHelper = new ItemTouchHelper(callback);
+                    mItemTouchHelper.attachToRecyclerView(list);
+    /*                ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+                    itemTouchHelper.attachToRecyclerView(list);
+                    SwipeAdapter swipeAdapter1 = new SwipeAdapter(getContext(), arrayList, null);
+
+*/
+                    list.setAdapter(swipeAdapter);
+                } else {
+                    editText.setText(R.string.Edit);
+/*
+                    DataService dataService = new DataService();
+                    HeadZikrObject[] headZikrObjects = dataService.GetAllAzkar();
+                    ArrayList<String> ids = new ArrayList<>();
+                    for (int i = 0; i < SwipeAdapter.mItems.size(); i++) {
+
+                        if (SwipeAdapter.mItems.get(i).equals(headZikrObjects[i])) {
+                            ids.add(headZikrObjects[i].ID);
+                            Toast.makeText(getContext(), ids.get(i), Toast.LENGTH_SHORT).show();
+                            hashMap.clear();
+                            hashMap.put(ids.get(i), SwipeAdapter.mItems.get(i));
+                            saveMap(hashMap);
+                        }
+                    }*/
+
+                    list.setAdapter(adapter);
+                }
+
+
+            }
+        });
+
         return rootView;
     }
+
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -130,5 +188,22 @@ public class FavoriteFragment extends Fragment {
             e.printStackTrace();
         }
         return outputMap;
+    }
+
+    private void saveMap(HashMap<String, String> inputMap) {
+
+        if (pref != null) {
+            JSONObject jsonObject = new JSONObject(inputMap);
+            String jsonString = jsonObject.toString();
+            editor.remove(mapKey).apply();
+            editor.putString(mapKey, jsonString);
+            editor.commit();
+        }
+    }
+
+    @Override
+    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+        mItemTouchHelper.startDrag(viewHolder);
+
     }
 }

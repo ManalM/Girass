@@ -25,6 +25,7 @@
 
     <!-- Fav Layout-->
     <string name="Edit">تعديل</string>
+    <string name="agree">موافق</string>
     <!-- Notification Settings   -->
 
     <string name="title">تنبيهات الأذكار</string>

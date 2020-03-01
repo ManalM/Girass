@@ -16,19 +16,3 @@ public class ZikrObject {
 }
 
 
-class HeadZikrObject {
-
-
-    String ID, SearchTitle, TITLE;
-
-    ZikrObject[] AllAzkar;
-
-
-    public HeadZikrObject(String ID, String searchTitle, String TITLE, ZikrObject[] allAzkar) {
-        this.ID = ID;
-        SearchTitle = searchTitle;
-        this.TITLE = TITLE;
-        AllAzkar = allAzkar;
-    }
-}
-

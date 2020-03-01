@@ -92,7 +92,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
     private TextView www, phone, twitter, email, desc,
             morningTime, eveningTime, sleepTime, wakeTime, reminderTime,
 
-            textSize, fontType;
+    textSize, fontType;
     private ImageView background_img, www_img, email_img, phone_img, twitter_img, dozo; // the image
     private ImageView generalArrow, masbahaArrow;
     //
@@ -142,6 +142,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
     SegmentedButtonGroup soundsGroup;
     SegmentedButtonGroup fontsGroup, launcherGroup;
     int count = 1;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -544,8 +545,6 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
     /*************************************
      ****    General settings funcs   ****
      *************************************/
-
-
 
 
     /******************************************
@@ -1048,18 +1047,19 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
 
             //  for (int i = 0; i <= 4; i++) {
             AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);
-                Intent myIntent = new Intent(getContext(), Notify.class);
-                myIntent.putExtra("content", content);
+            Intent myIntent = new Intent(getContext(), Notify.class);
+            myIntent.putExtra("content", content);
             myIntent.putExtra("count", count);
+            myIntent.putExtra("requestCode", requestCode);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), requestCode, myIntent, 0);
 
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
-                    ///TODO: try with Repeating func.
-                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
-                    //alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-                }
+                ///TODO: try with Repeating func.
+                // alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            }
             // intentArray.add(pendingIntent);
 
                 /*editor.putInt("arrayListLength", intentArray.size());
@@ -1071,6 +1071,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
             Toast.makeText(getContext(), "Error" + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
+
     private void cancelNotification(int requestCode) {
         count--;
         AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
@@ -1083,12 +1084,12 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
 
     private void creatReminderNotification() {
         //-- take random zikr as a content
-        DataService dataService = new DataService();
+ /*       DataService dataService = new DataService();
         String[] h = dataService.GetChosenAzkar();
         String randomReminderZikr = h[new Random().nextInt(h.length)];
-        Toast.makeText(getContext(), randomReminderZikr, Toast.LENGTH_SHORT).show();
-        Intent myIntent = new Intent(getContext(), Notify.class);
-        myIntent.putExtra("content", randomReminderZikr);
+        Toast.makeText(getContext(), randomReminderZikr, Toast.LENGTH_SHORT).show();*/
+        Intent myIntent = new Intent(getContext(), NotifyReminder.class);
+        // myIntent.putExtra("content", randomReminderZikr);
 
         try {
             AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);

@@ -5,13 +5,18 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.res.TypedArrayUtils;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,6 +32,8 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.viewHolder> {
     private String[] arrayList;
     String mRecentlyDeletedItem;
     int mRecentlyDeletedItemPosition;
+
+
     public interface OnItemClickListener {
         void onItemClick(int position);
     }
@@ -55,8 +62,8 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.viewHolder> {
     public void onBindViewHolder(@NonNull FavAdapter.viewHolder holder, int position) {
 
         holder.title.setText(arrayList[position]);
-    }
 
+    }
 
     @Override
     public int getItemCount() {
@@ -69,13 +76,14 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.viewHolder> {
         SharedPreferences.Editor editor;
 
         int textSize;
-
         Typeface defaultFont;
 
         public viewHolder(@NonNull View itemView, FavAdapter.OnItemClickListener listener) {
             super(itemView);
 
             title = itemView.findViewById(R.id.zikrText_fav);
+
+
             //-------------------------- SharedPreference -----------------
             pref = PreferenceManager.getDefaultSharedPreferences(FavAdapter.mContext);
             editor = PreferenceManager.getDefaultSharedPreferences(FavAdapter.mContext).edit();
@@ -111,9 +119,11 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.viewHolder> {
             title.setTypeface(defaultFont);
             //--------------------------------------------------------
 
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     if (listener != null) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
@@ -124,5 +134,6 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.viewHolder> {
             });
 
         }
+
     }
 }

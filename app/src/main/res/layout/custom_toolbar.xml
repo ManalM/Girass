@@ -12,10 +12,11 @@
 
     <TextView
         android:id="@+id/edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
         android:layout_margin="15dp"
         android:layout_gravity="end"
+        android:padding="3dp"
         android:text=""
         style="@style/Base.TextAppearance.Widget.AppCompat.Toolbar.Subtitle." />
     <TextView
