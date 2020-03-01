@@ -31,33 +31,18 @@ import java.util.ArrayList;
 public class Adapter extends RecyclerView.Adapter<Adapter.viewHolder> implements Filterable {
 
     private static Context mContext;
-    private ArrayList<String> mAzkarArray;
+    private static ArrayList<String> mAzkarArray;
     private ArrayList<String> serachList;
-    private Adapter.OnItemClickListener mListener;
     private ValueFilter valueFilter;
 
-
-    @Override
-    public Filter getFilter() {
-        if (valueFilter == null) {
-            valueFilter = new ValueFilter();
-        }
-        return valueFilter;
-    }
+    private static SelectedUser selectedUser;
 
 
-    public interface OnItemClickListener {
-        void onItemClick(int position);
-    }
-
-    public void setOnItemClickListener(Adapter.OnItemClickListener listener) {
-        mListener = listener;
-    }
-
-    public Adapter(Context context, ArrayList<String> mAzkarArray) {
+    public Adapter(Context context, ArrayList<String> mAzkarArray, SelectedUser selectedUser) {
         this.mContext = context;
         this.mAzkarArray = mAzkarArray;
         this.serachList = mAzkarArray;
+        this.selectedUser = selectedUser;
     }
 
     @Override
@@ -66,18 +51,35 @@ public class Adapter extends RecyclerView.Adapter<Adapter.viewHolder> implements
         /*    TODO: ZIKR_LIST_ITEM LAYOUT */
 
         View view = mInflater.inflate(R.layout.zikr_list_item, parent, false);
-        return new Adapter.viewHolder(view, mListener);
+        return new Adapter.viewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull viewHolder holder, int position) {
         holder.mTextView.setText(mAzkarArray.get(position));
 
+
     }
 
     @Override
     public int getItemCount() {
         return mAzkarArray.size();
+    }
+
+    //--------- listener for each item---------------
+    public interface SelectedUser {
+
+        void selectedUser(String s);
+
+    }
+
+    // -------------- filter the search -------------
+    @Override
+    public Filter getFilter() {
+        if (valueFilter == null) {
+            valueFilter = new ValueFilter();
+        }
+        return valueFilter;
     }
 
     public static class viewHolder extends RecyclerView.ViewHolder {
@@ -91,7 +93,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.viewHolder> implements
 
         Typeface defaultFont;
 
-        public viewHolder(@NonNull View itemView, final OnItemClickListener listener) {
+        public viewHolder(@NonNull View itemView) {
             super(itemView);
 
             //-------------------------- SharedPreference -----------------
@@ -136,12 +138,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.viewHolder> implements
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (listener != null) {
-                        int position = getAdapterPosition();
-                        if (position != RecyclerView.NO_POSITION) {
-                            listener.onItemClick(position);
-                        }
-                    }
+
+                    selectedUser.selectedUser(mAzkarArray.get(getAdapterPosition()));
+
                 }
             });
         }
@@ -180,7 +179,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.viewHolder> implements
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-
             mAzkarArray = (ArrayList<String>) results.values;
 
             notifyDataSetChanged();

@@ -1,27 +1,20 @@
 package com.example.girass;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
+
 import android.widget.ImageButton;
 
 import android.widget.LinearLayout;
@@ -32,34 +25,29 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class AzkarFragment extends Fragment implements SearchView.OnQueryTextListener {
-    private RecyclerView listView;
+public class AzkarFragment extends Fragment implements SearchView.OnQueryTextListener, Adapter.SelectedUser {
     private Toolbar toolbar;
-    private TextView toolbarText;
-    private ImageButton searchBtn;
-    ArrayList<String> titles;
-    LinearLayout searchBar;
-    Adapter mAdapterAzkar;
-    SearchView searchView;
+    private ArrayList<String> titles;
+    private LinearLayout searchBar;
+    private Adapter mAdapterAzkar;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_azkar, container, false);
 
-        // final Animation anim = AnimationUtils.loadAnimation(this, R.anim.fade_anim);
         /////////////////////////////////////////////
         /////////////     ToolBar       ////////////
         //////////////////////////////////////////
 
-        searchBtn = rootView.findViewById(R.id.button);
+        ImageButton searchBtn = rootView.findViewById(R.id.button);
         searchBar = rootView.findViewById(R.id.search_view1);
-        searchView = rootView.findViewById(R.id.searchText);
+        SearchView searchView = rootView.findViewById(R.id.searchText);
         //---------------------------------------------------
 
 
         toolbar = (Toolbar) rootView.findViewById(R.id.main_toolbar);
-        toolbarText = rootView.findViewById(R.id.toolbar_title);
+        TextView toolbarText = rootView.findViewById(R.id.toolbar_title);
 
         toolbar.setTitle("");
         toolbarText.setText(R.string.azkar);
@@ -71,7 +59,7 @@ public class AzkarFragment extends Fragment implements SearchView.OnQueryTextLis
         /////////////  List Azkar //////////////////
         ///////////////////////////////////////////
 
-        listView = rootView.findViewById(R.id.list);
+        RecyclerView listView = rootView.findViewById(R.id.list);
         DataService dataService = new DataService();
         final HeadZikrObject[] headZikrObjects = dataService.GetAllAzkar();
 
@@ -84,12 +72,12 @@ public class AzkarFragment extends Fragment implements SearchView.OnQueryTextLis
         }
 
 
-        mAdapterAzkar = new Adapter(getContext(), titles);
+        mAdapterAzkar = new Adapter(getContext(), titles, this);
         listView.setLayoutManager(new GridLayoutManager(getContext(), 1));
         listView.setAdapter(mAdapterAzkar);
 
 
-        clickItem();
+        ///----------------search btn and process ----------
         searchView.setOnQueryTextListener(this);
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,25 +85,7 @@ public class AzkarFragment extends Fragment implements SearchView.OnQueryTextLis
                 titles.clear();
                 toolbar.setVisibility(View.GONE);
                 searchBar.setVisibility(View.VISIBLE);
-                clickItem();
-/*
-                mAdapterAzkar.setOnItemClickListener(new Adapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(int position) {
-                        AllZikr allZikr = new AllZikr();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("array", titles.get(position));
-                        bundle.putInt("tag", 1);
-                        allZikr.setArguments(bundle);
 
-                        //----------------------------------------------------------------
-
-
-                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, allZikr).commit();
-
-                    }
-                });
-*/
             }
         });
 
@@ -125,26 +95,6 @@ public class AzkarFragment extends Fragment implements SearchView.OnQueryTextLis
     }
 
 
-    private void clickItem() {
-        mAdapterAzkar.setOnItemClickListener(new Adapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                AllZikr allZikr = new AllZikr();
-                Bundle bundle = new Bundle();
-                bundle.putString("array", titles.get(position));
-//                bundle.putString("id", String.valueOf(position + 1));
-                bundle.putInt("tag", 1);
-                allZikr.setArguments(bundle);
-
-                //----------------------------------------------------------------
-
-
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, allZikr).commit();
-
-            }
-        });
-
-    }
     @Override
     public boolean onQueryTextSubmit(String query) {
 
@@ -154,6 +104,24 @@ public class AzkarFragment extends Fragment implements SearchView.OnQueryTextLis
     @Override
     public boolean onQueryTextChange(String newText) {
         mAdapterAzkar.getFilter().filter(newText);
+
+
         return false;
+    }
+
+
+    ///---------- send data to allZIkr fragment ------------
+    @Override
+    public void selectedUser(String s) {
+
+        AllZikr allZikr = new AllZikr();
+        Bundle bundle = new Bundle();
+        bundle.putString("array", s);
+        bundle.putInt("tag", 1);
+        allZikr.setArguments(bundle);
+
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, allZikr).commit();
+
+
     }
 }
