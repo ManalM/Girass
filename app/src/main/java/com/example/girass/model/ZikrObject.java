@@ -1,11 +1,11 @@
-package com.example.girass;
+package com.example.girass.model;
 
 public class ZikrObject {
 
 
-    String ID, Details, Narriated;
+    public String ID, Details, Narriated;
 
-    int TimesToRepeat;
+    public int TimesToRepeat;
 
     public ZikrObject(String ID, String details, int timesToRepeat, String narriated) {
         this.ID = ID;

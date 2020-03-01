@@ -1,30 +1,19 @@
-package com.example.girass;
+package com.example.girass.adapters;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.core.content.res.TypedArrayUtils;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.girass.Preference.SharedPreference;
-
-import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
-import java.util.List;
+import com.example.girass.R;
 
 public class FavAdapter extends RecyclerView.Adapter<FavAdapter.viewHolder> {
     private FavAdapter.OnItemClickListener mListener;

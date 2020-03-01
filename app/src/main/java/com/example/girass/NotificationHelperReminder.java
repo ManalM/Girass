@@ -14,6 +14,8 @@ import android.preference.PreferenceManager;
 
 import androidx.core.app.NotificationCompat;
 
+import com.example.girass.Data.DataService;
+
 import java.util.Random;
 
 class NotificationHelperReminder extends ContextWrapper {

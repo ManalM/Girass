@@ -2,17 +2,14 @@ package com.example.girass.adapters;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,10 +20,6 @@ import androidx.core.view.MotionEventCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.girass.DataService;
-import com.example.girass.FavAdapter;
-import com.example.girass.FavoriteFragment;
-import com.example.girass.HeadZikrObject;
 import com.example.girass.R;
 import com.example.girass.helpers.ItemTouchHelperAdapter;
 import com.example.girass.helpers.ItemTouchHelperViewHolder;
@@ -38,8 +31,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
-
-import static androidx.recyclerview.widget.ItemTouchHelper.*;
 
 public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.ItemViewHolder> implements ItemTouchHelperAdapter {
 

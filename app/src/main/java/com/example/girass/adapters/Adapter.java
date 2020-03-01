@@ -1,22 +1,23 @@
-package com.example.girass;
+package com.example.girass.adapters;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.text.Html;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.girass.Data.DataService;
+import com.example.girass.model.HeadZikrObject;
+import com.example.girass.R;
 
 import java.util.ArrayList;
 

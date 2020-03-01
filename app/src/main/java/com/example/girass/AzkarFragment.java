@@ -23,6 +23,10 @@ import androidx.appcompat.widget.SearchView;
 
 import android.widget.TextView;
 
+import com.example.girass.Data.DataService;
+import com.example.girass.adapters.Adapter;
+import com.example.girass.model.HeadZikrObject;
+
 import java.util.ArrayList;
 
 public class AzkarFragment extends Fragment implements SearchView.OnQueryTextListener, Adapter.SelectedUser {

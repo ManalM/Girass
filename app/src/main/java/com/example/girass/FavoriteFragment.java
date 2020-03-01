@@ -1,9 +1,6 @@
 package com.example.girass;
 
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -16,14 +13,12 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.girass.Preference.SharedPreference;
+import com.example.girass.adapters.FavAdapter;
 import com.example.girass.adapters.SimpleItemTouchHelperCallback;
 import com.example.girass.adapters.SwipeAdapter;
 import com.example.girass.helpers.OnStartDragListener;
@@ -34,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 
 
 public class FavoriteFragment extends Fragment implements OnStartDragListener {

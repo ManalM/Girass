@@ -1,7 +1,6 @@
 package com.example.girass;
 
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 
@@ -14,7 +13,6 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +32,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Set;
+import com.example.girass.Data.DataService;
+import com.example.girass.adapters.AdapterAzkar;
 
 import static android.content.Context.MODE_PRIVATE;
 

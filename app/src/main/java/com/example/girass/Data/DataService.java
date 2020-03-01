@@ -1,4 +1,7 @@
-package com.example.girass;
+package com.example.girass.Data;
+
+import com.example.girass.model.HeadZikrObject;
+import com.example.girass.model.ZikrObject;
 
 import java.util.UUID;
 

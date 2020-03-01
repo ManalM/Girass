@@ -1,14 +1,15 @@
-package com.example.girass;
+package com.example.girass.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.girass.R;
 
 /*
  * This adapter is related to the dialog  List of the MasbahaFragment

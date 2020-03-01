@@ -1,4 +1,4 @@
-package com.example.girass;
+package com.example.girass.model;
 
 public class HeadZikrObject {
 
