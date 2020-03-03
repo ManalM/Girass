@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -123,11 +124,6 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
 
         subhaBtn.setOnClickListener(this);
 
-/*        if (savedInstanceState == null) {
-
-            Toast.makeText(context, "null", Toast.LENGTH_SHORT).show();
-        } else
-            noOfTasih.setText(String.valueOf(savedInstanceState.getInt("number")));*/
         mBundleRecyclerViewState = new Bundle();
 
         return rootView;
@@ -378,8 +374,8 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
 
                 if (prefs.getString("chooseZikr", chozenZikr) != null) {
                     noOfTasih.setText(chozenZikr);
-                    noOfTasih.setTextColor(getResources().getColor(R.color.firstText));
-                    noOfTasih.setTextSize(15);// change with settings
+                    noOfTasih.setTextColor(getResources().getColor(R.color.secondText));
+                    noOfTasih.setTextSize(20);
                 }
                 firstZikr.setText("");
                 secZikr.setText("");
@@ -395,33 +391,74 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
         dialog.show();
     }
 
-    /*   @Override
-       public void onSaveInstanceState(@NonNull Bundle outState) {
-           super.onSaveInstanceState(outState);
-           //todo:not working
-           outState.putInt("number", theCount);
-           outState.putString("first", firstZikr.getText().toString());
-           outState.putString("sec", secZikr.getText().toString());
-           outState.putString("third", thirdZikr.getText().toString());
-
-       }*/
-//todo:not working
     @Override
     public void onResume() {
         super.onResume();
-        firstZikr.setText(mBundleRecyclerViewState.getString("first"));
+        if (mBundleRecyclerViewState != null) {
+            int bundleCount = mBundleRecyclerViewState.getInt("count");
+            String bundleZikr = mBundleRecyclerViewState.getString("text");
+            if (bundleCount == 0)
+                noOfTasih.setText(String.valueOf(bundleCount));
+            if (bundleCount == 1) {
+
+                firstZikr.setText(bundleZikr);
+                secZikr.setText("");
+                thirdZikr.setText("");
+            } else if (bundleCount == 2) {
+
+                secZikr.setText(bundleZikr);
+
+            } else if (bundleCount == 3) {
+
+                thirdZikr.setText(bundleZikr);
+
+
+            }
+
+        }
+
+
+    /*    firstZikr.setText(mBundleRecyclerViewState.getString("first"));
         secZikr.setText(mBundleRecyclerViewState.getString("sec"));
         thirdZikr.setText(mBundleRecyclerViewState.getString("third"));
-
+*/
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mBundleRecyclerViewState.putString("first", firstZikr.getText().toString());
-        mBundleRecyclerViewState.putString("sec", secZikr.getText().toString());
 
-        mBundleRecyclerViewState.putString("third", thirdZikr.getText().toString());
+        int prefCount = 8;//prefs.getInt("count",0) ;
+        if (prefCount != 0 || !zikr.equals(null)) {
+            mBundleRecyclerViewState.putInt("count", prefCount);
+            mBundleRecyclerViewState.putString("text", zikr);
+
+        }
+    }
+
+
+   /* @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("no", prefs.getString("count",null).toString());
+        outState.putString("first", firstZikr.getText().toString());
+        outState.putString("sec", secZikr.getText().toString());
+        outState.putString("third", thirdZikr.getText().toString());
 
     }
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            noOfTasih.setText(savedInstanceState.getString("no"));
+
+            firstZikr.setText(savedInstanceState.getString("first"));
+
+            thirdZikr.setText(savedInstanceState.getString("third"));
+
+            secZikr.setText(savedInstanceState.getString("sec"));
+
+        }
+    }*/
+
 }

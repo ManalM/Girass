@@ -37,7 +37,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.viewHolder> implements
     private ValueFilter valueFilter;
 
     private static SelectedUser selectedUser;
-
+    public static int selectedItem;
 
     public Adapter(Context context, ArrayList<String> mAzkarArray, SelectedUser selectedUser) {
         this.mContext = context;
@@ -141,6 +141,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.viewHolder> implements
                 public void onClick(View v) {
 
                     selectedUser.selectedUser(mAzkarArray.get(getAdapterPosition()));
+                    selectedItem = getAdapterPosition();
 
                 }
             });

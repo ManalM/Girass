@@ -3,6 +3,7 @@ package com.example.girass;
 
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -42,24 +43,28 @@ public class AzkarFragment extends Fragment implements SearchView.OnQueryTextLis
     private RecyclerView listView;
     private final String KEY_RECYCLER_STATE = "list_state";
     private Bundle mBundleRecyclerViewState;
-    private Parcelable mListState;
+    private SavedState mListState;
     private LinearLayout linearLayout;
     GridLayoutManager linearLayoutManager;
     static int currentVisiblePosition;
+    String LIST_STATE_KEY = "key";
+    private AzkarFragment mLayoutManager;
+
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_azkar, container, false);
 
-        /////////////////////////////////////////////
-        /////////////     ToolBar       ////////////
-        //////////////////////////////////////////
+
+        //---------------------------------------------------
 
         ImageButton searchBtn = rootView.findViewById(R.id.button);
         searchBar = rootView.findViewById(R.id.search_view1);
         SearchView searchView = rootView.findViewById(R.id.searchText);
         arrow = rootView.findViewById(R.id.search_arrow);
-        //---------------------------------------------------
+        /////////////////////////////////////////////
+        /////////////     ToolBar       ////////////
+        //////////////////////////////////////////
         linearLayout = rootView.findViewById(R.id.recyclerView_layout);
         linearLayoutManager = new GridLayoutManager(getContext(), 1);
         toolbar = (Toolbar) rootView.findViewById(R.id.main_toolbar);
@@ -84,15 +89,19 @@ public class AzkarFragment extends Fragment implements SearchView.OnQueryTextLis
         int i = 0;
         while (i < headZikrObjects.length) {
             titles.add(headZikrObjects[i].TITLE);
+
             i++;
         }
 
 
+
         mAdapterAzkar = new Adapter(getContext(), titles, this);
         listView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+        final Parcelable state;
+        state = listView.getLayoutManager().onSaveInstanceState();
         listView.setAdapter(mAdapterAzkar);
 
-
+        //   listView.getLayoutManager().onRestoreInstanceState(state);
         ///----------------search btn and process ----------
         searchView.setOnQueryTextListener(this);
         searchBtn.setOnClickListener(new View.OnClickListener() {
@@ -161,8 +170,10 @@ public class AzkarFragment extends Fragment implements SearchView.OnQueryTextLis
     @Override
     public void onPause() {
         super.onPause();
-        mBundleRecyclerViewState = new Bundle();
+        //mBundleRecyclerViewState = new Bundle();
 
+
+        //   mBundleRecyclerViewState.putInt("selectedItem",mAdapterAzkar.selectedItem);
         currentVisiblePosition = 0;
         currentVisiblePosition = ((LinearLayoutManager) listView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
     }
@@ -171,8 +182,37 @@ public class AzkarFragment extends Fragment implements SearchView.OnQueryTextLis
     public void onResume() {
         super.onResume();
 
+  /*      if (mListState != null) {
+            mLayoutManager.onActivityCreated(mListState);
+        }*/
+
         ((LinearLayoutManager) listView.getLayoutManager()).scrollToPosition(currentVisiblePosition);
+
         currentVisiblePosition = 0;
+    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle state) {
+        super.onActivityCreated(state);
+        // if(state != null)
+        //      mListState = state.getParcelable(LIST_STATE_KEY);
+    }
+/*
+    private void onRestoreInstanceState(Bundle state) {
+        super.onRestoreInstanceState(state);
+        // Retrieve list state and list/item positions
+        if(state != null)
+            mListState = state.getParcelable(LIST_STATE_KEY);
+    }*/
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+//        mListState =  getFragmentManager().saveFragmentInstanceState(mLayoutManager);
+        //  mListState = mLayoutManager.onSaveInstanceState();
+        //  savedInstanceState.putParcelable(LIST_STATE_KEY, mListState);
+
     }
 
 }
