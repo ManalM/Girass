@@ -10,25 +10,28 @@
     android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
     android:id="@+id/main_toolbar">
 
-    <TextView
-        android:id="@+id/edit"
-        android:layout_width="50dp"
-        android:layout_height="match_parent"
-        android:layout_margin="15dp"
-        android:layout_gravity="end"
-        android:padding="3dp"
-        android:text=""
-        style="@style/Base.TextAppearance.Widget.AppCompat.Toolbar.Subtitle." />
-    <!--
-        todo:text space
-    -->
+    <!--  <TextView
+          android:id="@+id/edit"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:layout_margin="15dp"
+          android:layout_gravity="end"
+          android:padding="3dp"
+
+          android:text=""
+          style="@style/Base.TextAppearance.Widget.AppCompat.Toolbar.Subtitle." />
+  -->
     <TextView
         android:id="@+id/toolbar_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
+        android:layout_margin="3dp"
+
         style="@style/Toolbar.TitleText"
         android:layout_gravity="center"
+        android:ellipsize="end"
+        android:singleLine="true"
         />
 
     <ImageButton
@@ -37,7 +40,7 @@
         android:layout_height="wrap_content"
 
         android:layout_gravity="start"
-        android:layout_margin="15dp"
+        android:layout_margin="10dp"
         android:background="@android:color/transparent"
         />
 

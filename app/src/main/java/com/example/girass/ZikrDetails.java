@@ -22,6 +22,8 @@ import android.widget.TextView;
 
 import com.example.girass.model.ZikrObject;
 
+import static android.text.Layout.JUSTIFICATION_MODE_INTER_WORD;
+
 
 public class ZikrDetails extends Fragment {
 
@@ -146,7 +148,12 @@ public class ZikrDetails extends Fragment {
     private void textStyle() {
         zikr.setTypeface(defaultFont);
         narriated.setTypeface(defaultFont);
-
+        // zikr.getLineSpacingExtra();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            zikr.setJustificationMode(JUSTIFICATION_MODE_INTER_WORD);
+            narriated.setJustificationMode(JUSTIFICATION_MODE_INTER_WORD);
+        }
+        //narriated.setLineSpacing(15,15);
         zikr.setTextSize(TextSize);
         narriated.setTextSize(TextSize);
     }

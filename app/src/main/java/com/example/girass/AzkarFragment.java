@@ -192,6 +192,7 @@ public class AzkarFragment extends Fragment implements SearchView.OnQueryTextLis
     }
 
 
+
     @Override
     public void onActivityCreated(@Nullable Bundle state) {
         super.onActivityCreated(state);

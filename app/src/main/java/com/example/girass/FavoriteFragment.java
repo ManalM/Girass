@@ -61,7 +61,7 @@ public class FavoriteFragment extends Fragment implements OnStartDragListener {
         //------------ToolBar----------------------
 
         toolbar = (Toolbar) rootView.findViewById(R.id.main_toolbar);
-        toolbarText = rootView.findViewById(R.id.toolbar_title);
+        toolbarText = rootView.findViewById(R.id.toolbar_title1);
         editText = rootView.findViewById(R.id.edit);
         toolbar.setTitle("");
         toolbarText.setText(R.string.fav);

@@ -34,6 +34,7 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:gravity="center"
+            android:singleLine="true"
             android:minHeight="?android:attr/listPreferredItemHeight"
             android:textColor="@color/textColor"
             android:textSize="20sp"

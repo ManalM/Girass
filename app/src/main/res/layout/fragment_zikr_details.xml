@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|center_vertical"
                 android:layout_margin="20dp"
-
+                android:lineSpacingExtra="15dp"
                 android:layout_weight="1"
                 android:gravity="center|center_vertical"
                 android:textColor="@color/textColor"
@@ -46,7 +46,7 @@
             <TextView
                 android:id="@+id/narriated"
                 android:layout_width="match_parent"
-
+                android:lineSpacingExtra="15dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|center_vertical"
                 android:layout_margin="20dp"
