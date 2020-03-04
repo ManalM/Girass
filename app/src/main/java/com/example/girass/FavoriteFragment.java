@@ -44,7 +44,7 @@ public class FavoriteFragment extends Fragment implements OnStartDragListener {
 
     //---------------------
 
-    private String[] favorites;
+    private ArrayList<String> favorites;
     private final String mapKey = "map";
     String id = "";
     private ItemTouchHelper mItemTouchHelper;
@@ -75,7 +75,11 @@ public class FavoriteFragment extends Fragment implements OnStartDragListener {
 
         hashMap = loadMap();
         Collection<String> values = hashMap.values();
-        favorites = values.toArray(new String[hashMap.size()]);
+
+
+//Creating an ArrayList of values
+
+        favorites = new ArrayList<String>(values);
 
         FavAdapter adapter = new FavAdapter(getContext(), favorites);
         list.setAdapter(adapter);
@@ -83,7 +87,7 @@ public class FavoriteFragment extends Fragment implements OnStartDragListener {
 
         //----------------------subtitle of toolbar-----------------------
 
-        if (favorites.length == 0) {
+        if (favorites.size() == 0) {
             editText.setText(" ");
 
         } else {
@@ -102,9 +106,7 @@ public class FavoriteFragment extends Fragment implements OnStartDragListener {
                 AllZikr allZikr = new AllZikr();
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, allZikr).commit();
                 Bundle bundle = new Bundle();
-                bundle.putString("array", favorites[position]);
-
-                Toast.makeText(getContext(), "length:" + favorites[position].length(), Toast.LENGTH_SHORT).show();
+                bundle.putString("array", favorites.get(position));
                 bundle.putInt("tag", 2);
 
                 allZikr.setArguments(bundle);
@@ -120,39 +122,17 @@ public class FavoriteFragment extends Fragment implements OnStartDragListener {
 
                 if (list.getAdapter() == adapter) {
                     editText.setText(R.string.agree);
-                    ArrayList<String> arrayList = new ArrayList<>();
 
-                    for (int i = 0; i < favorites.length; i++) {
-                        arrayList.add(favorites[i]);
-                    }
-
-                    SwipeAdapter swipeAdapter = new SwipeAdapter(getContext(), arrayList, FavoriteFragment.this::onStartDrag);
+                    SwipeAdapter swipeAdapter = new SwipeAdapter(getContext(), favorites, FavoriteFragment.this::onStartDrag);
 
                     ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(swipeAdapter);
                     mItemTouchHelper = new ItemTouchHelper(callback);
                     mItemTouchHelper.attachToRecyclerView(list);
-    /*                ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
-                    itemTouchHelper.attachToRecyclerView(list);
-                    SwipeAdapter swipeAdapter1 = new SwipeAdapter(getContext(), arrayList, null);
-
-*/
                     list.setAdapter(swipeAdapter);
-                } else {
-                    editText.setText(R.string.Edit);
-/*
-                    DataService dataService = new DataService();
-                    HeadZikrObject[] headZikrObjects = dataService.GetAllAzkar();
-                    ArrayList<String> ids = new ArrayList<>();
-                    for (int i = 0; i < SwipeAdapter.mItems.size(); i++) {
 
-                        if (SwipeAdapter.mItems.get(i).equals(headZikrObjects[i])) {
-                            ids.add(headZikrObjects[i].ID);
-                            Toast.makeText(getContext(), ids.get(i), Toast.LENGTH_SHORT).show();
-                            hashMap.clear();
-                            hashMap.put(ids.get(i), SwipeAdapter.mItems.get(i));
-                            saveMap(hashMap);
-                        }
-                    }*/
+                } else {
+
+                    editText.setText(R.string.Edit);
 
                     list.setAdapter(adapter);
                 }

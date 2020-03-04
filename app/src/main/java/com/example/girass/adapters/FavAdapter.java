@@ -18,10 +18,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.girass.R;
 
+import java.util.ArrayList;
+
 public class FavAdapter extends RecyclerView.Adapter<FavAdapter.viewHolder> {
     private FavAdapter.OnItemClickListener mListener;
     public static Context mContext;
-    private static String[] arrayList;
+    private static ArrayList<String> arrayList;
     String mRecentlyDeletedItem;
     int mRecentlyDeletedItemPosition;
     static int value = 0;
@@ -34,7 +36,7 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.viewHolder> {
         mListener = listener;
     }
 
-    public FavAdapter(Context mContext, String[] arrayList) {
+    public FavAdapter(Context mContext, ArrayList<String> arrayList) {
         this.mContext = mContext;
         this.arrayList = arrayList;
 
@@ -52,13 +54,13 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.viewHolder> {
     @Override
     public void onBindViewHolder(@NonNull FavAdapter.viewHolder holder, int position) {
 
-        holder.title.setText(arrayList[position]);
+        holder.title.setText(arrayList.get(position));
         value = position;
     }
 
     @Override
     public int getItemCount() {
-        return arrayList.length;
+        return arrayList.size();
     }
 
     public class viewHolder extends RecyclerView.ViewHolder {
