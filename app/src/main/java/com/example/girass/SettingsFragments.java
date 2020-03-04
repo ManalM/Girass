@@ -1180,7 +1180,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
         Glide.with(this).load(R.drawable.phone).into(phone_img);
         Glide.with(this).load(R.drawable.email1).into(email_img);
 
-        twitter.setText("@dozo_apps");
+        twitter.setText("@dozo_app");
         desc.setText("تمت برمجة هذا التطبيق في معامل دوزو إذا كان لديك اقتراح أو فكرة تطبيق تريد أن  ننفذها لك فتواصل معنا");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             desc.setJustificationMode(JUSTIFICATION_MODE_INTER_WORD);
@@ -1251,11 +1251,9 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
                         sendIntent.putExtra(Intent.EXTRA_TEXT, "السلام عليكم ...");
                         //sendIntent.setType("text/plain");
                         sendIntent.setPackage("com.whatsapp");
-                        // sendIntent.setPackage("com.twitter");
                         try {
                             startActivity(sendIntent);
                         } catch (ActivityNotFoundException e) {
-                            String message = e.getMessage();
 
                             Toast.makeText(getContext(), "لايوجد برنامج واتس اب ", Toast.LENGTH_LONG).show();
 
@@ -1268,18 +1266,14 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
             }
         });
 
-//TODO: test
         twitter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(twitter.getText().toString()));
-                browserIntent.setPackage("com.twitter");
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?user_id=974020966971043841"));
                 try {
                     startActivity(browserIntent);
                 } catch (ActivityNotFoundException e) {
-                    String message = e.getMessage();
-
-                    Toast.makeText(getContext(), "لايوجد برنامج تويتر", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/dozo_app")));
 
                 }
 
