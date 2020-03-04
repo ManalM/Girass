@@ -68,7 +68,7 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
         backBtn = rootView.findViewById(R.id.button);
         toolbar = (Toolbar) rootView.findViewById(R.id.bar);
         toolbarText = rootView.findViewById(R.id.toolbar_title);
-        like = rootView.findViewById(R.id.like);
+        // like = rootView.findViewById(R.id.like);
         toolbar.setTitle("");
         backBtn.setImageResource(R.drawable.left_arrow);
         //----------------------------------------------------------
@@ -105,7 +105,7 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
 
 
         toolbarText.setTypeface(defaultFont);
-        HashMap<String, String> azkar = loadMap();
+       /* HashMap<String, String> azkar = loadMap();
 
 
         for (int i = 0; i < azkar.size(); i++) {
@@ -120,7 +120,7 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
             }
 
         }
-        editor.putBoolean("like", isLiked);
+        editor.putBoolean("like", isLiked);*/
 
         //----------------------viewPager and indicator---------------------
 
@@ -157,7 +157,7 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
 
 
         favoriteAzkar = new ArrayList<>();
-        like.setOnClickListener(new View.OnClickListener() {
+      /*  like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -187,7 +187,7 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
                 saveMap(azkar);
             }
         });
-
+*/
 
         mPager.setAdapter(pagerAdapter);
         mPager.addOnPageChangeListener(this);
@@ -195,6 +195,7 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
         return rootView;
     }
 
+/*
 
     private void saveMap(HashMap<String, String> inputMap) {
 
@@ -237,6 +238,7 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
         }
         return outputMap;
     }
+*/
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {

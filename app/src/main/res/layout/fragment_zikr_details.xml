@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ZikrDetails">
 
     <ScrollView
         android:id="@+id/scroll"
+        android:layout_weight="1"
+        android:layout_marginBottom="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible">
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -25,9 +29,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|center_vertical"
                 android:layout_margin="20dp"
-                android:lineSpacingExtra="15dp"
                 android:layout_weight="1"
                 android:gravity="center|center_vertical"
+                android:lineSpacingExtra="15dp"
                 android:textColor="@color/textColor"
                 android:textStyle="bold" />
 
@@ -46,11 +50,11 @@
             <TextView
                 android:id="@+id/narriated"
                 android:layout_width="match_parent"
-                android:lineSpacingExtra="15dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|center_vertical"
                 android:layout_margin="20dp"
                 android:gravity="center|center_vertical"
+                android:lineSpacingExtra="15dp"
                 android:textColor="@color/textColor"
                 android:textStyle="bold" />
 
@@ -59,39 +63,51 @@
 
     <LinearLayout
         android:id="@+id/click"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:clickable="true"
-        android:gravity="center">
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
+        <ImageView
+            android:id="@+id/like"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+
+            android:layout_weight="1"
+            android:src="@drawable/fav_heart" />
         <RelativeLayout
+
             android:layout_width="80dp"
             android:layout_height="80dp"
+            android:layout_alignParentBottom="true"
             android:layout_gravity="center"
-            android:gravity="center_vertical"
             android:layout_marginRight="60dp"
-            android:layout_marginBottom="10dp">
+            android:gravity="center_vertical">
             <!--
             todo:use progress bar
             -->
             <ProgressBar
                 android:id="@+id/progress"
+                style="?android:progressBarStyleHorizontal"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                style="?android:progressBarStyleHorizontal"
                 android:progress="0"
+                android:progressDrawable="@drawable/progress_drawable"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:progressDrawable="@drawable/progress_drawable" />
+                app:layout_constraintTop_toTopOf="parent" />
+
             <ImageView
 
                 android:id="@+id/rounded_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
                 android:background="@drawable/counting_button" />
 
             <TextView
@@ -109,8 +125,8 @@
         <RelativeLayout
             android:layout_width="51dp"
             android:layout_height="60dp"
-
-            android:layout_marginBottom="10dp">
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp">
 
             <ImageView
                 android:id="@+id/repeat"
@@ -127,4 +143,4 @@
         </RelativeLayout>
 
     </LinearLayout>
-</RelativeLayout>
+</LinearLayout>

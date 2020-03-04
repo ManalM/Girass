@@ -19,10 +19,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.girass.Data.DataService;
+import com.example.girass.model.HeadZikrObject;
 import com.example.girass.model.ZikrObject;
 
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Iterator;
+
 import static android.text.Layout.JUSTIFICATION_MODE_INTER_WORD;
+import static com.example.girass.AllZikr.title;
 
 
 public class ZikrDetails extends Fragment {
@@ -38,9 +47,11 @@ public class ZikrDetails extends Fragment {
     private Typeface defaultFont;
     private int TextSize, countNumber = 1;
     private ZikrObject zikrObject;
-
+    public ImageView like;
     private Vibrator vibrator;
-
+    String ZikrId = "";
+    private final String mapKey = "map";
+    private Boolean isLiked = false;
     //------------Constructor -----------------
     public ZikrDetails(ZikrObject zikrObject) {
         this.zikrObject = zikrObject;
@@ -52,7 +63,7 @@ public class ZikrDetails extends Fragment {
         // Inflate the layout for this fragment
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_zikr_details, container, false);
-
+        like = rootView.findViewById(R.id.like);
         zikr = rootView.findViewById(R.id.zikr);
         narriated = rootView.findViewById(R.id.narriated);
         timeToRepeat = rootView.findViewById(R.id.time_repeat);
@@ -111,6 +122,55 @@ public class ZikrDetails extends Fragment {
 
 
         //---------------------retrieve zikr------------------------
+        HashMap<String, String> azkar = loadMap();
+
+
+        for (int i = 0; i < azkar.size(); i++) {
+
+            if (azkar.containsValue(title)) {
+
+                like.setImageResource(R.drawable.fill_heart);
+                isLiked = true;
+            } else {
+                like.setImageResource(R.drawable.fav_heart);
+                isLiked = false;
+            }
+
+        }
+        editor.putBoolean("like", isLiked);
+        //----------------------------------------------------------
+        DataService dataService = new DataService();
+        final HeadZikrObject[] headZikrObjects = dataService.GetAllAzkar();
+        like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                for (int i = 0; i < headZikrObjects.length; i++) {
+                    if (headZikrObjects[i].TITLE.equals(title)) {
+                        ZikrId = headZikrObjects[i].ID;
+
+                        if (!azkar.containsValue(title)) {
+
+                            like.setImageResource(R.drawable.fill_heart);
+                            azkar.put(ZikrId, title);
+
+                            Toast.makeText(getContext(), "added", Toast.LENGTH_SHORT).show();
+
+
+                        } else {
+                            Toast.makeText(getContext(), "deleted", Toast.LENGTH_SHORT).show();
+                            like.setImageResource(R.drawable.fav_heart);
+                            azkar.remove(ZikrId);
+                            //  saveMap(azkar);
+                            // deleteMapItem();
+
+                        }
+                    }
+                }
+                saveMap(azkar);
+            }
+        });
 
 
         zikr.setText(zikrObject.Details);
@@ -156,5 +216,37 @@ public class ZikrDetails extends Fragment {
         //narriated.setLineSpacing(15,15);
         zikr.setTextSize(TextSize);
         narriated.setTextSize(TextSize);
+    }
+
+
+    private HashMap<String, String> loadMap() {
+        HashMap<String, String> outputMap = new HashMap<>();
+
+        try {
+            if (pref != null) {
+                String jsonString = pref.getString(mapKey, (new JSONObject()).toString());
+                JSONObject jsonObject = new JSONObject(jsonString);
+                Iterator<String> keysItr = jsonObject.keys();
+                while (keysItr.hasNext()) {
+                    String key = keysItr.next();
+                    outputMap.put(key, (String) jsonObject.get(key));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return outputMap;
+    }
+
+    private void saveMap(HashMap<String, String> inputMap) {
+
+        if (pref != null) {
+            JSONObject jsonObject = new JSONObject(inputMap);
+            String jsonString = jsonObject.toString();
+            Toast.makeText(getContext(), jsonString, Toast.LENGTH_SHORT).show();
+            editor.remove(mapKey).apply();
+            editor.putString(mapKey, jsonString);
+            editor.commit();
+        }
     }
 }

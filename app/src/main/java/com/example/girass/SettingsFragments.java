@@ -233,12 +233,17 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
         seekBar = rootView.findViewById(R.id.seek_bar);
 
         fontType.setTypeface(defualtFont);
-        seekBar.setProgress((int) pref.getInt("fontSize", 18));
+        seekBar.setProgress((int) pref.getInt("fontSize", 15));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             seekBar.setMin(15);
             seekBar.setMinimumHeight(22);
         }
-        textSize.setTextSize(pref.getInt("fontSize", 18));
+
+        if (pref.getInt("fontSize", 15) > 23)
+            textSize.setTextSize(21);
+        else
+
+            textSize.setTextSize(pref.getInt("fontSize", 15));
         checkSound = MediaPlayer.create(getContext(), R.raw.correct);
 
         //--------------------Listeners------------------------------
@@ -355,7 +360,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
                 if (progress > 23)
-                    textSize.setTextSize(23);
+                    textSize.setTextSize(21);
                 else
                     textSize.setTextSize(progress);
                 Toast.makeText(getContext(), "seekbar:" + progress, Toast.LENGTH_SHORT).show();

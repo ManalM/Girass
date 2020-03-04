@@ -29,6 +29,7 @@
         android:layout_margin="3dp"
         android:fontFamily="@font/tajwal_bold"
         style="@style/Toolbar.TitleText"
+        android:textSize="15sp"
         android:layout_gravity="center"
         android:ellipsize="end"
         android:singleLine="true"
