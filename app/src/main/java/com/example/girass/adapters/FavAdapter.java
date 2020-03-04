@@ -44,7 +44,6 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.viewHolder> {
     @Override
     public FavAdapter.viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater mInflater = LayoutInflater.from(mContext);
-        /*    TODO: ZIKR_LIST_ITEM LAYOUT */
 
         View view = mInflater.inflate(R.layout.list_item, parent, false);
         return new FavAdapter.viewHolder(view, mListener);

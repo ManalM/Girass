@@ -28,13 +28,17 @@
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_margin="5dp"
-        android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:gravity="center"
-
+        android:layout_above="@id/horizontalScrollView"
         />
 
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_alignParentBottom="true"
 
+        android:id="@+id/horizontalScrollView" />
     <!--    <com.viewpagerindicator.CirclePageIndicator
             android:id="@+id/indicator1"
             android:layout_width="fill_parent"

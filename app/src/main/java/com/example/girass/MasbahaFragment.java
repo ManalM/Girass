@@ -185,7 +185,6 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
         noOfTasih.setText(String.valueOf(theCount));
         noOfTasih.setTextSize(40);
         noOfTasih.setTextColor(getResources().getColor(R.color.colorAccent));
-        //TODO: textsize very big in some phones
         if (count == 0) {
 
             firstZikr.setText("");
@@ -397,7 +396,7 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
         if (mBundleRecyclerViewState != null) {
             int bundleCount = mBundleRecyclerViewState.getInt("count");
             String bundleZikr = mBundleRecyclerViewState.getString("text");
-            if (bundleCount == 0)
+            if (bundleCount != 0)
                 noOfTasih.setText(String.valueOf(bundleCount));
             if (bundleCount == 1) {
 

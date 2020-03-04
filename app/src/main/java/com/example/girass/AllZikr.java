@@ -18,7 +18,9 @@ import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,6 +60,8 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
 
 
     String ZikrId = "";
+    private HorizontalScrollView hzScrollView;
+    private LinearLayout hzswItemContainer;
 
     @RequiresApi(api = Build.VERSION_CODES.P)
     @Nullable
@@ -124,6 +128,9 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
 
         //----------------------viewPager and indicator---------------------
 
+        hzScrollView = (HorizontalScrollView) rootView.findViewById(R.id.horizontalScrollView);
+        //   hzswItemContainer = (LinearLayout)rootView.findViewById(R.id.horizontalScrollViewItemContainer);
+
         mPager = (ViewPager) rootView.findViewById(R.id.view_pager);
         pagerAdapter = new ScreenSlidePagerAdapter(getChildFragmentManager());
         pagerAdapter.notifyDataSetChanged();
@@ -145,6 +152,7 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
         }
         if (indicatorNumber > 1)
             circleIndicator.createIndicators(indicatorNumber, 0);
+        setHzScrollViewCenter(circleIndicator);
         //------------------------------------------------------------------
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -194,6 +202,17 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
 
         return rootView;
     }
+
+/*
+    todo:horizontal ScroolView
+*/
+private void setHzScrollViewCenter(View view) {
+    //smoothly set horizontalScrollView to centerLock
+    int screenWidth = mPager.getWidth();
+    int scrollX = (view.getLeft() - (screenWidth / 2)) + (view.getWidth() / 2);
+    hzScrollView.smoothScrollTo(scrollX, 0);
+
+}
 
 /*
 

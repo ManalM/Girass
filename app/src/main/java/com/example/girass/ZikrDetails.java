@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
@@ -43,7 +44,7 @@ public class ZikrDetails extends Fragment {
     private SharedPreferences.Editor editor;
     private MediaPlayer defualt;
     private Boolean doIPlaySound, doIVibrate;
-    private ProgressBar progressBar;
+    private CircularProgressBar progressBar;
     private Typeface defaultFont;
     private int TextSize, countNumber = 1;
     private ZikrObject zikrObject;
@@ -52,6 +53,8 @@ public class ZikrDetails extends Fragment {
     String ZikrId = "";
     private final String mapKey = "map";
     private Boolean isLiked = false;
+    int state = 10;
+
     //------------Constructor -----------------
     public ZikrDetails(ZikrObject zikrObject) {
         this.zikrObject = zikrObject;
@@ -69,18 +72,16 @@ public class ZikrDetails extends Fragment {
         timeToRepeat = rootView.findViewById(R.id.time_repeat);
         click = rootView.findViewById(R.id.click);
         countingText = rootView.findViewById(R.id.counting);
-        roundedButton = rootView.findViewById(R.id.rounded_button);
+        //roundedButton = rootView.findViewById(R.id.rounded_button);
         progressBar = rootView.findViewById(R.id.progress);
         vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
         //----------------------------Click button---------------------------------
-      /*  ShapeDrawable shapedrawable = new ShapeDrawable();
-        shapedrawable.setShape(new OvalShape());
-        shapedrawable.getPaint().setColor(Color.TRANSPARENT);
-        shapedrawable.getPaint().setStrokeWidth(10);
-        shapedrawable.getPaint().setStyle(Paint.Style.STROKE);
-        click.setBackground(shapedrawable);*/
      /* GradientDrawable gradientDrawable = (GradientDrawable) click.getDrawable();
       gradientDrawable.setStroke(10,Color.GRAY);*/
+
+        progressBar.setVisibility(View.VISIBLE);
+
+
 //--------------------SharedPreference-----------------------------
 
 
@@ -180,16 +181,14 @@ public class ZikrDetails extends Fragment {
 
         textStyle();
         int repeatingNumber = Integer.valueOf(zikrObject.TimesToRepeat);
+        progressBar.setMax(repeatingNumber);
 
         click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (countNumber <= repeatingNumber) {
                     countingText.setText(String.valueOf(countNumber));
-
-                    /*    todo:use progress bar
-                     */
-                    progressBar.setProgress(10);
+                    progressBar.setProgress(countNumber);
                     countNumber++;
                 }
                 if (doIPlaySound)

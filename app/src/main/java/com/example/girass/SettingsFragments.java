@@ -1068,7 +1068,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
-                ///TODO: try with Repeating func.
+                ///TODO: try with Repeating func. and permission
                 // alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
             }
@@ -1222,7 +1222,6 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.Theme_AppCompat_Light_Dialog);
                 builder.setTitle(R.string.call_title);
-//todo: buttons dont appear
                 builder.setMessage(R.string.call_message);
                 builder.setPositiveButton("اتصال", new DialogInterface.OnClickListener() {
                     @Override
