@@ -39,7 +39,7 @@ public class ZikrDetails extends Fragment {
 
     private TextView zikr, narriated, timeToRepeat, countingText;
     private LinearLayout click;
-    private ImageView roundedButton;
+
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private MediaPlayer defualt;
@@ -72,12 +72,9 @@ public class ZikrDetails extends Fragment {
         timeToRepeat = rootView.findViewById(R.id.time_repeat);
         click = rootView.findViewById(R.id.click);
         countingText = rootView.findViewById(R.id.counting);
-        //roundedButton = rootView.findViewById(R.id.rounded_button);
         progressBar = rootView.findViewById(R.id.progress);
         vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
-        //----------------------------Click button---------------------------------
-     /* GradientDrawable gradientDrawable = (GradientDrawable) click.getDrawable();
-      gradientDrawable.setStroke(10,Color.GRAY);*/
+        //----------------------------progress ---------------------------------
 
         progressBar.setVisibility(View.VISIBLE);
 
@@ -139,7 +136,7 @@ public class ZikrDetails extends Fragment {
 
         }
         editor.putBoolean("like", isLiked);
-        //----------------------------------------------------------
+        //---------------------check if fav--------------------------
         DataService dataService = new DataService();
         final HeadZikrObject[] headZikrObjects = dataService.GetAllAzkar();
         like.setOnClickListener(new View.OnClickListener() {
@@ -174,12 +171,15 @@ public class ZikrDetails extends Fragment {
         });
 
 
+        //---------------- change text view--------------------
         zikr.setText(zikrObject.Details);
         narriated.setText(zikrObject.Narriated);
         timeToRepeat.setText(Integer.valueOf(zikrObject.TimesToRepeat).toString());
 
 
+        //---------------style of text depends on settings---------------
         textStyle();
+        //--------------------------- counting button -------------
         int repeatingNumber = Integer.valueOf(zikrObject.TimesToRepeat);
         progressBar.setMax(repeatingNumber);
 
@@ -201,9 +201,11 @@ public class ZikrDetails extends Fragment {
 
             }
         });
+
         return rootView;
     }
 
+    //-----------------------methods--------------------------
     private void textStyle() {
         zikr.setTypeface(defaultFont);
         narriated.setTypeface(defaultFont);

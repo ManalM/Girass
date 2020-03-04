@@ -152,6 +152,7 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
         }
         if (indicatorNumber > 1)
             circleIndicator.createIndicators(indicatorNumber, 0);
+
         setHzScrollViewCenter(circleIndicator);
         //------------------------------------------------------------------
         backBtn.setOnClickListener(new View.OnClickListener() {
