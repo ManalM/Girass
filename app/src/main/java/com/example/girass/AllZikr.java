@@ -11,6 +11,7 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.girass.Data.DataService;
+import com.example.girass.adapters.Adapter;
 import com.example.girass.model.HeadZikrObject;
 import com.example.girass.model.ZikrObject;
 
@@ -47,7 +49,7 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
     private CircleIndicator circleIndicator;
     public static String title;
     Boolean isLiked = false;
-
+    Typeface defaultFont;
     private final String mapKey = "map";
 
     private int tag;
@@ -83,6 +85,26 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
         //------------------SharedPreference---------------------------
         pref = PreferenceManager.getDefaultSharedPreferences(getContext());
         editor = PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
+
+        if (pref != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+                if (pref.getString("defaultFont", "regular").equals("regular"))
+                    defaultFont = getResources().getFont(R.font.tajawal_regular);
+
+                else if (pref.getString("defaultFont", "bold").equals("bold"))
+                    defaultFont = getResources().getFont(R.font.tajwal_bold);
+                else if (pref.getString("defaultFont", "light").equals("light"))
+                    defaultFont = getResources().getFont(R.font.tajawal_light);
+
+            }
+        } else {
+            defaultFont = getResources().getFont(R.font.tajawal_regular);
+        }
+        editor.putString("defaultFont", "regular");
+
+
+        toolbarText.setTypeface(defaultFont);
         HashMap<String, String> azkar = loadMap();
 
 

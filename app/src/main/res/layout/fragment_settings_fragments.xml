@@ -135,22 +135,21 @@
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
                         android:max="30"
-                        android:min="18"
+                        android:min="15"
 
                         android:layout_margin="10dp"
                         android:theme="@style/Theme.MyTheme"
-                        android:progress="18" />
+                        android:progress="15" />
 
                     <TextView
-
+                        android:singleLine="true"
                         android:id="@+id/text_size"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="30dp"
                         android:layout_margin="10dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/tajawal_regular"
                         android:text="حجم الخط"
-                        android:textSize="18sp"
                         android:textColor="@color/textColor" />
                 </LinearLayout>
 

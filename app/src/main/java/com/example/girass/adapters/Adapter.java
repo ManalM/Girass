@@ -59,6 +59,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.viewHolder> implements
     public void onBindViewHolder(@NonNull viewHolder holder, int position) {
         holder.mTextView.setText(mAzkarArray.get(position));
 
+        if (mAzkarArray.get(position).length() > 20) {
+            holder.textSize = 18;
+        }
 
     }
 
@@ -89,6 +92,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.viewHolder> implements
 
         SharedPreferences pref;
         SharedPreferences.Editor editor;
+
 
         int textSize;
 
@@ -122,6 +126,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.viewHolder> implements
                 }
                 editor.putString("defaultFont", "regular");
 
+
                 textSize = 18;
                 editor.putInt("fontSize", textSize);
                 editor.apply();
@@ -131,8 +136,11 @@ public class Adapter extends RecyclerView.Adapter<Adapter.viewHolder> implements
             mTextView = itemView.findViewById(R.id.zikrText);
 
             //-------------------- set Zikr text ---------------------------
+            if (textSize > 18)
+                mTextView.setTextSize(18);
+            else
+                mTextView.setTextSize(textSize);
 
-            mTextView.setTextSize(textSize);
             mTextView.setTypeface(defaultFont);
             //--------------------------------------------------------
 

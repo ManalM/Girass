@@ -5,12 +5,15 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.widget.TextViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.girass.R;
@@ -18,10 +21,10 @@ import com.example.girass.R;
 public class FavAdapter extends RecyclerView.Adapter<FavAdapter.viewHolder> {
     private FavAdapter.OnItemClickListener mListener;
     public static Context mContext;
-    private String[] arrayList;
+    private static String[] arrayList;
     String mRecentlyDeletedItem;
     int mRecentlyDeletedItemPosition;
-
+    static int value = 0;
 
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -51,7 +54,7 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.viewHolder> {
     public void onBindViewHolder(@NonNull FavAdapter.viewHolder holder, int position) {
 
         holder.title.setText(arrayList[position]);
-
+        value = position;
     }
 
     @Override
@@ -63,6 +66,7 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.viewHolder> {
         TextView title;
         SharedPreferences pref;
         SharedPreferences.Editor editor;
+
 
         int textSize;
         Typeface defaultFont;
@@ -98,13 +102,17 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.viewHolder> {
                 }
                 editor.putString("defaultFont", "regular");
 
-                textSize = 18;
+                textSize = 15;
                 editor.putInt("fontSize", textSize);
                 editor.apply();
             }
             //--------------------------------------------------------
 
-            title.setTextSize(textSize);
+            if (textSize > 18)
+                title.setTextSize(18);
+            else
+                title.setTextSize(textSize);
+
             title.setTypeface(defaultFont);
             //--------------------------------------------------------
 

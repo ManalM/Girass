@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="fill"
+    android:fitsSystemWindows="true"
     android:background="@drawable/dark_back"
     android:orientation="vertical">
 
@@ -17,6 +18,7 @@
             android:id="@+id/about_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:src="@drawable/cancel"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_marginTop="5dp"
@@ -35,6 +37,7 @@
             android:layout_alignParentLeft="true"
             android:layout_marginStart="17dp"
             android:layout_marginLeft="17dp"
+            android:src="@drawable/about"
             android:layout_marginTop="5dp"
             android:background="@android:color/transparent" />
 
@@ -44,23 +47,23 @@
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="15dp">
 
 
         <ImageButton
             android:id="@+id/dozo"
             android:layout_width="150dp"
-            android:layout_height="100dp"
+            android:layout_height="110dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_gravity="center_horizontal"
-            android:layout_marginStart="161dp"
-            android:layout_marginLeft="161dp"
-            android:layout_marginEnd="150dp"
-            android:layout_marginRight="150dp"
-            android:background="@drawable/dozo1"
+            android:layout_marginStart="130dp"
+            android:layout_marginLeft="131dp"
+            android:layout_marginEnd="120dp"
+            android:layout_marginRight="120dp"
+            android:background="@drawable/dozo"
             android:gravity="center" />
 
         <TextView
@@ -74,8 +77,8 @@
             android:layout_marginBottom="10dp"
             android:fontFamily="@font/tajawal_regular"
             android:gravity="center"
+            android:lineSpacingExtra="10dp"
             android:textColor="@color/colorAccent"
-            android:textDirection="rtl"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -119,7 +122,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:fontFamily="@font/tajawal_regular"
+                android:fontFamily="sans-serif-black"
+
                 android:gravity="center"
 
                 android:text="www.dozo-apps.com"
@@ -148,8 +152,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:fontFamily="@font/tajawal_regular"
                 android:gravity="center"
+                android:fontFamily="sans-serif-black"
+
                 android:text="info@dozo-apps.com"
                 android:textColor="@color/textColor"
                 android:textStyle="bold" />
@@ -177,9 +182,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-
                 android:layout_weight="1"
-                android:fontFamily="@font/tajawal_regular"
+                android:fontFamily="sans-serif-black"
+
                 android:gravity="center"
                 android:textColor="@color/textColor"
                 android:textStyle="bold" />
@@ -208,9 +213,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:fontFamily="@font/tajawal_regular"
                 android:gravity="center"
                 android:text="00966567636391"
+                android:fontFamily="sans-serif-black"
+
                 android:textColor="@color/textColor"
                 android:textStyle="bold" />
 

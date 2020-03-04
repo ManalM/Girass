@@ -76,6 +76,7 @@ import hotchemi.stringpicker.StringPicker;
 
 import static android.content.Context.ALARM_SERVICE;
 import static android.content.Context.MODE_PRIVATE;
+import static android.text.Layout.JUSTIFICATION_MODE_INTER_WORD;
 
 
 public class SettingsFragments extends Fragment implements View.OnClickListener, TimePicker.OnTimeChangedListener {
@@ -234,10 +235,10 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
         fontType.setTypeface(defualtFont);
         seekBar.setProgress((int) pref.getInt("fontSize", 18));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            seekBar.setMin(18);
+            seekBar.setMin(15);
             seekBar.setMinimumHeight(22);
         }
-        textSize.setTextSize(TypedValue.COMPLEX_UNIT_PX, pref.getInt("fontSize", 18));
+        textSize.setTextSize(pref.getInt("fontSize", 18));
         checkSound = MediaPlayer.create(getContext(), R.raw.correct);
 
         //--------------------Listeners------------------------------
@@ -352,7 +353,13 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                textSize.setTextSize(TypedValue.COMPLEX_UNIT_PX, progress);
+
+                if (progress > 23)
+                    textSize.setTextSize(23);
+                else
+                    textSize.setTextSize(progress);
+                Toast.makeText(getContext(), "seekbar:" + progress, Toast.LENGTH_SHORT).show();
+
                 editor.putInt("fontSize", progress);
                 editor.commit();
             }
@@ -1165,18 +1172,15 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
         www_img.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         twitter_img.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        //  Glide.with(this).load(R.drawable.www).into(www_img);
         Glide.with(this).load(R.drawable.phone).into(phone_img);
         Glide.with(this).load(R.drawable.email1).into(email_img);
-        // Glide.with(this).load(R.drawable.twitter).into(twitter_img);
-        Glide.with(this).load(R.drawable.ic_cancel_black_24dp).into(aboutClose);
-        Glide.with(this).load(R.drawable.i).into(aboutApp);
-        //    Glide.with(this).load(R.drawable.dozo1).into(dozo);
-        //     Glide.with(this).load(R.drawable.dark_back).into(background_img);
 
         twitter.setText("@dozo_apps");
-        desc.setText("تمت برمجة هذا التطبيق في معامل دوزو \n \n إذا كان لديك اقتراح أو فكرة تطبيق تريد أن \n \n ننفذها لك فتواصل معنا");
-
+        desc.setText("تمت برمجة هذا التطبيق في معامل دوزو إذا كان لديك اقتراح أو فكرة تطبيق تريد أن  ننفذها لك فتواصل معنا");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            desc.setJustificationMode(JUSTIFICATION_MODE_INTER_WORD);
+        }
+//"\n \n "
         //------------------------------------------------------------------
 
 
@@ -1211,7 +1215,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
         phone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.Theme_AppCompat_Light_Dialog);
                 builder.setTitle(R.string.call_title);
 //todo: buttons dont appear
                 builder.setMessage(R.string.call_message);
@@ -1285,6 +1289,10 @@ public class SettingsFragments extends Fragment implements View.OnClickListener,
 
                 detailsDialog = new Dialog(getContext());
                 detailsDialog.setContentView(R.layout.details_dialog);
+                TextView thanks = detailsDialog.findViewById(R.id.thanks);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    thanks.setJustificationMode(JUSTIFICATION_MODE_INTER_WORD);
+                }
                 //    CardView card =detailsDialog.findViewById(R.id.card);
 
                 ///    card.setRadius(9);

@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="15dp"
-    android:layout_marginRight="15dp"
-    android:layout_marginTop="15dp"
-    app:cardCornerRadius="20dp">
+
 
 
     <LinearLayout
         android:id="@+id/zikr_linear"
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="70dp">
+        android:layout_height="?android:attr/listPreferredItemHeight"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/rounded_back">
         <!-- SET SIZE
         TEXT SHOULD BE IN LIMIT OF DESIGN
         -->
@@ -21,14 +19,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-
-            android:background="@drawable/cell"
-            android:singleLine="true"
             android:layout_weight="1"
-            android:gravity="center"
-            android:minHeight="?android:attr/listPreferredItemHeight"
+            android:layout_margin="15dp"
 
+            android:gravity="center"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text=""
             android:textColor="@color/colorAccent"
             android:textStyle="bold" />
     </LinearLayout>
-</androidx.cardview.widget.CardView>

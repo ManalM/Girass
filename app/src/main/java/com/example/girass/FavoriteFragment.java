@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.girass.adapters.FavAdapter;
 import com.example.girass.adapters.SimpleItemTouchHelperCallback;
@@ -103,6 +104,7 @@ public class FavoriteFragment extends Fragment implements OnStartDragListener {
                 Bundle bundle = new Bundle();
                 bundle.putString("array", favorites[position]);
 
+                Toast.makeText(getContext(), "length:" + favorites[position].length(), Toast.LENGTH_SHORT).show();
                 bundle.putInt("tag", 2);
 
                 allZikr.setArguments(bundle);

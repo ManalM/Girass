@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:text=""
         android:layout_margin="3dp"
-
+        android:fontFamily="@font/tajwal_bold"
         style="@style/Toolbar.TitleText"
         android:layout_gravity="center"
         android:ellipsize="end"

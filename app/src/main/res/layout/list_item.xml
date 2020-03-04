@@ -3,9 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fav_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    app:cardCornerRadius="20dp">
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
+    android:layout_marginTop="10dp"
+    app:cardCornerRadius="15dp">
 
 
     <LinearLayout
@@ -34,10 +36,11 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:gravity="center"
+
             android:singleLine="true"
             android:minHeight="?android:attr/listPreferredItemHeight"
             android:textColor="@color/textColor"
-            android:textSize="20sp"
+            android:maxLines="1"
             android:textStyle="bold" />
 
 
