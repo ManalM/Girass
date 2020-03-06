@@ -13,12 +13,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
 import android.os.Parcelable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 
 import android.view.View;
 import android.view.ViewGroup;
 
 
+import android.widget.EditText;
 import android.widget.ImageButton;
 
 import android.widget.ImageView;
@@ -34,7 +37,7 @@ import com.example.girass.model.HeadZikrObject;
 
 import java.util.ArrayList;
 
-public class AzkarFragment extends Fragment implements SearchView.OnQueryTextListener, Adapter.SelectedUser {
+public class AzkarFragment extends Fragment implements Adapter.SelectedUser {
     private Toolbar toolbar;
     private ArrayList<String> titles;
     private LinearLayout searchBar;
@@ -60,7 +63,8 @@ public class AzkarFragment extends Fragment implements SearchView.OnQueryTextLis
 
         ImageButton searchBtn = rootView.findViewById(R.id.button);
         searchBar = rootView.findViewById(R.id.search_view1);
-        SearchView searchView = rootView.findViewById(R.id.searchText);
+        //  SearchView searchView = rootView.findViewById(R.id.searchText);
+        EditText search = rootView.findViewById(R.id.search);
         arrow = rootView.findViewById(R.id.search_arrow);
         /////////////////////////////////////////////
         /////////////     ToolBar       ////////////
@@ -69,6 +73,7 @@ public class AzkarFragment extends Fragment implements SearchView.OnQueryTextLis
         linearLayoutManager = new GridLayoutManager(getContext(), 1);
         toolbar = (Toolbar) rootView.findViewById(R.id.main_toolbar);
         TextView toolbarText = rootView.findViewById(R.id.toolbar_title);
+
 
         toolbar.setTitle("");
         toolbarText.setText(R.string.azkar);
@@ -103,7 +108,25 @@ public class AzkarFragment extends Fragment implements SearchView.OnQueryTextLis
 
         //   listView.getLayoutManager().onRestoreInstanceState(state);
         ///----------------search btn and process ----------
-        searchView.setOnQueryTextListener(this);
+        // searchView.setOnQueryTextListener(this);
+
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                mAdapterAzkar.getFilter().filter(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,19 +159,7 @@ public class AzkarFragment extends Fragment implements SearchView.OnQueryTextLis
     }
 
 
-    @Override
-    public boolean onQueryTextSubmit(String query) {
 
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        mAdapterAzkar.getFilter().filter(newText);
-
-
-        return false;
-    }
 
 
     ///---------- send data to allZIkr fragment ------------

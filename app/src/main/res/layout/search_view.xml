@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/search_view1"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="?android:attr/listPreferredItemHeight"
     android:background="@color/colorPrimaryDark"
     android:orientation="horizontal">
 
@@ -15,16 +15,20 @@
 
         app:srcCompat="@drawable/up_arrow" />
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/searchText"
+
+    <EditText
+        android:id="@+id/search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
         android:layout_weight="1"
         android:ems="10"
+        android:layout_margin="10dp"
         android:gravity="center"
-        android:inputType="textPersonName"
-        android:text="ابحث عن الذكر الذي تريده"
-        android:textColor="@color/colorAccent" />
-
+        android:fontFamily="@font/tajawal_regular"
+        android:layout_gravity="center"
+        android:background="@android:color/transparent"
+        android:hint="ابحث عن الذكر الذي تريده "
+        android:inputType="text"
+        android:textColor="@color/colorAccent"
+        android:textColorHint="@color/colorAccent" />
 </LinearLayout>

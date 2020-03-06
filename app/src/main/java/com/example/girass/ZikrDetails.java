@@ -48,13 +48,12 @@ public class ZikrDetails extends Fragment {
     private Typeface defaultFont;
     private int TextSize, countNumber = 1;
     private ZikrObject zikrObject;
-    public ImageView like;
+    public static ImageView like;
     private Vibrator vibrator;
     String ZikrId = "";
     private final String mapKey = "map";
     private Boolean isLiked = false;
-    int state = 10;
-
+    private HashMap<String, String> azkar;
     //------------Constructor -----------------
     public ZikrDetails(ZikrObject zikrObject) {
         this.zikrObject = zikrObject;
@@ -120,7 +119,7 @@ public class ZikrDetails extends Fragment {
 
 
         //---------------------retrieve zikr------------------------
-        HashMap<String, String> azkar = loadMap();
+        azkar = loadMap();
 
 
         for (int i = 0; i < azkar.size(); i++) {
@@ -153,15 +152,13 @@ public class ZikrDetails extends Fragment {
                             like.setImageResource(R.drawable.fill_heart);
                             azkar.put(ZikrId, title);
 
-                            Toast.makeText(getContext(), "added", Toast.LENGTH_SHORT).show();
 
 
                         } else {
-                            Toast.makeText(getContext(), "deleted", Toast.LENGTH_SHORT).show();
                             like.setImageResource(R.drawable.fav_heart);
                             azkar.remove(ZikrId);
                             //  saveMap(azkar);
-                            // deleteMapItem();
+                            //   deleteMapItem();
 
                         }
                     }
@@ -209,12 +206,10 @@ public class ZikrDetails extends Fragment {
     private void textStyle() {
         zikr.setTypeface(defaultFont);
         narriated.setTypeface(defaultFont);
-        // zikr.getLineSpacingExtra();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             zikr.setJustificationMode(JUSTIFICATION_MODE_INTER_WORD);
             narriated.setJustificationMode(JUSTIFICATION_MODE_INTER_WORD);
         }
-        //narriated.setLineSpacing(15,15);
         zikr.setTextSize(TextSize);
         narriated.setTextSize(TextSize);
     }

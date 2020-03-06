@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -21,17 +22,17 @@ import androidx.core.app.NotificationCompat;
 class NotificationHelper extends ContextWrapper {
     public static final String channelID = "channelID";
     public static final String channelName = "Channel Name";
-    public String group = "com.android.example.girass";
     private static SharedPreferences pref;
     private NotificationManager mManager;
     private static String content;
     Boolean vibate, sound;
-
+    int code;
     Uri soundUri;
 
     public NotificationHelper(Context base, Intent intent, String message) {
         super(base);
-        // content = intent.getStringExtra("content");
+        //  content = intent.getStringExtra("message");
+
         content = message;
         pref = PreferenceManager.getDefaultSharedPreferences(base);
         vibate = pref.getBoolean("generalVibrate", true);
@@ -45,7 +46,9 @@ class NotificationHelper extends ContextWrapper {
 
     @TargetApi(Build.VERSION_CODES.O)
     private void createChannel() {
-        NotificationChannel channel = new NotificationChannel(channelID, channelName, NotificationManager.IMPORTANCE_HIGH);
+        NotificationChannel channel;
+
+        channel = new NotificationChannel(channelID, channelName, NotificationManager.IMPORTANCE_HIGH);
 
         getManager().createNotificationChannel(channel);
     }
@@ -59,16 +62,15 @@ class NotificationHelper extends ContextWrapper {
     }
 
     public NotificationCompat.Builder getChannelNotification() {
-        //Context context;
-       /* Activity activity = (Activity) context;
-        Intent intent = activity.getIntent();
-        String title = intent.getStringExtra("title");
-        String content = intent.getStringExtra("content");*/
+
+        Intent intent = new Intent(NotificationHelper.this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(NotificationHelper.this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(getApplicationContext(), channelID)
                         .setContentTitle("لاتنس ذكر اللّه")
                         .setContentText(content)
-                        .setGroup(group)
+                        .setContentIntent(pendingIntent).setAutoCancel(true)
                         .setSmallIcon(R.drawable.logo);
 
         if (vibate)
@@ -77,6 +79,5 @@ class NotificationHelper extends ContextWrapper {
             builder.setSound(soundUri);
 
         return builder;
-        //.enableVibration(pref.getBoolean("generalVibrate", true));
     }
 }
