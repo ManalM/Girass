@@ -152,8 +152,6 @@ public class ZikrDetails extends Fragment {
                             like.setImageResource(R.drawable.fill_heart);
                             azkar.put(ZikrId, title);
 
-
-
                         } else {
                             like.setImageResource(R.drawable.fav_heart);
                             azkar.remove(ZikrId);

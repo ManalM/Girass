@@ -31,16 +31,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name=".Notify"/>
-        <receiver android:name=".NotifyReminder" />
-        <!--  <receiver android:name=".Notify" android:exported="true">
-        <intent-filter>
-            <action android:name="com.example.app.START_SERVICE" />
-        </intent-filter>
-        <intent-filter>
-            <action android:name="com.example.app.STOP_SERVICE" />
-        </intent-filter>
-        </receiver>-->
+
+        <receiver android:name=".Notification.Notify" />
+        <receiver android:name=".Notification.NotifyReminder" />
+        <receiver android:name=".Notification.NotifyEvening" />
+        <receiver android:name=".Notification.NotifySleep" />
+        <receiver android:name=".Notification.NotifyWakeup" />
     </application>
 
 </manifest>

@@ -116,7 +116,6 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.ItemViewHold
 
         notifyItemMoved(fromPosition, toPosition);
 
-
         return true;
     }
 

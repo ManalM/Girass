@@ -1,86 +1,61 @@
 package com.example.girass;
 
-import android.Manifest;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.TimePickerDialog;
 import android.content.ActivityNotFoundException;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.fonts.FontFamily;
-import android.media.AudioAttributes;
-import android.media.Image;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 
-import android.preference.Preference;
 import android.preference.PreferenceManager;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.SeekBar;
-import android.widget.Switch;
-import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.addisonelliott.segmentedbutton.SegmentedButton;
 import com.addisonelliott.segmentedbutton.SegmentedButtonGroup;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.CircleCrop;
-import com.example.girass.Data.DataService;
-import com.google.android.material.circularreveal.cardview.CircularRevealCardView;
-import com.google.android.material.internal.CircularBorderDrawable;
+import com.example.girass.Notification.Notify;
+import com.example.girass.Notification.NotifyEvening;
+import com.example.girass.Notification.NotifyReminder;
+import com.example.girass.Notification.NotifySleep;
+import com.example.girass.Notification.NotifyWakeup;
 import com.suke.widget.SwitchButton;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
-import java.util.zip.Inflater;
 
 import hotchemi.stringpicker.StringPicker;
 
 import static android.content.Context.ALARM_SERVICE;
-import static android.content.Context.MODE_PRIVATE;
 import static android.text.Layout.JUSTIFICATION_MODE_INTER_WORD;
 
 
@@ -147,6 +122,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
     SegmentedButtonGroup soundsGroup;
     SegmentedButtonGroup fontsGroup, launcherGroup;
     int count = 1;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -651,9 +627,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
             public void onCheckedChanged(SwitchButton buttonView, boolean isChecked) {
 
                 if (isChecked) {
-
-                    createTimeNotification("morning", "حان وقت أذكار الصباح", 1);
-
+                    morningNotification();
                     editor.putBoolean("morningSwitch", true);
                     editor.commit();
                 } else {
@@ -668,8 +642,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
             public void onCheckedChanged(SwitchButton buttonView, boolean isChecked) {
                 if (isChecked) {
 
-                    createTimeNotification("evening", "حان وقت أذكار المساء", 2);
-
+                    eveningNotification();
                     editor.putBoolean("eveningSwitch", true);
                     editor.commit();
                 } else {
@@ -684,8 +657,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
             public void onCheckedChanged(SwitchButton buttonView, boolean isChecked) {
                 if (isChecked) {
 
-                    createTimeNotification("sleep", "حان وقت أذكار النوم", 3);
-
+                    sleepNotification();
                     editor.putBoolean("sleepSwitch", true);
                     editor.commit();
                 } else {
@@ -699,8 +671,8 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
             @Override
             public void onCheckedChanged(SwitchButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    createTimeNotification("wakeup", "حان وقت أذكار الاستيقاظ من النوم", 4);
 
+                    wakeupNotification();
                     editor.putBoolean("wakeupSwitch", true);
                     editor.commit();
                 } else {
@@ -1007,19 +979,13 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         //   textView.setText(pref.getInt("hourOf" + textView.getText(), 00) + ":" + pref.getInt("minOf" + textView.getText(), 00) + " " + pref.getString("formatOf" + textView.getText(), "AM"));
     }
 
-    public void createTimeNotification(String s, String content, int requestCode) {
-        // String s , int content
-
-
-        count++;
-
+    private Calendar getCalender(String s) {
         Calendar calendar = Calendar.getInstance();
         switch (s) {
             case "morning":
 
         /*        editor.putString("contentOfMorning",content);
                 editor.apply();*/
-
                 calendar.set(Calendar.HOUR, pref.getInt("hourOfMorning", hourOfDay));
                 calendar.set(Calendar.MINUTE, pref.getInt("minOfMorning", min));
                 if (pref.getString("formatOfMorning", format).equals("AM"))
@@ -1029,7 +995,6 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 
                 break;
             case "evening":
-
                 calendar.set(Calendar.HOUR, pref.getInt("hourOfEvening", hourOfDay));
                 calendar.set(Calendar.MINUTE, pref.getInt("minOfEvening", min));
                 if (pref.getString("formatOfEvening", format).equals("AM"))
@@ -1059,14 +1024,21 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         }
 
         calendar.set(Calendar.SECOND, 0);
+
+        return calendar;
+    }
+
+    private void morningNotification() {
+        Calendar calendar = getCalender("morning");
+
         try {
             //   ArrayList<PendingIntent> intentArray = new ArrayList<PendingIntent>();
+            Intent myIntent = new Intent(getContext(), Notify.class);
 
             //  for (int i = 0; i <= 4; i++) {
             AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);
-            Intent myIntent = new Intent(getContext(), Notify.class);
-            myIntent.putExtra("content", content);
-            myIntent.putExtra("requestCode", requestCode);
+           /* myIntent.putExtra("content", content);
+            myIntent.putExtra("requestCode", requestCode);*/
             PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 1, myIntent, 0);
 
 
@@ -1086,6 +1058,68 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         }
     }
 
+    private void eveningNotification() {
+        Calendar calendar = getCalender("evening");
+
+        try {
+            Intent myIntent = new Intent(getContext(), NotifyEvening.class);
+
+            AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);
+
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 2, myIntent, 0);
+
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            }
+
+        } catch (NullPointerException e) {
+            Toast.makeText(getContext(), "Error" + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void wakeupNotification() {
+        Calendar calendar = getCalender("wakeup");
+
+        try {
+            Intent myIntent = new Intent(getContext(), NotifyWakeup.class);
+
+            AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);
+
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 3, myIntent, 0);
+
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            }
+
+        } catch (NullPointerException e) {
+            Toast.makeText(getContext(), "Error" + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void sleepNotification() {
+        Calendar calendar = getCalender("sleep");
+
+        try {
+            Intent myIntent = new Intent(getContext(), NotifySleep.class);
+
+            AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);
+
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 4, myIntent, 0);
+
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            }
+
+        } catch (NullPointerException e) {
+            Toast.makeText(getContext(), "Error" + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
 
     private void cancelNotification(int requestCode) {
         count--;
@@ -1118,6 +1152,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
             Toast.makeText(getContext(), "Error" + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
+
 
     /*************************************
      ****    share settings funcs   *****
@@ -1301,26 +1336,4 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 
     }
 
-
-/*
-    @Override
-    public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-      */
-/*  Calendar calendar = Calendar.getInstance();
-        // calendar.set(Calendar. SECOND , 0 ) ;
-        calendar.set(Calendar.HOUR, hourOfDay);
-        calendar.set(Calendar.MINUTE, minute);
-       *//*
-     */
-/* if (pref.getString("formatOf" + s, format).equals("AM"))
-            calendar.set(Calendar.AM_PM, Calendar.AM);
-        else if (pref.getString("formatOf" + s, format).equals("PM"))
-            calendar.set(Calendar.AM_PM, Calendar.PM);*//*
-     */
-/*
-
-        createTimeNotification(calendar);*//*
-
-    }
-*/
 }

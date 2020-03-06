@@ -1,7 +1,6 @@
-package com.example.girass;
+package com.example.girass.Notification;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,14 +9,14 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.media.AudioAttributes;
 import android.net.Uri;
 import android.os.Build;
-import android.os.VibrationEffect;
 import android.preference.PreferenceManager;
 
 import androidx.core.app.NotificationCompat;
+
+import com.example.girass.MainActivity;
+import com.example.girass.R;
 
 class NotificationHelper extends ContextWrapper {
     public static final String channelID = "channelID";
@@ -29,9 +28,8 @@ class NotificationHelper extends ContextWrapper {
     int code;
     Uri soundUri;
 
-    public NotificationHelper(Context base, Intent intent, String message) {
+    public NotificationHelper(Context base, String message) {
         super(base);
-        //  content = intent.getStringExtra("message");
 
         content = message;
         pref = PreferenceManager.getDefaultSharedPreferences(base);
