@@ -32,6 +32,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
+
 
 public class FavoriteFragment extends Fragment implements OnStartDragListener {
 
@@ -52,6 +54,7 @@ public class FavoriteFragment extends Fragment implements OnStartDragListener {
 
 
     static int currentVisiblePosition;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -70,7 +73,6 @@ public class FavoriteFragment extends Fragment implements OnStartDragListener {
         //-------------------RecyclerView--------------
         list = rootView.findViewById(R.id.fav_list);
         list.setLayoutManager(new GridLayoutManager(getContext(), 1));
-
         //-------------------get Azkar------------------
 
         hashMap = loadMap();
@@ -82,9 +84,10 @@ public class FavoriteFragment extends Fragment implements OnStartDragListener {
         favorites = new ArrayList<String>(values);
 
         FavAdapter adapter = new FavAdapter(getContext(), favorites);
+        //    AlphaInAnimationAdapter animation=new AlphaInAnimationAdapter(adapter);
+        //  list.setAdapter(animation);
         list.setAdapter(adapter);
-
-
+        //  adapter.setAnimation(new AlphaInAnimationAdapter(adapter)); = new AlphaInAnimationAdapter(adapter);
         //----------------------subtitle of toolbar-----------------------
 
         if (favorites.size() == 0) {
@@ -143,7 +146,6 @@ public class FavoriteFragment extends Fragment implements OnStartDragListener {
 
         return rootView;
     }
-
 
 
     private HashMap<String, String> loadMap() {

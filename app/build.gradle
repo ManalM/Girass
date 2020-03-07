@@ -41,5 +41,6 @@ dependencies {
     implementation 'com.github.addisonelliott:SegmentedButton:3.1.6'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'me.relex:circleindicator:2.1.4@aar'
+    implementation 'jp.wasabeef:recyclerview-animators:3.0.0'
 
 }

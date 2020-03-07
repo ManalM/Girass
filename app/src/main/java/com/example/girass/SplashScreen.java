@@ -30,7 +30,6 @@ public class SplashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.splash_screen);
-// TODO: background size of the splash screen
         star = findViewById(R.id.star);
         name = findViewById(R.id.name);
         label1 = findViewById(R.id.label1);
@@ -50,8 +49,6 @@ public class SplashScreen extends AppCompatActivity {
 
 
                 startActivity(new Intent(SplashScreen.this, MainActivity.class));
-               /* getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new AzkarFragment()).commit();*/
                 finish();
             }
         }, 1000);

@@ -87,9 +87,7 @@
             android:layout_gravity="center"
             android:layout_marginRight="60dp"
             android:gravity="center_vertical">
-            <!--
-            todo:use progress bar
-            -->
+
             <com.example.girass.CircularProgressBar
                 android:id="@+id/progress"
                 android:layout_width="200dp"
@@ -98,14 +96,6 @@
                 app:progress="0"
                 app:progressBarThickness="4dp" />
 
-
-            <!--            <ImageView
-
-                            android:id="@+id/rounded_button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-
-                            android:background="@drawable/counting_button" />-->
 
             <TextView
                 android:id="@+id/counting"
