@@ -49,6 +49,7 @@ import com.example.girass.Notification.NotifySleep;
 import com.example.girass.Notification.NotifyWakeup;
 import com.suke.widget.SwitchButton;
 
+import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -1279,11 +1280,10 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                 builder.setNegativeButton("واتس أب", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent sendIntent = new Intent();
-                        sendIntent.setAction(Intent.ACTION_SEND);
-                        sendIntent.setDataAndType(Uri.parse("https://api.whatsapp.com/send?phone=966567636391"), "text/plain");
-                        sendIntent.putExtra(Intent.EXTRA_TEXT, "السلام عليكم ...");
-                        //sendIntent.setType("text/plain");
+                        String text = URLEncoder.encode("السلام عليكم ...");
+                        Uri uri = Uri.parse("https://api.whatsapp.com/send?phone=966567636391&text=" + text);
+                        Intent sendIntent = new Intent(Intent.ACTION_VIEW, uri);
+
                         sendIntent.setPackage("com.whatsapp");
                         try {
                             startActivity(sendIntent);
