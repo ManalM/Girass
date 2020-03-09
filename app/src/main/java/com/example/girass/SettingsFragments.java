@@ -32,9 +32,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -79,6 +82,8 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
     private ImageView generalArrow, masbahaArrow;
     //
     private SeekBar seekBar;
+    private RelativeLayout btns, declare;
+    private LinearLayout listContact;
     //-------------------------------------------------------------
     private MediaPlayer mediaSound1, mediaSound2, mediaSound3, mediaSound4;
     //-------------------------------------------------------------
@@ -544,6 +549,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
      ****    notification settings funcs   ****
      ******************************************/
     private void showDialog() {
+        Animation showList = AnimationUtils.loadAnimation(getContext(), R.anim.slide_down);
 
         dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.notification_dialog);
@@ -578,6 +584,8 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 
 
             notificationLinear.setVisibility(View.VISIBLE);
+            notificationLinear.startAnimation(showList);
+
             editor.putBoolean("NotificationLinearVisibility", checked);
             editor.commit();
         } else {
@@ -606,13 +614,19 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
             @Override
             public void onCheckedChanged(SwitchButton buttonView, boolean isChecked) {
                 if (isChecked) {
+
                     checked = isChecked;
                     notificationLinear.setVisibility(View.VISIBLE);
+                    notificationLinear.startAnimation(showList);
+
                     editor.putBoolean("NotificationLinearVisibility", checked);
                     editor.commit();
                 } else {
+                    Animation hideList = AnimationUtils.loadAnimation(getContext(), R.anim.slide_up);
+
                     checked = isChecked;
                     notificationLinear.setVisibility(View.GONE);
+                    notificationLinear.startAnimation(hideList);
                     for (int i = 1; i <= 4; i++)
                         cancelNotification(i);
                     editor.putBoolean("NotificationLinearVisibility", checked);
@@ -1188,13 +1202,15 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 
 
         aboutDialog = new Dialog(getContext());
-
         aboutDialog.setContentView(R.layout.about_dialog);
         aboutDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         aboutDialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.MATCH_PARENT);
 
 
+        listContact = aboutDialog.findViewById(R.id.list_contact);
+        declare = aboutDialog.findViewById(R.id.declare);
+        btns = aboutDialog.findViewById(R.id.btns);
         aboutClose = aboutDialog.findViewById(R.id.about_close);
         phone = aboutDialog.findViewById(R.id.phone);
         www = aboutDialog.findViewById(R.id.www);
@@ -1207,8 +1223,56 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         email_img = aboutDialog.findViewById(R.id.email_img);
         dozo = aboutDialog.findViewById(R.id.dozo);
         desc = aboutDialog.findViewById(R.id.desc);
-        //-------------------------------------------------------
+        //----------------------animation----------------------------
+        aboutDialog.getWindow().getAttributes().windowAnimations = R.style.PauseDialogAnimation;
 
+        Animation a = AnimationUtils.loadAnimation(getContext(), R.anim.slide_down);
+        a.setDuration(1000);
+        Animation list = AnimationUtils.loadAnimation(getContext(), R.anim.slide_down);
+        list.setDuration(1000);
+        Animation btn = AnimationUtils.loadAnimation(getContext(), R.anim.slide_down);
+        btn.setDuration(1000);
+
+
+        declare.setVisibility(View.VISIBLE);
+        declare.startAnimation(a);
+        a.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                listContact.setVisibility(View.VISIBLE);
+                listContact.startAnimation(list);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        list.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                btns.setVisibility(View.VISIBLE);
+
+                btns.startAnimation(btn);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        //------------------------------------------------------------
         www_img.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         twitter_img.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
@@ -1220,7 +1284,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             desc.setJustificationMode(JUSTIFICATION_MODE_INTER_WORD);
         }
-//"\n \n "
+
         //------------------------------------------------------------------
 
 
@@ -1250,7 +1314,6 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                 }
             }
         });
-//TODO: test
 
         phone.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1325,9 +1388,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     thanks.setJustificationMode(JUSTIFICATION_MODE_INTER_WORD);
                 }
-                //    CardView card =detailsDialog.findViewById(R.id.card);
 
-                ///    card.setRadius(9);
                 detailsDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 detailsDialog.show();
             }

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/textColor"
-    android:layout_height="match_parent">
+    android:orientation="vertical">
 
 
     <RelativeLayout
@@ -14,7 +15,9 @@
 
 
         <ImageView
+            android:visibility="invisible"
             android:id="@+id/star"
+
             android:layout_width="200dp"
             android:layout_height="250dp"
             android:layout_alignParentStart="true"
@@ -25,12 +28,13 @@
             android:layout_marginStart="55dp"
             android:layout_marginLeft="55dp"
             android:layout_marginTop="163dp"
-            android:layout_marginEnd="56dp"
-            android:layout_marginRight="56dp"
+            android:layout_marginEnd="55dp"
+            android:layout_marginRight="55dp"
             android:background="@drawable/splash_star" />
 
         <ImageView
             android:id="@+id/name"
+            android:visibility="invisible"
 
             android:layout_width="100dp"
             android:layout_height="100dp"
@@ -40,38 +44,61 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
-            android:layout_marginStart="43dp"
-            android:layout_marginLeft="43dp"
-            android:layout_marginTop="235dp"
-            android:layout_marginEnd="68dp"
-            android:layout_marginRight="68dp"
+            android:layout_marginStart="53dp"
+            android:layout_marginLeft="53dp"
+            android:layout_marginTop="230dp"
+            android:layout_marginEnd="66dp"
+            android:layout_marginRight="66dp"
             app:srcCompat="@drawable/girass_name" />
 
-        <TextView
-            android:id="@+id/label1"
+        <LinearLayout
+            android:visibility="invisible"
+
+            android:id="@+id/labels"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/star"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="38dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="159dp"
             android:gravity="center"
-            android:textSize="18sp"
-            android:fontFamily="@font/tajawal_regular"
-            android:textColor="@color/colorAccent"
-            android:layout_margin="20dp"
-            android:text="@string/label1" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/label2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/label1"
-            android:gravity="center"
-            android:textColor="@color/colorAccent"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:fontFamily="@font/tajawal_regular"
-            android:layout_margin="5dp"
-            android:text="@string/label2" />
+            <TextView
+                android:id="@+id/label1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/tajawal_regular"
+                android:maxLines="1"
+                android:gravity="center"
+                android:text="@string/label1"
+                android:textColor="@color/colorAccent"
 
+                android:textSize="18sp" />
+
+            <TextView
+                android:maxLines="1"
+
+                android:id="@+id/label2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/label1"
+                android:layout_margin="5dp"
+                android:fontFamily="@font/tajawal_regular"
+                android:gravity="center"
+                android:text="@string/label2"
+                android:textColor="@color/colorAccent"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
     </RelativeLayout>
 

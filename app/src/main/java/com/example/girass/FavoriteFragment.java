@@ -17,6 +17,7 @@ import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Interpolator;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +34,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
+import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 
 
 public class FavoriteFragment extends Fragment implements OnStartDragListener {
@@ -84,10 +86,16 @@ public class FavoriteFragment extends Fragment implements OnStartDragListener {
         favorites = new ArrayList<String>(values);
 
         FavAdapter adapter = new FavAdapter(getContext(), favorites);
-        //    AlphaInAnimationAdapter animation=new AlphaInAnimationAdapter(adapter);
-        //  list.setAdapter(animation);
-        list.setAdapter(adapter);
-        //  adapter.setAnimation(new AlphaInAnimationAdapter(adapter)); = new AlphaInAnimationAdapter(adapter);
+        AlphaInAnimationAdapter animation = new AlphaInAnimationAdapter(adapter);
+        animation.setInterpolator(new Interpolator() {
+            @Override
+            public float getInterpolation(float input) {
+                return 0;
+            }
+        });
+        list.setAdapter(new SlideInBottomAnimationAdapter(animation));
+        ///  list.setAdapter(adapter);
+        //adapter.setAnimation(new AlphaInAnimationAdapter(adapter)); = new AlphaInAnimationAdapter(adapter);
         //----------------------subtitle of toolbar-----------------------
 
         if (favorites.size() == 0) {

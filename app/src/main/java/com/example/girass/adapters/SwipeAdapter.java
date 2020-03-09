@@ -206,7 +206,10 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.ItemViewHold
             }
             //--------------------------------------------------------
 
-            textView.setTextSize(textSize);
+            if (textSize > 18)
+                textView.setTextSize(18);
+            else
+                textView.setTextSize(textSize);
             textView.setTypeface(defaultFont);
             //--------------------------------------------------------
 

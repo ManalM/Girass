@@ -10,6 +10,8 @@
     android:orientation="vertical">
 
     <RelativeLayout
+        android:visibility="invisible"
+        android:id="@+id/btns"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -44,7 +46,8 @@
     </RelativeLayout>
 
     <RelativeLayout
-
+        android:visibility="invisible"
+        android:id="@+id/declare"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp">
@@ -94,6 +97,8 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:visibility="invisible"
+        android:id="@+id/list_contact"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
