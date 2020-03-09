@@ -44,8 +44,8 @@ public class ZikrDetails extends Fragment {
 
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
-    private MediaPlayer defualt;
-    private Boolean doIPlaySound, doIVibrate;
+    private MediaPlayer defualt, likeMedia;
+    private Boolean doIPlaySound, doIVibrate, likeSound;
     private CircularProgressBar progressBar;
     private Typeface defaultFont;
     private int TextSize, countNumber = 1;
@@ -77,6 +77,8 @@ public class ZikrDetails extends Fragment {
         progressBar = rootView.findViewById(R.id.progress);
         animeHeart = rootView.findViewById(R.id.anim_heart);
         vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+        likeMedia = MediaPlayer.create(getContext(), R.raw.pop);
+
         //----------------------------progress ---------------------------------
 
         progressBar.setVisibility(View.VISIBLE);
@@ -88,11 +90,11 @@ public class ZikrDetails extends Fragment {
         pref = PreferenceManager.getDefaultSharedPreferences(getContext());
         editor = PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
 
-
         if (pref != null) {
             defualt = MediaPlayer.create(getContext(), pref.getInt("defaultSound", R.raw.click));
             doIPlaySound = pref.getBoolean("masbahaSound", true);
             doIVibrate = pref.getBoolean("masbahaVibrate", true);
+            likeSound = pref.getBoolean("generalSound", true);
             if (pref.getString("defaultFont", "regular").equals("regular"))
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     defaultFont = getResources().getFont(R.font.tajawal_regular);
@@ -106,8 +108,8 @@ public class ZikrDetails extends Fragment {
             TextSize = pref.getInt("fontSize", 18);
 
         } else {
+            likeSound = true;
             defualt = MediaPlayer.create(getContext(), R.raw.click);
-            doIVibrate = true;
             doIPlaySound = true;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 defaultFont = getResources().getFont(R.font.tajawal_regular);
@@ -145,13 +147,8 @@ public class ZikrDetails extends Fragment {
         like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (doIPlaySound)
-                    defualt.start();
-                if (doIVibrate)
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        vibrator.vibrate(VibrationEffect.createOneShot(300, VibrationEffect.EFFECT_TICK));
-                    } else
-                        vibrator.vibrate(500);
+                if (likeSound)
+                    likeMedia.start();
 
                 Animation likeAnim = AnimationUtils.loadAnimation(getContext(), R.anim.heart_beat);
                 animeHeart.setVisibility(View.VISIBLE);

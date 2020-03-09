@@ -78,7 +78,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
             morningTime, eveningTime, sleepTime, wakeTime, reminderTime,
 
     textSize, fontType;
-    private ImageView background_img, www_img, email_img, phone_img, twitter_img, dozo; // the image
+    private ImageView www_img, email_img, phone_img, twitter_img, dozo; // the image
     private ImageView generalArrow, masbahaArrow;
     //
     private SeekBar seekBar;
@@ -90,7 +90,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 
     public static MediaPlayer defualtSound, checkSound;
     public static Typeface defualtFont;
-    public static int TextSize;
+
     public static Boolean Masbahavibrate, Masbahasound, GeneralSound, Generalvibrate, checked;
     //-------------------------------------------------------------
     public static SharedPreferences pref;
