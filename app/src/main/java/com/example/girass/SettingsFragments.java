@@ -527,7 +527,6 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
             case R.id.about:
                 try {
 
-                    // startActivity(new Intent(getContext(), Notes.class));
                     aboutApp();
                 } catch (OutOfMemoryError e) {
                     Toast.makeText(getContext(), "Error" + e.getMessage(), Toast.LENGTH_SHORT).show();

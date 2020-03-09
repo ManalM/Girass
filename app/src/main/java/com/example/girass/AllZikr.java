@@ -20,20 +20,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.example.girass.Data.DataService;
-import com.example.girass.adapters.Adapter;
+
 import com.example.girass.model.HeadZikrObject;
 import com.example.girass.model.ZikrObject;
 
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
+
 
 import me.relex.circleindicator.CircleIndicator;
 import me.relex.circleindicator.Config;
@@ -41,27 +39,25 @@ import me.relex.circleindicator.Config;
 public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener {
     private Toolbar toolbar;
     private TextView toolbarText;
-    ;
+
 
     public static SharedPreferences pref;
     public static SharedPreferences.Editor editor;
-    private ImageView backBtn, like;
+    private ImageView backBtn;
     private PagerAdapter pagerAdapter;
     private ViewPager mPager;
     private CircleIndicator circleIndicator;
     public static String title;
-    Boolean isLiked = false;
     Typeface defaultFont;
-    private final String mapKey = "map";
+
 
     private int tag;
     private int indicatorNumber;
     public static ArrayList<String> favoriteAzkar;
 
 
-    String ZikrId = "";
     private HorizontalScrollView hzScrollView;
-    private LinearLayout hzswItemContainer;
+
 
     @RequiresApi(api = Build.VERSION_CODES.P)
     @Nullable
@@ -72,7 +68,6 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
         backBtn = rootView.findViewById(R.id.button);
         toolbar = (Toolbar) rootView.findViewById(R.id.bar);
         toolbarText = rootView.findViewById(R.id.toolbar_title);
-        // like = rootView.findViewById(R.id.like);
         toolbar.setTitle("");
         backBtn.setImageResource(R.drawable.left_arrow);
         //----------------------------------------------------------
@@ -109,27 +104,10 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
 
 
         toolbarText.setTypeface(defaultFont);
-       /* HashMap<String, String> azkar = loadMap();
-
-
-        for (int i = 0; i < azkar.size(); i++) {
-
-            if (azkar.containsValue(title)) {
-
-                like.setImageResource(R.drawable.fill_heart);
-                isLiked = true;
-            } else {
-                like.setImageResource(R.drawable.fav_heart);
-                isLiked = false;
-            }
-
-        }
-        editor.putBoolean("like", isLiked);*/
 
         //----------------------viewPager and indicator---------------------
 
         hzScrollView = (HorizontalScrollView) rootView.findViewById(R.id.horizontalScrollView);
-        //   hzswItemContainer = (LinearLayout)rootView.findViewById(R.id.horizontalScrollViewItemContainer);
 
         mPager = (ViewPager) rootView.findViewById(R.id.view_pager);
         pagerAdapter = new ScreenSlidePagerAdapter(getChildFragmentManager());
@@ -166,37 +144,6 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
 
 
         favoriteAzkar = new ArrayList<>();
-      /*  like.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                for (int i = 0; i < headZikrObjects.length; i++) {
-                    if (headZikrObjects[i].TITLE.equals(title)) {
-                        ZikrId = headZikrObjects[i].ID;
-
-                        if (!azkar.containsValue(title)) {
-
-                            like.setImageResource(R.drawable.fill_heart);
-                            azkar.put(ZikrId, title);
-
-                            Toast.makeText(getContext(), "added", Toast.LENGTH_SHORT).show();
-
-
-                        } else {
-                            Toast.makeText(getContext(), "deleted", Toast.LENGTH_SHORT).show();
-                            like.setImageResource(R.drawable.fav_heart);
-                            azkar.remove(ZikrId);
-                            //  saveMap(azkar);
-                            // deleteMapItem();
-
-                        }
-                    }
-                }
-                saveMap(azkar);
-            }
-        });
-*/
 
         mPager.setAdapter(pagerAdapter);
         mPager.addOnPageChangeListener(this);
@@ -215,50 +162,6 @@ private void setHzScrollViewCenter(View view) {
 
 }
 
-/*
-
-    private void saveMap(HashMap<String, String> inputMap) {
-
-        if (pref != null) {
-            JSONObject jsonObject = new JSONObject(inputMap);
-            String jsonString = jsonObject.toString();
-            Toast.makeText(getContext(), jsonString, Toast.LENGTH_SHORT).show();
-            editor.remove(mapKey).apply();
-            editor.putString(mapKey, jsonString);
-            editor.commit();
-        }
-    }
-
-    private void deleteMapItem() {
-
-        if (pref != null) {
-            editor.remove(mapKey).apply();
-
-            editor.clear();
-            editor.commit();
-        }
-
-    }
-
-    private HashMap<String, String> loadMap() {
-        HashMap<String, String> outputMap = new HashMap<>();
-
-        try {
-            if (pref != null) {
-                String jsonString = pref.getString(mapKey, (new JSONObject()).toString());
-                JSONObject jsonObject = new JSONObject(jsonString);
-                Iterator<String> keysItr = jsonObject.keys();
-                while (keysItr.hasNext()) {
-                    String key = keysItr.next();
-                    outputMap.put(key, (String) jsonObject.get(key));
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return outputMap;
-    }
-*/
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -327,7 +230,6 @@ class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
             if (headZikrObjects[i].TITLE.equals(AllZikr.title))
                 num_pages = headZikrObjects[i].AllAzkar.length;
 
-            //    break;
         }
         return num_pages;
     }
