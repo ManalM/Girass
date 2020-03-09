@@ -16,6 +16,8 @@ import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -54,6 +56,7 @@ public class ZikrDetails extends Fragment {
     private final String mapKey = "map";
     private Boolean isLiked = false;
     private HashMap<String, String> azkar;
+    ImageView animeHeart;
     //------------Constructor -----------------
     public ZikrDetails(ZikrObject zikrObject) {
         this.zikrObject = zikrObject;
@@ -72,6 +75,7 @@ public class ZikrDetails extends Fragment {
         click = rootView.findViewById(R.id.click);
         countingText = rootView.findViewById(R.id.counting);
         progressBar = rootView.findViewById(R.id.progress);
+        animeHeart = rootView.findViewById(R.id.anim_heart);
         vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
         //----------------------------progress ---------------------------------
 
@@ -141,8 +145,33 @@ public class ZikrDetails extends Fragment {
         like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (doIPlaySound)
+                    defualt.start();
+                if (doIVibrate)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        vibrator.vibrate(VibrationEffect.createOneShot(300, VibrationEffect.EFFECT_TICK));
+                    } else
+                        vibrator.vibrate(500);
 
+                Animation likeAnim = AnimationUtils.loadAnimation(getContext(), R.anim.heart_beat);
+                animeHeart.setVisibility(View.VISIBLE);
+                animeHeart.startAnimation(likeAnim);
+                likeAnim.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
 
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        animeHeart.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
                 for (int i = 0; i < headZikrObjects.length; i++) {
                     if (headZikrObjects[i].TITLE.equals(title)) {
                         ZikrId = headZikrObjects[i].ID;
@@ -237,7 +266,6 @@ public class ZikrDetails extends Fragment {
         if (pref != null) {
             JSONObject jsonObject = new JSONObject(inputMap);
             String jsonString = jsonObject.toString();
-            Toast.makeText(getContext(), jsonString, Toast.LENGTH_SHORT).show();
             editor.remove(mapKey).apply();
             editor.putString(mapKey, jsonString);
             editor.commit();

@@ -33,8 +33,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
-import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 
 
 public class FavoriteFragment extends Fragment implements OnStartDragListener {
