@@ -9,12 +9,12 @@
 
     <ScrollView
         android:id="@+id/scroll"
-        android:layout_weight="1"
-        android:layout_marginBottom="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible"
-        app:layout_constraintStart_toStartOf="parent">
+        android:layout_above="@id/click"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="4dp"
+        android:visibility="visible">
 
 
         <LinearLayout
@@ -102,6 +102,7 @@
             android:layout_height="80dp"
             android:layout_alignParentBottom="true"
             android:layout_gravity="center"
+
             android:layout_marginRight="60dp"
             android:gravity="center_vertical">
 

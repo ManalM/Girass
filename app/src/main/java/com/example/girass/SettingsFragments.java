@@ -78,7 +78,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
             morningTime, eveningTime, sleepTime, wakeTime, reminderTime,
 
     textSize, fontType;
-    private ImageView www_img, email_img, phone_img, twitter_img, dozo; // the image
+    private ImageView www_img, email_img, phone_img, twitter_img;
     private ImageView generalArrow, masbahaArrow;
     //
     private SeekBar seekBar;
@@ -349,7 +349,6 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                     textSize.setTextSize(21);
                 else
                     textSize.setTextSize(progress);
-                Toast.makeText(getContext(), "seekbar:" + progress, Toast.LENGTH_SHORT).show();
 
                 editor.putInt("fontSize", progress);
                 editor.commit();
@@ -1221,7 +1220,6 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         phone_img = aboutDialog.findViewById(R.id.phone_img);
         twitter_img = aboutDialog.findViewById(R.id.twitter_img);
         email_img = aboutDialog.findViewById(R.id.email_img);
-        dozo = aboutDialog.findViewById(R.id.dozo);
         desc = aboutDialog.findViewById(R.id.desc);
         //----------------------animation----------------------------
         aboutDialog.getWindow().getAttributes().windowAnimations = R.style.PauseDialogAnimation;
