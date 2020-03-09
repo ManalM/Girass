@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -48,7 +49,7 @@ public class AdapterAzkar extends RecyclerView.Adapter<AdapterAzkar.NewViewHolde
     public void onBindViewHolder(final NewViewHolder holder, final int position) {
 
         holder.mTextView.setText(mAzkarArray[position]);
-
+        holder.mLinearLayout.setAnimation(AnimationUtils.loadAnimation(mContext, R.anim.list_anim));
     }
 
     @Override

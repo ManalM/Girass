@@ -5,15 +5,14 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.widget.TextViewCompat;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.girass.R;
@@ -56,6 +55,8 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.viewHolder> {
 
         holder.title.setText(arrayList.get(position));
         value = position;
+        if (arrayList.size() > 0)
+            holder.cardView.setAnimation(AnimationUtils.loadAnimation(mContext, R.anim.list_anim));
     }
 
     @Override
@@ -67,8 +68,7 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.viewHolder> {
         TextView title;
         SharedPreferences pref;
         SharedPreferences.Editor editor;
-
-
+        CardView cardView;
         int textSize;
         Typeface defaultFont;
 
@@ -77,7 +77,7 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.viewHolder> {
 
             title = itemView.findViewById(R.id.zikrText_fav);
 
-
+            cardView = itemView.findViewById(R.id.fav_layout);
             //-------------------------- SharedPreference -----------------
             pref = PreferenceManager.getDefaultSharedPreferences(FavAdapter.mContext);
             editor = PreferenceManager.getDefaultSharedPreferences(FavAdapter.mContext).edit();

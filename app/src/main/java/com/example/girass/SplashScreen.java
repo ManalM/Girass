@@ -103,23 +103,5 @@ public class SplashScreen extends AppCompatActivity {
 
             }
         });
-/*
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Animation a = AnimationUtils.loadAnimation(SplashScreen.this, R.anim.txt_anim);
-                a.setDuration(1000);
-                star.startAnimation(a);
-
-                name.startAnimation(a);
-                label1.startAnimation(a);
-                label2.startAnimation(a);
-
-
-                startActivity(new Intent(SplashScreen.this, MainActivity.class));
-                finish();
-            }
-        }, 1000);
-*/
     }
 }

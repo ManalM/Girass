@@ -21,6 +21,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -44,14 +46,10 @@ public class AzkarFragment extends Fragment implements Adapter.SelectedUser {
     private ImageView arrow;
     private Adapter mAdapterAzkar;
     private RecyclerView listView;
-    private final String KEY_RECYCLER_STATE = "list_state";
-    private Bundle mBundleRecyclerViewState;
-    private SavedState mListState;
-    private LinearLayout linearLayout;
+
     GridLayoutManager linearLayoutManager;
     static int currentVisiblePosition;
-    String LIST_STATE_KEY = "key";
-    private AzkarFragment mLayoutManager;
+
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
@@ -69,7 +67,6 @@ public class AzkarFragment extends Fragment implements Adapter.SelectedUser {
         /////////////////////////////////////////////
         /////////////     ToolBar       ////////////
         //////////////////////////////////////////
-        linearLayout = rootView.findViewById(R.id.recyclerView_layout);
         linearLayoutManager = new GridLayoutManager(getContext(), 1);
         toolbar = (Toolbar) rootView.findViewById(R.id.main_toolbar);
         TextView toolbarText = rootView.findViewById(R.id.toolbar_title);
@@ -102,13 +99,10 @@ public class AzkarFragment extends Fragment implements Adapter.SelectedUser {
 
         mAdapterAzkar = new Adapter(getContext(), titles, this);
         listView.setLayoutManager(new GridLayoutManager(getContext(), 1));
-        final Parcelable state;
-        state = listView.getLayoutManager().onSaveInstanceState();
         listView.setAdapter(mAdapterAzkar);
 
-        //   listView.getLayoutManager().onRestoreInstanceState(state);
+
         ///----------------search btn and process ----------
-        // searchView.setOnQueryTextListener(this);
 
         search.addTextChangedListener(new TextWatcher() {
             @Override
@@ -150,9 +144,6 @@ public class AzkarFragment extends Fragment implements Adapter.SelectedUser {
             }
         });
 
-      /*  Fragment f = new Fragment();
-        SavedState savestate = getFragmentManager().saveFragmentInstanceState(f);
-        f.setInitialSavedState(savestate);*/
         return rootView;
 
 
@@ -181,10 +172,7 @@ public class AzkarFragment extends Fragment implements Adapter.SelectedUser {
     @Override
     public void onPause() {
         super.onPause();
-        //mBundleRecyclerViewState = new Bundle();
 
-
-        //   mBundleRecyclerViewState.putInt("selectedItem",mAdapterAzkar.selectedItem);
         currentVisiblePosition = 0;
         currentVisiblePosition = ((LinearLayoutManager) listView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
     }
@@ -193,38 +181,11 @@ public class AzkarFragment extends Fragment implements Adapter.SelectedUser {
     public void onResume() {
         super.onResume();
 
-  /*      if (mListState != null) {
-            mLayoutManager.onActivityCreated(mListState);
-        }*/
-
         ((LinearLayoutManager) listView.getLayoutManager()).scrollToPosition(currentVisiblePosition);
 
         currentVisiblePosition = 0;
     }
 
 
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle state) {
-        super.onActivityCreated(state);
-        // if(state != null)
-        //      mListState = state.getParcelable(LIST_STATE_KEY);
-    }
-/*
-    private void onRestoreInstanceState(Bundle state) {
-        super.onRestoreInstanceState(state);
-        // Retrieve list state and list/item positions
-        if(state != null)
-            mListState = state.getParcelable(LIST_STATE_KEY);
-    }*/
-
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-//        mListState =  getFragmentManager().saveFragmentInstanceState(mLayoutManager);
-        //  mListState = mLayoutManager.onSaveInstanceState();
-        //  savedInstanceState.putParcelable(LIST_STATE_KEY, mListState);
-
-    }
 
 }

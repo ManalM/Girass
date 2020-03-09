@@ -8,8 +8,10 @@ import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -62,6 +64,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.viewHolder> implements
             holder.textSize = 18;
         }
 
+        holder.zikrLinear.setAnimation(AnimationUtils.loadAnimation(mContext, R.anim.list_anim));
     }
 
     @Override
@@ -91,7 +94,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.viewHolder> implements
 
         SharedPreferences pref;
         SharedPreferences.Editor editor;
-
+        LinearLayout zikrLinear;
 
         int textSize;
 
@@ -133,7 +136,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.viewHolder> implements
             //--------------------------------------------------------
 
             mTextView = itemView.findViewById(R.id.zikrText);
-
+            zikrLinear = itemView.findViewById(R.id.zikr_linear);
             //-------------------- set Zikr text ---------------------------
             if (textSize > 18)
                 mTextView.setTextSize(18);

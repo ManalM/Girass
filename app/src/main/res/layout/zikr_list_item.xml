@@ -11,9 +11,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginRight="15dp"
         android:background="@drawable/rounded_back">
-        <!-- SET SIZE
-        TEXT SHOULD BE IN LIMIT OF DESIGN
-        -->
+
         <TextView
             android:id="@+id/zikrText"
             android:layout_width="0dp"
