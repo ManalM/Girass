@@ -26,10 +26,14 @@ import android.widget.Toast;
 
 import com.example.girass.Data.DataService;
 import com.example.girass.model.HeadZikrObject;
+import com.example.girass.model.ObjectSerializer;
+import com.example.girass.model.PrefMethods;
 import com.example.girass.model.ZikrObject;
 
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -53,10 +57,12 @@ public class ZikrDetails extends Fragment {
     public static ImageView like;
     private Vibrator vibrator;
     String ZikrId = "";
-    private final String mapKey = "map";
+
     private Boolean isLiked = false;
-    private HashMap<String, String> azkar;
+
     ImageView animeHeart;
+
+    ArrayList<String> favArray;
     //------------Constructor -----------------
     public ZikrDetails(ZikrObject zikrObject) {
         this.zikrObject = zikrObject;
@@ -125,12 +131,14 @@ public class ZikrDetails extends Fragment {
 
 
         //---------------------retrieve zikr------------------------
-        azkar = loadMap();
 
 
-        for (int i = 0; i < azkar.size(); i++) {
+        favArray = new PrefMethods(getContext()).getArray();
 
-            if (azkar.containsValue(title)) {
+
+        for (int i = 0; i < favArray.size(); i++) {
+
+            if (favArray.contains(title)) {
 
                 like.setImageResource(R.drawable.fill_heart);
                 isLiked = true;
@@ -150,6 +158,7 @@ public class ZikrDetails extends Fragment {
                 if (likeSound)
                     likeMedia.start();
 
+                //-- animate heart ---------
                 Animation likeAnim = AnimationUtils.loadAnimation(getContext(), R.anim.heart_beat);
                 animeHeart.setVisibility(View.VISIBLE);
                 animeHeart.startAnimation(likeAnim);
@@ -169,25 +178,26 @@ public class ZikrDetails extends Fragment {
 
                     }
                 });
+                //---- add to fav-----
+
                 for (int i = 0; i < headZikrObjects.length; i++) {
                     if (headZikrObjects[i].TITLE.equals(title)) {
                         ZikrId = headZikrObjects[i].ID;
 
-                        if (!azkar.containsValue(title)) {
+                        if (!favArray.contains(title)) {
 
                             like.setImageResource(R.drawable.fill_heart);
-                            azkar.put(ZikrId, title);
+                            favArray.add(title);
 
                         } else {
                             like.setImageResource(R.drawable.fav_heart);
-                            azkar.remove(ZikrId);
-                            //  saveMap(azkar);
-                            //   deleteMapItem();
+                            favArray.remove(title);
+
 
                         }
                     }
                 }
-                saveMap(azkar);
+                new PrefMethods(getContext()).saveArray(favArray);
             }
         });
 
@@ -226,6 +236,7 @@ public class ZikrDetails extends Fragment {
         return rootView;
     }
 
+
     //-----------------------methods--------------------------
     private void textStyle() {
         zikr.setTypeface(defaultFont);
@@ -239,33 +250,5 @@ public class ZikrDetails extends Fragment {
     }
 
 
-    private HashMap<String, String> loadMap() {
-        HashMap<String, String> outputMap = new HashMap<>();
 
-        try {
-            if (pref != null) {
-                String jsonString = pref.getString(mapKey, (new JSONObject()).toString());
-                JSONObject jsonObject = new JSONObject(jsonString);
-                Iterator<String> keysItr = jsonObject.keys();
-                while (keysItr.hasNext()) {
-                    String key = keysItr.next();
-                    outputMap.put(key, (String) jsonObject.get(key));
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return outputMap;
-    }
-
-    private void saveMap(HashMap<String, String> inputMap) {
-
-        if (pref != null) {
-            JSONObject jsonObject = new JSONObject(inputMap);
-            String jsonString = jsonObject.toString();
-            editor.remove(mapKey).apply();
-            editor.putString(mapKey, jsonString);
-            editor.commit();
-        }
-    }
 }

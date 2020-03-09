@@ -4,7 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
+
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -17,26 +17,22 @@ import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Interpolator;
+
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.example.girass.adapters.FavAdapter;
 import com.example.girass.adapters.SimpleItemTouchHelperCallback;
 import com.example.girass.adapters.SwipeAdapter;
 import com.example.girass.helpers.OnStartDragListener;
+import com.example.girass.model.PrefMethods;
 
-import org.json.JSONObject;
+
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-
 
 
 public class FavoriteFragment extends Fragment implements OnStartDragListener {
-
     private Toolbar toolbar;
     private TextView toolbarText, editText;
 
@@ -47,13 +43,13 @@ public class FavoriteFragment extends Fragment implements OnStartDragListener {
     //---------------------
 
     private ArrayList<String> favorites;
-    private final String mapKey = "map";
-    String id = "";
+
     private ItemTouchHelper mItemTouchHelper;
-    public static HashMap<String, String> hashMap;
 
 
+    FavAdapter adapter;
     static int currentVisiblePosition;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,25 +71,11 @@ public class FavoriteFragment extends Fragment implements OnStartDragListener {
         list.setLayoutManager(new GridLayoutManager(getContext(), 1));
         //-------------------get Azkar------------------
 
-        hashMap = loadMap();
-        Collection<String> values = hashMap.values();
+        favorites = new PrefMethods(getContext()).getArray();
+        adapter = new FavAdapter(getContext(), favorites);
 
-
-//Creating an ArrayList of values
-
-        favorites = new ArrayList<String>(values);
-
-        FavAdapter adapter = new FavAdapter(getContext(), favorites);
-   /*     AlphaInAnimationAdapter animation = new AlphaInAnimationAdapter(adapter);
-        animation.setInterpolator(new Interpolator() {
-            @Override
-            public float getInterpolation(float input) {
-                return 0;
-            }
-        });
-        list.setAdapter(new SlideInBottomAnimationAdapter(animation));*/
         list.setAdapter(adapter);
-        //adapter.setAnimation(new AlphaInAnimationAdapter(adapter)); = new AlphaInAnimationAdapter(adapter);
+
         //----------------------subtitle of toolbar-----------------------
 
         if (favorites.size() == 0) {
@@ -132,7 +114,7 @@ public class FavoriteFragment extends Fragment implements OnStartDragListener {
                 if (list.getAdapter() == adapter) {
                     editText.setText(R.string.agree);
 
-                    SwipeAdapter swipeAdapter = new SwipeAdapter(getContext(), favorites, FavoriteFragment.this::onStartDrag);
+                    SwipeAdapter swipeAdapter = new SwipeAdapter(getContext(), FavoriteFragment.this::onStartDrag);
 
                     ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(swipeAdapter);
                     mItemTouchHelper = new ItemTouchHelper(callback);
@@ -142,7 +124,8 @@ public class FavoriteFragment extends Fragment implements OnStartDragListener {
                 } else {
 
                     editText.setText(R.string.Edit);
-
+                    favorites = new PrefMethods(getContext()).getArray();
+                    adapter = new FavAdapter(getContext(), favorites);
                     list.setAdapter(adapter);
                 }
 
@@ -153,36 +136,6 @@ public class FavoriteFragment extends Fragment implements OnStartDragListener {
         return rootView;
     }
 
-
-    private HashMap<String, String> loadMap() {
-        HashMap<String, String> outputMap = new HashMap<>();
-
-        try {
-            if (pref != null) {
-                String jsonString = pref.getString(mapKey, (new JSONObject()).toString());
-                JSONObject jsonObject = new JSONObject(jsonString);
-                Iterator<String> keysItr = jsonObject.keys();
-                while (keysItr.hasNext()) {
-                    String key = keysItr.next();
-                    outputMap.put(key, (String) jsonObject.get(key));
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return outputMap;
-    }
-
-    private void saveMap(HashMap<String, String> inputMap) {
-
-        if (pref != null) {
-            JSONObject jsonObject = new JSONObject(inputMap);
-            String jsonString = jsonObject.toString();
-            editor.remove(mapKey).apply();
-            editor.putString(mapKey, jsonString);
-            editor.commit();
-        }
-    }
 
     @Override
     public void onStartDrag(RecyclerView.ViewHolder viewHolder) {

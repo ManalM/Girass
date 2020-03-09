@@ -28,6 +28,7 @@ import com.example.girass.helpers.ItemTouchHelperAdapter;
 import com.example.girass.helpers.ItemTouchHelperViewHolder;
 import com.example.girass.helpers.OnStartDragListener;
 import com.example.girass.model.HeadZikrObject;
+import com.example.girass.model.PrefMethods;
 
 import org.json.JSONObject;
 
@@ -44,15 +45,12 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.ItemViewHold
     public static ArrayList<String> mItems;
     private Context context;
     private final OnStartDragListener mDragStartListener;
-    public static SharedPreferences pref;
-    public static SharedPreferences.Editor editor;
-    private final String mapKey = "map";
-    HashMap<String, String> hashMap = loadMap();
 
-    public SwipeAdapter(Context context, ArrayList<String> array, OnStartDragListener dragStartListener) {
+
+    public SwipeAdapter(Context context, OnStartDragListener dragStartListener) {
         mDragStartListener = dragStartListener;
         this.context = context;
-        mItems = array;
+        mItems = new PrefMethods(context).getArray();
     }
 
 
@@ -91,23 +89,11 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.ItemViewHold
     public void onItemDismiss(int position) {
         mItems.remove(position);
         notifyItemRemoved(position);
-/*        for (int i =0; i<mItems.size();i++){
-            hashMap.put(String.valueOf(position+1),mItems.get(position));
-        }
-        saveMap(hashMap);*/
+        new PrefMethods(context).saveArray(mItems);
+
     }
 
-    private void saveMap(HashMap<String, String> inputMap) {
 
-        if (pref != null) {
-            JSONObject jsonObject = new JSONObject(inputMap);
-            String jsonString = jsonObject.toString();
-            Toast.makeText(context, jsonString, Toast.LENGTH_SHORT).show();
-            editor.remove(mapKey).apply();
-            editor.putString(mapKey, jsonString);
-            editor.commit();
-        }
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -115,6 +101,7 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.ItemViewHold
         Collections.swap(mItems, fromPosition, toPosition);
 
         notifyItemMoved(fromPosition, toPosition);
+        new PrefMethods(context).saveArray(mItems);
 
         return true;
     }
@@ -124,41 +111,7 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.ItemViewHold
         return mItems.size();
     }
 
-    private HashMap<String, String> loadMap() {
-        HashMap<String, String> outputMap = new HashMap<>();
 
-        try {
-            if (pref != null) {
-                String jsonString = pref.getString(mapKey, (new JSONObject()).toString());
-                JSONObject jsonObject = new JSONObject(jsonString);
-                Iterator<String> keysItr = jsonObject.keys();
-                while (keysItr.hasNext()) {
-                    String key = keysItr.next();
-                    outputMap.put(key, (String) jsonObject.get(key));
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return outputMap;
-    }
-
-
-/*
-    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-        @Override
-        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-            return false;
-        }
-
-        @Override
-        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-
-            int position = viewHolder.getAdapterPosition();
-            Toast.makeText(context, position, Toast.LENGTH_SHORT).show();
-        }
-    };
-*/
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder implements
             ItemTouchHelperViewHolder {

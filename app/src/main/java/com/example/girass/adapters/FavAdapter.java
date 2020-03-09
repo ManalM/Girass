@@ -23,9 +23,7 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.viewHolder> {
     private FavAdapter.OnItemClickListener mListener;
     public static Context mContext;
     private static ArrayList<String> arrayList;
-    String mRecentlyDeletedItem;
-    int mRecentlyDeletedItemPosition;
-    static int value = 0;
+
 
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -54,7 +52,6 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.viewHolder> {
     public void onBindViewHolder(@NonNull FavAdapter.viewHolder holder, int position) {
 
         holder.title.setText(arrayList.get(position));
-        value = position;
         if (arrayList.size() > 0)
             holder.cardView.setAnimation(AnimationUtils.loadAnimation(mContext, R.anim.list_anim));
     }
