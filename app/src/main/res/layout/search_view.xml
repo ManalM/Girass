@@ -24,6 +24,7 @@
         android:ems="10"
         android:layout_margin="10dp"
         android:gravity="center"
+        android:imeOptions="actionDone"
         android:fontFamily="@font/tajawal_regular"
         android:layout_gravity="center"
         android:background="@android:color/transparent"
