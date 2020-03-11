@@ -21,7 +21,7 @@ import android.view.LayoutInflater;
 
 import android.view.View;
 import android.view.ViewGroup;
-import android.*:
+import android.*;
 
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
@@ -112,7 +112,7 @@ public class AzkarFragment extends Fragment implements Adapter.SelectedUser {
             public void onClick(View v) {
                 titles.clear();
                 toolbar.setVisibility(View.GONE);
-
+                search.setText(null);
                 searchBar.setVisibility(View.VISIBLE);
                 keyboardShowAndHide(getActivity(), search, 0);
 
@@ -162,10 +162,10 @@ public class AzkarFragment extends Fragment implements Adapter.SelectedUser {
 
             InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
             if (value == 0)
-                imm.showSoftInput(search, InputMethodManager.SHOW_IMPLICIT);
+                imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
             else
-                imm.hideSoftInputFromWindow(search.getWindowToken(), 0);
-        } catch () {
+                imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+        } catch (Exception e) {
 
         }
 
