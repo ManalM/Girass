@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.MotionEventCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,7 +44,7 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.ItemViewHold
 
 
     public static ArrayList<String> mItems;
-    private Context context;
+    public static Context context;
     private final OnStartDragListener mDragStartListener;
 
 
@@ -129,28 +130,24 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.ItemViewHold
             handleView = (ImageView) itemView.findViewById(R.id.handle);
             delete = (ImageView) itemView.findViewById(R.id.delete);
             //-------------------------- SharedPreference -----------------
-            pref = PreferenceManager.getDefaultSharedPreferences(FavAdapter.mContext);
-            editor = PreferenceManager.getDefaultSharedPreferences(FavAdapter.mContext).edit();
+            pref = PreferenceManager.getDefaultSharedPreferences(context);
+            editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
 
             if (pref != null) {
                 textSize = pref.getInt("fontSize", 18);
 
 
                 if (pref.getString("defaultFont", "regular").equals("regular"))
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        defaultFont = FavAdapter.mContext.getResources().getFont(R.font.tajawal_regular);
-                    } else if (pref.getString("defaultFont", "bold").equals("bold"))
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            defaultFont = FavAdapter.mContext.getResources().getFont(R.font.tajwal_bold);
-                        } else if (pref.getString("defaultFont", "light").equals("light"))
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                defaultFont = FavAdapter.mContext.getResources().getFont(R.font.tajawal_light);
-                            }
+                    defaultFont = ResourcesCompat.getFont(context, R.font.tajawal_regular);
+                else if (pref.getString("defaultFont", "bold").equals("bold"))
+                    defaultFont = ResourcesCompat.getFont(context, R.font.tajawal_bold);
+                else if (pref.getString("defaultFont", "light").equals("light"))
+                    defaultFont = ResourcesCompat.getFont(context, R.font.tajawal_light);
+
             } else {
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    defaultFont = FavAdapter.mContext.getResources().getFont(R.font.tajawal_regular);
-                }
+                defaultFont = ResourcesCompat.getFont(context, R.font.tajawal_regular);
+
                 editor.putString("defaultFont", "regular");
 
                 textSize = 18;

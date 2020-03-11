@@ -23,6 +23,7 @@ import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import android.preference.PreferenceManager;
@@ -90,7 +91,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 
     public static MediaPlayer defualtSound, checkSound;
     public static Typeface defualtFont;
-
+    int font;
     public static Boolean Masbahavibrate, Masbahasound, GeneralSound, Generalvibrate, checked;
     //-------------------------------------------------------------
     public static SharedPreferences pref;
@@ -171,11 +172,6 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         generalSound = rootView.findViewById(R.id.general_sounds);
         generalVibrate = rootView.findViewById(R.id.general_vibrate);
 
-        //--------------------- Defaults ------------------------------
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            defualtFont = getResources().getFont(R.font.tajawal_regular);
-        }
 
 
         //-------------------------------------------------------------
@@ -210,16 +206,28 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
             masbahaCard.setVisibility(View.VISIBLE);
         } else if (pref.getString("masbahaCardVisibility", "gone").equals("gone"))
             masbahaCard.setVisibility(View.GONE);
+        //--------------------- Defaults ------------------------------
+
+
+        if (pref.getString("defaultFont", "regular").equals("regular"))
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                defualtFont = getResources().getFont(R.font.tajawal_regular);
+            } else if (pref.getString("defaultFont", "bold").equals("bold"))
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    defualtFont = getResources().getFont(R.font.tajawal_bold);
+                } else if (pref.getString("defaultFont", "light").equals("light"))
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        defualtFont = getResources().getFont(R.font.tajawal_light);
+                    }
 
 
         //-------------------------------------------------------------
         textSize = (TextView) rootView.findViewById(R.id.text_size);
         fontType = (TextView) rootView.findViewById(R.id.FontType);
-        textSize.setTypeface(defualtFont);
         seekBar = rootView.findViewById(R.id.seek_bar);
 
         fontType.setTypeface(defualtFont);
-        seekBar.setProgress((int) pref.getInt("fontSize", 15));
+        seekBar.setProgress((int) pref.getInt("fontSize", 22));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             seekBar.setMin(15);
             seekBar.setMinimumHeight(22);
@@ -229,7 +237,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
             textSize.setTextSize(21);
         else
 
-            textSize.setTextSize(pref.getInt("fontSize", 15));
+            textSize.setTextSize(pref.getInt("fontSize", 22));
         checkSound = MediaPlayer.create(getContext(), R.raw.correct);
 
         //--------------------Listeners------------------------------
@@ -311,32 +319,48 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         fontsGroup.setOnPositionChangedListener(new SegmentedButtonGroup.OnPositionChangedListener() {
             @Override
             public void onPositionChanged(int position) {
+
                 if (position == 0) {
+
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         defualtFont = getResources().getFont(R.font.tajawal_regular);
+                        fontType.setTypeface(defualtFont);
                     }
-                    fontType.setTypeface(defualtFont);
+
+                    //fontType.setTypeface( getResources().getFont(R.font.tajawal_regular));
                     editor.putString("defaultFont", "regular");
                 } else if (position == 1) {
+
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         defualtFont = getResources().getFont(R.font.tajawal_light);
+
                     }
-                    fontType.setTypeface(defualtFont);
+
+                    // fontType.setTypeface( getResources().getFont(R.font.tajawal_light));
 
                     editor.putString("defaultFont", "light");
                 } else if (position == 2) {
 
+
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        defualtFont = getResources().getFont(R.font.tajwal_bold);
+                        defualtFont = getResources().getFont(R.font.tajawal_bold);
                     }
-                    fontType.setTypeface(defualtFont);
+
+
+                    // fontType.setTypeface(ResourcesCompat.getFont(getContext(),R.font.tajawal_bold));
+
 
                     editor.putString("defaultFont", "bold");
-                }
+                    }
+
+
+                fontType.setTypeface(defualtFont);
+
                 editor.putInt("selectedFont", position);
 
                 editor.commit();
             }
+
         });
         //----------------------------------------------------
 

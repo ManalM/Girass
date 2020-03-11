@@ -31,6 +31,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.ImageButton;
 
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,7 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
 
 
     private ImageButton resetCount, chooseZikr, subhaBtn;
+    private LinearLayout tasbihLayout;
     private int count = 0, theCount = 0;
     private Boolean doIPlaySound;
     private Boolean doIVibrate;
@@ -104,7 +106,7 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
         resetCount = (ImageButton) rootView.findViewById(R.id.reset);
         chooseZikr = (ImageButton) rootView.findViewById(R.id.choose_btn);
         subhaBtn = (ImageButton) rootView.findViewById(R.id.subha_btn);
-
+        tasbihLayout = rootView.findViewById(R.id.tasbih_layout);
         noOfTasih = (TextView) rootView.findViewById(R.id.no_tasbih);
         firstZikr = (TextView) rootView.findViewById(R.id.fisrt_zikr);
         secZikr = (TextView) rootView.findViewById(R.id.sec_zikr);
@@ -124,7 +126,7 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
         chooseZikr.setOnClickListener(this);
 
         subhaBtn.setOnClickListener(this);
-
+        tasbihLayout.setOnClickListener(this);
         mBundleRecyclerViewState = new Bundle();
 
         return rootView;
@@ -143,7 +145,6 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
 
             case R.id.reset:
-                // do nt forget to play sound depends on settings
                 setResetCount();
                 break;
             case R.id.choose_btn:
@@ -153,7 +154,9 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
             case R.id.subha_btn:
                 counting();
                 break;
-
+            case R.id.tasbih_layout:
+                counting();
+                break;
 
         }
     }
@@ -256,7 +259,7 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
             else if (doIVibrate && theCount >= 1000)
                 v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
             else {
-                v.vibrate(VibrationEffect.createOneShot(300, VibrationEffect.EFFECT_TICK));
+                v.vibrate(VibrationEffect.createOneShot(100, 1));
 
             }
 
@@ -288,7 +291,7 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
             else if (doIVibrate && theCount >= 1000)
                 v.vibrate(500);
             else {
-                v.vibrate(500);
+                v.vibrate(100);
 
             }
         }
@@ -323,7 +326,7 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
             menu.start();
         } else {
             defualt.start();
-        } /// change it after settings page < depends on user choice;
+        }
 
     }
 
@@ -335,7 +338,7 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
          *************************************/
 
         if (doIVibrate)
-            v.vibrate(500);
+            v.vibrate(100);
         if (doIPlaySound)
             defualt.start();
         // do nt forget to play sound depends on settings

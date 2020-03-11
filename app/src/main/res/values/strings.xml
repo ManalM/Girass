@@ -16,12 +16,12 @@
     <string name="choose_zikr"> إِخْتَرْ ذِكْـرًا</string>
 
     <!-- Settings List  -->
-    <string name="general_setting">إِعْدَادَات عَامَّة</string>
-    <string name="masbaha_setting">إٍعْدَادَات المَسْبَحَة</string>
+    <string name="general_setting">إِعــْدَادَات عَامَّــــة</string>
+    <string name="masbaha_setting">إٍعـْدَادَات المـَسـْبـَحـَة</string>
     <string name="notification">التّــنْـبِـيـهَـــــات</string>
-    <string name="share">نَشْر التّطبيق</string>
-    <string name="rate">تَقْيٍيم التّطبيق</string>
-    <string name="about">حَوْل التّطبيق</string>
+    <string name="share">نَـشْـر التّطـبيـق</string>
+    <string name="rate">تـَقـْيٍيـم التـّطبيـق</string>
+    <string name="about">حـــَوْل التّـطبيـق</string>
 
     <!-- Fav Layout-->
     <string name="Edit">تعديل</string>

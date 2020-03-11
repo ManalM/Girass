@@ -106,12 +106,12 @@ public class ZikrDetails extends Fragment {
                     defaultFont = getResources().getFont(R.font.tajawal_regular);
                 } else if (pref.getString("defaultFont", "bold").equals("bold"))
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        defaultFont = getResources().getFont(R.font.tajwal_bold);
+                        defaultFont = getResources().getFont(R.font.tajawal_bold);
                     } else if (pref.getString("defaultFont", "light").equals("light"))
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                             defaultFont = getResources().getFont(R.font.tajawal_light);
                         }
-            TextSize = pref.getInt("fontSize", 18);
+            TextSize = pref.getInt("fontSize", 22);
 
         } else {
             likeSound = true;
@@ -120,7 +120,7 @@ public class ZikrDetails extends Fragment {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 defaultFont = getResources().getFont(R.font.tajawal_regular);
             }
-            TextSize = 15;
+            TextSize = 22;
             editor.putInt("defaultSound", R.raw.click);
             editor.putBoolean("masbahaSound", true);
             editor.putBoolean("masbahaVibrate", true);
@@ -226,9 +226,9 @@ public class ZikrDetails extends Fragment {
                     defualt.start();
                 if (doIVibrate)
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        vibrator.vibrate(VibrationEffect.createOneShot(300, VibrationEffect.EFFECT_TICK));
+                        vibrator.vibrate(VibrationEffect.createOneShot(100, 1));
                     } else
-                        vibrator.vibrate(500);
+                        vibrator.vibrate(100);
 
             }
         });

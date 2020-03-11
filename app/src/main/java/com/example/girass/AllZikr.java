@@ -30,6 +30,7 @@ import com.example.girass.model.HeadZikrObject;
 import com.example.girass.model.ZikrObject;
 
 
+
 import java.util.ArrayList;
 
 
@@ -59,7 +60,6 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
     private HorizontalScrollView hzScrollView;
 
 
-    @RequiresApi(api = Build.VERSION_CODES.P)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -86,19 +86,26 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
         editor = PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
 
         if (pref != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
 
                 if (pref.getString("defaultFont", "regular").equals("regular"))
-                    defaultFont = getResources().getFont(R.font.tajawal_regular);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        defaultFont = getResources().getFont(R.font.tajawal_regular);
+                    }
 
                 else if (pref.getString("defaultFont", "bold").equals("bold"))
-                    defaultFont = getResources().getFont(R.font.tajwal_bold);
-                else if (pref.getString("defaultFont", "light").equals("light"))
-                    defaultFont = getResources().getFont(R.font.tajawal_light);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            defaultFont = getResources().getFont(R.font.tajawal_bold);
+                        } else if (pref.getString("defaultFont", "light").equals("light"))
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                defaultFont = getResources().getFont(R.font.tajawal_light);
+                            }
 
-            }
+
         } else {
-            defaultFont = getResources().getFont(R.font.tajawal_regular);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                defaultFont = getResources().getFont(R.font.tajawal_regular);
+            }
         }
         editor.putString("defaultFont", "regular");
 

@@ -104,8 +104,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.viewHolder> implements
             super(itemView);
 
             //-------------------------- SharedPreference -----------------
-            pref = PreferenceManager.getDefaultSharedPreferences(Adapter.mContext);
-            editor = PreferenceManager.getDefaultSharedPreferences(Adapter.mContext).edit();
+            pref = PreferenceManager.getDefaultSharedPreferences(mContext);
+            editor = PreferenceManager.getDefaultSharedPreferences(mContext).edit();
 
             if (pref != null) {
                 textSize = pref.getInt("fontSize", 18);
@@ -116,7 +116,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.viewHolder> implements
                         defaultFont = Adapter.mContext.getResources().getFont(R.font.tajawal_regular);
                     } else if (pref.getString("defaultFont", "bold").equals("bold"))
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            defaultFont = Adapter.mContext.getResources().getFont(R.font.tajwal_bold);
+                            defaultFont = Adapter.mContext.getResources().getFont(R.font.tajawal_bold);
                         } else if (pref.getString("defaultFont", "light").equals("light"))
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                                 defaultFont = Adapter.mContext.getResources().getFont(R.font.tajawal_light);

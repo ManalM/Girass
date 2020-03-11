@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:text=""
         android:textSize="18sp"
-        android:fontFamily="@font/tajwal_bold"
+        android:fontFamily="@font/tajawal_bold"
         style="@style/Toolbar.TitleText"
         android:layout_gravity="center"
         android:ellipsize="end"

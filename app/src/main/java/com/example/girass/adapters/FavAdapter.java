@@ -76,8 +76,8 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.viewHolder> {
 
             cardView = itemView.findViewById(R.id.fav_layout);
             //-------------------------- SharedPreference -----------------
-            pref = PreferenceManager.getDefaultSharedPreferences(FavAdapter.mContext);
-            editor = PreferenceManager.getDefaultSharedPreferences(FavAdapter.mContext).edit();
+            pref = PreferenceManager.getDefaultSharedPreferences(mContext);
+            editor = PreferenceManager.getDefaultSharedPreferences(mContext).edit();
 
             if (pref != null) {
                 textSize = pref.getInt("fontSize", 18);
@@ -88,7 +88,7 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.viewHolder> {
                         defaultFont = FavAdapter.mContext.getResources().getFont(R.font.tajawal_regular);
                     } else if (pref.getString("defaultFont", "bold").equals("bold"))
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            defaultFont = FavAdapter.mContext.getResources().getFont(R.font.tajwal_bold);
+                            defaultFont = FavAdapter.mContext.getResources().getFont(R.font.tajawal_bold);
                         } else if (pref.getString("defaultFont", "light").equals("light"))
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                                 defaultFont = FavAdapter.mContext.getResources().getFont(R.font.tajawal_light);
@@ -100,7 +100,7 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.viewHolder> {
                 }
                 editor.putString("defaultFont", "regular");
 
-                textSize = 15;
+                textSize = 18;
                 editor.putInt("fontSize", textSize);
                 editor.apply();
             }

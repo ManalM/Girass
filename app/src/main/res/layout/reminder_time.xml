@@ -19,33 +19,34 @@
         android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
+
         <ImageView
-            android:id="@+id/correct_reminder_picker"
+            android:id="@+id/cancel_reminder_picker"
+            android:layout_alignParentLeft="true"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:layout_margin="10dp"
-            android:src="@drawable/correct_1" />
-
+            android:src="@drawable/cancel2" />
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:fontFamily="@font/tajwal_bold"
+            android:fontFamily="@font/tajawal_bold"
             android:gravity="center"
             android:text="@string/choose_notification_time"
             android:textColor="@color/textColor"
             android:textStyle="bold" />
 
         <ImageView
-            android:id="@+id/cancel_reminder_picker"
-
+            android:id="@+id/correct_reminder_picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:layout_margin="10dp"
-            android:src="@drawable/cancel2" />
+            android:layout_alignParentRight="true"
+
+            android:src="@drawable/correct_1" />
     </LinearLayout>
     <hotchemi.stringpicker.StringPicker
         android:id="@+id/string_picker"
