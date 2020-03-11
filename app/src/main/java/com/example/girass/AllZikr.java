@@ -12,12 +12,15 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 
@@ -27,6 +30,7 @@ import android.widget.TextView;
 import com.example.girass.Data.DataService;
 
 import com.example.girass.model.HeadZikrObject;
+import com.example.girass.model.PrefMethods;
 import com.example.girass.model.ZikrObject;
 
 
@@ -54,12 +58,13 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
 
     private int tag;
     private int indicatorNumber;
-    public static ArrayList<String> favoriteAzkar;
+    public static ArrayList<String> favArray;
 
+    ImageView like, animeHeart;
 
     private HorizontalScrollView hzScrollView;
-
-
+    MediaPlayer likeMedia;
+    boolean likeSound;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -70,6 +75,10 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
         toolbarText = rootView.findViewById(R.id.toolbar_title);
         toolbar.setTitle("");
         backBtn.setImageResource(R.drawable.left_arrow);
+        animeHeart = rootView.findViewById(R.id.anim_heart);
+        like = rootView.findViewById(R.id.like);
+        likeMedia = MediaPlayer.create(getContext(), R.raw.pop);
+
         //----------------------------------------------------------
         DataService dataService = new DataService();
         final HeadZikrObject[] headZikrObjects = dataService.GetAllAzkar();
@@ -100,12 +109,14 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                                 defaultFont = getResources().getFont(R.font.tajawal_light);
                             }
+            likeSound = pref.getBoolean("generalSound", true);
 
 
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 defaultFont = getResources().getFont(R.font.tajawal_regular);
             }
+            likeSound = true;
         }
         editor.putString("defaultFont", "regular");
 
@@ -149,8 +160,54 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
 
         //------------------------add to fav-----------------------------------
 
+        //---------------------retrieve zikr------------------------
 
-        favoriteAzkar = new ArrayList<>();
+
+        favArray = new PrefMethods(getContext()).getArray();
+
+
+        for (int i = 0; i < favArray.size(); i++) {
+
+            if (favArray.contains(title)) {
+
+                like.setImageResource(R.drawable.fill_heart);
+            } else {
+                like.setImageResource(R.drawable.fav_heart);
+            }
+
+        }
+        //---------------------check if fav--------------------------
+
+        like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (likeSound)
+                    likeMedia.start();
+
+
+                //---- add to fav-----
+
+                for (int i = 0; i < headZikrObjects.length; i++) {
+                    if (headZikrObjects[i].TITLE.equals(title)) {
+
+                        if (!favArray.contains(title)) {
+
+                            like.setImageResource(R.drawable.fill_heart);
+                            favArray.add(title);
+                            //-- animate heart ---------
+                            animateHeart();
+                        } else {
+                            like.setImageResource(R.drawable.fav_heart);
+                            favArray.remove(title);
+                            //-- animate heart ---------
+                            animateHeart();
+
+                        }
+                    }
+                }
+                new PrefMethods(getContext()).saveArray(favArray);
+            }
+        });
 
         mPager.setAdapter(pagerAdapter);
         mPager.addOnPageChangeListener(this);
@@ -158,9 +215,27 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
         return rootView;
     }
 
-/*
-    todo:horizontal ScroolView
-*/
+    private void animateHeart() {
+        Animation likeAnim = AnimationUtils.loadAnimation(getContext(), R.anim.heart_beat);
+        animeHeart.setVisibility(View.VISIBLE);
+        animeHeart.startAnimation(likeAnim);
+        likeAnim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                animeHeart.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+    }
 private void setHzScrollViewCenter(View view) {
     //smoothly set horizontalScrollView to centerLock
     int screenWidth = mPager.getWidth();

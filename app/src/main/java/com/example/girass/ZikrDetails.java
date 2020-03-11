@@ -48,21 +48,16 @@ public class ZikrDetails extends Fragment {
 
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
-    private MediaPlayer defualt, likeMedia;
-    private Boolean doIPlaySound, doIVibrate, likeSound;
+    private MediaPlayer defualt;
+    private Boolean doIPlaySound, doIVibrate;
     private CircularProgressBar progressBar;
     private Typeface defaultFont;
     private int TextSize, countNumber = 1;
     private ZikrObject zikrObject;
-    public static ImageView like;
+
     private Vibrator vibrator;
-    String ZikrId = "";
 
-    private Boolean isLiked = false;
 
-    ImageView animeHeart;
-
-    ArrayList<String> favArray;
     //------------Constructor -----------------
     public ZikrDetails(ZikrObject zikrObject) {
         this.zikrObject = zikrObject;
@@ -74,16 +69,13 @@ public class ZikrDetails extends Fragment {
         // Inflate the layout for this fragment
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_zikr_details, container, false);
-        like = rootView.findViewById(R.id.like);
         zikr = rootView.findViewById(R.id.zikr);
         narriated = rootView.findViewById(R.id.narriated);
         timeToRepeat = rootView.findViewById(R.id.time_repeat);
         click = rootView.findViewById(R.id.click);
         countingText = rootView.findViewById(R.id.counting);
         progressBar = rootView.findViewById(R.id.progress);
-        animeHeart = rootView.findViewById(R.id.anim_heart);
         vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
-        likeMedia = MediaPlayer.create(getContext(), R.raw.pop);
 
         //----------------------------progress ---------------------------------
 
@@ -100,7 +92,6 @@ public class ZikrDetails extends Fragment {
             defualt = MediaPlayer.create(getContext(), pref.getInt("defaultSound", R.raw.click));
             doIPlaySound = pref.getBoolean("masbahaSound", true);
             doIVibrate = pref.getBoolean("masbahaVibrate", true);
-            likeSound = pref.getBoolean("generalSound", true);
             if (pref.getString("defaultFont", "regular").equals("regular"))
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     defaultFont = getResources().getFont(R.font.tajawal_regular);
@@ -114,7 +105,6 @@ public class ZikrDetails extends Fragment {
             TextSize = pref.getInt("fontSize", 22);
 
         } else {
-            likeSound = true;
             defualt = MediaPlayer.create(getContext(), R.raw.click);
             doIPlaySound = true;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -129,77 +119,6 @@ public class ZikrDetails extends Fragment {
             editor.commit();
         }
 
-
-        //---------------------retrieve zikr------------------------
-
-
-        favArray = new PrefMethods(getContext()).getArray();
-
-
-        for (int i = 0; i < favArray.size(); i++) {
-
-            if (favArray.contains(title)) {
-
-                like.setImageResource(R.drawable.fill_heart);
-                isLiked = true;
-            } else {
-                like.setImageResource(R.drawable.fav_heart);
-                isLiked = false;
-            }
-
-        }
-        editor.putBoolean("like", isLiked);
-        //---------------------check if fav--------------------------
-        DataService dataService = new DataService();
-        final HeadZikrObject[] headZikrObjects = dataService.GetAllAzkar();
-        like.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (likeSound)
-                    likeMedia.start();
-
-                //-- animate heart ---------
-                Animation likeAnim = AnimationUtils.loadAnimation(getContext(), R.anim.heart_beat);
-                animeHeart.setVisibility(View.VISIBLE);
-                animeHeart.startAnimation(likeAnim);
-                likeAnim.setAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(Animation animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-                        animeHeart.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
-
-                    }
-                });
-                //---- add to fav-----
-
-                for (int i = 0; i < headZikrObjects.length; i++) {
-                    if (headZikrObjects[i].TITLE.equals(title)) {
-                        ZikrId = headZikrObjects[i].ID;
-
-                        if (!favArray.contains(title)) {
-
-                            like.setImageResource(R.drawable.fill_heart);
-                            favArray.add(title);
-
-                        } else {
-                            like.setImageResource(R.drawable.fav_heart);
-                            favArray.remove(title);
-
-
-                        }
-                    }
-                }
-                new PrefMethods(getContext()).saveArray(favArray);
-            }
-        });
 
 
         //---------------- change text view--------------------
