@@ -29,10 +29,10 @@
     <!-- Notification Settings   -->
 
     <string name="title">تنبيهات الأذكار</string>
-    <string name="activate">تفعيل التنبيهات</string>
-    <string name="morning_zikr">أذكــار الصَّـبــاح</string>
-    <string name="evening_zikr">أذكــار الــمَسـاء</string>
-    <string name="wakeup_zikr">أذكــار الاِسْـتِيقاظ </string>
+    <string name="activate">تفــعــيل التنبيهـــات</string>
+    <string name="morning_zikr">أذكــار الصَّـــبــاح</string>
+    <string name="evening_zikr">أذكــار الــمـَسـاء</string>
+    <string name="wakeup_zikr">أذكــار الاِسْـتِيــقاظ </string>
     <string name="sleeping_zikr">أذكــار الـنَّــوْم</string>
     <string name="reminder">تذكير بالأذكـار</string>
     <string name="hour">السّـاعة:</string>

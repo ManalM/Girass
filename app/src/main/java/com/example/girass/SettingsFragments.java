@@ -85,13 +85,13 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
     private SeekBar seekBar;
     private RelativeLayout btns, declare;
     private LinearLayout listContact;
+    private LinearLayout morningLayout, eveningLayout, wakeupLayout, sleepLayout, reminderLayout;
     //-------------------------------------------------------------
     private MediaPlayer mediaSound1, mediaSound2, mediaSound3, mediaSound4;
     //-------------------------------------------------------------
 
     public static MediaPlayer defualtSound, checkSound;
     public static Typeface defualtFont;
-    int font;
     public static Boolean Masbahavibrate, Masbahasound, GeneralSound, Generalvibrate, checked;
     //-------------------------------------------------------------
     public static SharedPreferences pref;
@@ -161,6 +161,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         share = (LinearLayout) rootView.findViewById(R.id.share);
         rate = (LinearLayout) rootView.findViewById(R.id.rate);
         about = (LinearLayout) rootView.findViewById(R.id.about);
+
         //--------------------- Cards ---------------------------------
 
         generalCard = (CardView) rootView.findViewById(R.id.general_card);
@@ -248,6 +249,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         share.setOnClickListener(this);
         rate.setOnClickListener(this);
         about.setOnClickListener(this);
+
         /*****************************************
          ****                                 ****
          *             General Settings          *
@@ -558,6 +560,32 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 
                 break;
 
+            case R.id.reminder_time:
+            case R.id.reminder_layout:
+                chooseReminderTime();
+                break;
+
+            case R.id.evening_time:
+            case R.id.evening_layout:
+                pickerTime("evening");
+                break;
+
+            case R.id.sleep_time:
+            case R.id.sleep_layout:
+                pickerTime("sleep");
+                break;
+
+            case R.id.wakeup_time:
+            case R.id.wakeup_layout:
+
+                pickerTime("wakeup");
+                break;
+
+            case R.id.morning_layout:
+            case R.id.morning_time:
+                pickerTime("morning");
+                break;
+
         }
     }
 
@@ -597,7 +625,11 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         //--------------------general------------------
         notificationLinear = (LinearLayout) dialog.findViewById(R.id.linear_notification);
         close = (ImageButton) dialog.findViewById(R.id.close);
-
+        morningLayout = dialog.findViewById(R.id.morning_layout);
+        eveningLayout = dialog.findViewById(R.id.evening_layout);
+        wakeupLayout = dialog.findViewById(R.id.wakeup_layout);
+        sleepLayout = dialog.findViewById(R.id.sleep_layout);
+        reminderLayout = dialog.findViewById(R.id.reminder_layout);
 //-----------------------sharedPreference----------------------
 
         if (pref.getBoolean("NotificationLinearVisibility", false)) {
@@ -746,40 +778,17 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
             Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 //----------------------------show time dialog------------------
-        morningTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pickerTime("morning");
-            }
-        });
+        morningTime.setOnClickListener(this);
 
-        eveningTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pickerTime("evening");
-
-            }
-        });
-        sleepTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pickerTime("sleep");
-
-            }
-        });
-        wakeTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pickerTime("wakeup");
-
-            }
-        });
-        reminderTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chooseReminderTime();
-            }
-        });
+        eveningTime.setOnClickListener(this);
+        sleepTime.setOnClickListener(this);
+        wakeTime.setOnClickListener(this);
+        reminderTime.setOnClickListener(this);
+        morningLayout.setOnClickListener(this);
+        eveningLayout.setOnClickListener(this);
+        sleepLayout.setOnClickListener(this);
+        wakeupLayout.setOnClickListener(this);
+        reminderLayout.setOnClickListener(this);
         dialog.show();
     }
 
@@ -851,15 +860,6 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         }
         min = now.MINUTE;
 
-   /*     if (textView.equals("morning"))
-            morningTime.setText((pref.getInt("hourOf" + textView, hourOfDay) + ":" + pref.getInt("minOf" + textView, min) + " " + pref.getString("formatOf" + textView, format)));
-        else if (textView.equals("evening"))
-            eveningTime.setText((pref.getInt("hourOf" + textView, hourOfDay) + ":" + pref.getInt("minOf" + textView, min) + " " + pref.getString("formatOf" + textView, format)));
-        else if (textView.equals("sleep"))
-            sleepTime.setText((pref.getInt("hourOf" + textView, hourOfDay) + ":" + pref.getInt("minOf" + textView, min) + " " + pref.getString("formatOf" + textView, format)));
-        else if (textView.equals("wakeup"))
-            wakeTime.setText((pref.getInt("hourOf" + textView, hourOfDay) + ":" + pref.getInt("minOf" + textView, min) + " " + pref.getString("formatOf" + textView, format)));
-*/
         switch (s) {
             case "morning":
                 if (pref.getInt("minOfMorning", min) < 10 || pref.getInt("minOfMorning", min) == 0) {

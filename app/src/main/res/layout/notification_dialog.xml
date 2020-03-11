@@ -30,9 +30,9 @@
             android:layout_weight="1"
             android:fontFamily="@font/tajawal_regular"
             android:gravity="center"
-            android:textSize="18sp"
             android:text="@string/title"
             android:textColor="@color/colorAccent"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
 
@@ -46,13 +46,12 @@
         android:layout_marginStart="15dp"
 
         android:layout_marginEnd="15dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="20dp"
         android:background="@color/colorAccent" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:layout_marginBottom="20dp"
         android:background="#ADFFFFFF">
 
@@ -60,9 +59,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:layout_alignParentRight="true"
-            android:layout_margin="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
             android:fontFamily="@font/tajawal_regular"
             android:text="@string/activate"
             android:textColor="@color/textColor"
@@ -97,77 +97,82 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#ADFFFFFF"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <com.suke.widget.SwitchButton
+                android:id="@+id/morning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:textColor="@color/textColor"
+                app:sb_checked="false"
+                app:sb_checked_color="@color/colorPrimaryDark"
+                app:sb_checkline_color="@color/colorAccent"
+                app:sb_uncheck_color="@color/colorPrimaryDark"
+
+                />
+
+            <LinearLayout
+                android:id="@+id/morning_layout"
+
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:layout_alignParentRight="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="10dp"
+                    android:layout_weight="1"
                     android:fontFamily="@font/tajawal_regular"
                     android:text="@string/morning_zikr"
                     android:textColor="@color/textColor"
                     android:textSize="18sp" />
 
-                <com.suke.widget.SwitchButton
-                    android:id="@+id/morning"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_margin="10dp"
-                    android:textColor="@color/textColor"
-                    app:sb_checked="false"
-                    app:sb_checked_color="@color/colorPrimaryDark"
-                    app:sb_checkline_color="@color/colorAccent"
-                    app:sb_uncheck_color="@color/colorPrimaryDark"
-
-                    />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackground">
-
-                <TextView
-                    android:id="@+id/morning_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_toStartOf="@+id/hour1"
-                    android:layout_toLeftOf="@+id/hour1"
-                    android:fontFamily="@font/tajawal_regular"
-                    android:text=""
-                    android:textAlignment="center"
-                    android:textColor="@color/textColor"
-                    android:textDirection="rtl" />
-
-                <TextView
-                    android:id="@+id/hour1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
                     android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
 
-                    android:fontFamily="@font/tajawal_regular"
-                    android:foreground="?android:attr/selectableItemBackground"
+                    <TextView
+                        android:id="@+id/morning_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_toStartOf="@+id/hour1"
+                        android:layout_toLeftOf="@+id/hour1"
+                        android:fontFamily="@font/tajawal_regular"
+                        android:text=""
+                        android:textAlignment="center"
+                        android:textColor="@color/textColor"
+                        android:textDirection="rtl" />
 
-                    android:text="@string/hour"
-                    android:textColor="@color/textColor" />
+                    <TextView
+                        android:id="@+id/hour1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:clickable="true"
 
-            </RelativeLayout>
+                        android:fontFamily="@font/tajawal_regular"
+                        android:foreground="?android:attr/selectableItemBackground"
+
+                        android:text="@string/hour"
+                        android:textColor="@color/textColor" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout
@@ -175,312 +180,329 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5.5dp"
             android:background="#ADFFFFFF"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <com.suke.widget.SwitchButton
+                android:id="@+id/evening"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:textColor="@color/textColor"
+                app:sb_checked="false"
+                app:sb_checked_color="@color/colorPrimaryDark"
+                app:sb_checkline_color="@color/colorAccent"
+                app:sb_uncheck_color="@color/colorPrimaryDark"
+
+                />
+
+            <LinearLayout
+                android:id="@+id/evening_layout"
+
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="10dp"
+                    android:layout_weight="1"
                     android:fontFamily="@font/tajawal_regular"
                     android:text="@string/evening_zikr"
                     android:textColor="@color/textColor"
                     android:textSize="18sp" />
 
-                <com.suke.widget.SwitchButton
-                    android:id="@+id/evening"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_margin="10dp"
-                    android:textColor="@color/textColor"
-                    app:sb_checked="false"
-                    app:sb_checked_color="@color/colorPrimaryDark"
-                    app:sb_checkline_color="@color/colorAccent"
-                    app:sb_uncheck_color="@color/colorPrimaryDark"
-
-                    />
-            </RelativeLayout>
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackground">
-
-                <TextView
-                    android:id="@+id/evening_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_toStartOf="@+id/hour2"
-                    android:layout_toLeftOf="@+id/hour2"
-                    android:fontFamily="@font/tajawal_regular"
-                    android:text=""
-                    android:textAlignment="center"
-                    android:textColor="@color/textColor"
-                    android:textDirection="rtl" />
-
-                <TextView
-                    android:id="@+id/hour2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
                     android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
 
-                    android:fontFamily="@font/tajawal_regular"
-                    android:foreground="?android:attr/selectableItemBackground"
+                    <TextView
+                        android:id="@+id/evening_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_toStartOf="@+id/hour2"
+                        android:layout_toLeftOf="@+id/hour2"
+                        android:fontFamily="@font/tajawal_regular"
+                        android:text=""
+                        android:textAlignment="center"
+                        android:textColor="@color/textColor"
+                        android:textDirection="rtl" />
 
-                    android:text="@string/hour"
-                    android:textColor="@color/textColor" />
+                    <TextView
+                        android:id="@+id/hour2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:clickable="true"
 
-            </RelativeLayout>
+                        android:fontFamily="@font/tajawal_regular"
+                        android:foreground="?android:attr/selectableItemBackground"
+
+                        android:text="@string/hour"
+                        android:textColor="@color/textColor" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
         </LinearLayout>
-
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2.5dp"
+            android:layout_marginTop="5.5dp"
             android:background="#ADFFFFFF"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <com.suke.widget.SwitchButton
+                android:id="@+id/wakeup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:textColor="@color/textColor"
+                app:sb_checked="false"
+                app:sb_checked_color="@color/colorPrimaryDark"
+                app:sb_checkline_color="@color/colorAccent"
+                app:sb_uncheck_color="@color/colorPrimaryDark"
+
+                />
+
+            <LinearLayout
+                android:id="@+id/wakeup_layout"
+
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:layout_alignParentRight="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="10dp"
+                    android:layout_weight="1"
                     android:fontFamily="@font/tajawal_regular"
                     android:text="@string/wakeup_zikr"
                     android:textColor="@color/textColor"
                     android:textSize="18sp" />
 
-                <com.suke.widget.SwitchButton
-                    android:id="@+id/wakeup"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_margin="10dp"
-                    android:textColor="@color/textColor"
-                    app:sb_checked="false"
-                    app:sb_checked_color="@color/colorPrimaryDark"
-                    app:sb_checkline_color="@color/colorAccent"
-                    app:sb_uncheck_color="@color/colorPrimaryDark"
-
-                    />
-            </RelativeLayout>
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackground">
-
-                <TextView
-                    android:id="@+id/wakeup_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_toStartOf="@+id/hour3"
-                    android:layout_toLeftOf="@+id/hour3"
-                    android:fontFamily="@font/tajawal_regular"
-                    android:text=""
-                    android:textAlignment="center"
-                    android:textColor="@color/textColor"
-                    android:textDirection="rtl" />
-
-                <TextView
-                    android:id="@+id/hour3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
                     android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
 
-                    android:fontFamily="@font/tajawal_regular"
-                    android:foreground="?android:attr/selectableItemBackground"
+                    <TextView
+                        android:id="@+id/wakeup_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_toStartOf="@+id/hour3"
+                        android:layout_toLeftOf="@+id/hour3"
+                        android:fontFamily="@font/tajawal_regular"
+                        android:text=""
+                        android:textAlignment="center"
+                        android:textColor="@color/textColor"
+                        android:textDirection="rtl" />
 
-                    android:text="@string/hour"
-                    android:textColor="@color/textColor" />
+                    <TextView
+                        android:id="@+id/hour3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:clickable="true"
 
-            </RelativeLayout>
+                        android:fontFamily="@font/tajawal_regular"
+                        android:foreground="?android:attr/selectableItemBackground"
+
+                        android:text="@string/hour"
+                        android:textColor="@color/textColor" />
+
+                </RelativeLayout>
+            </LinearLayout>
         </LinearLayout>
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2.5dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="5.5dp"
+            android:layout_marginBottom="20dp"
             android:background="#ADFFFFFF"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <com.suke.widget.SwitchButton
+                android:id="@+id/sleep"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:textColor="@color/textColor"
+                app:sb_checked="false"
+                app:sb_checked_color="@color/colorPrimaryDark"
+                app:sb_checkline_color="@color/colorAccent"
+                app:sb_uncheck_color="@color/colorPrimaryDark"
+
+                />
+
+            <LinearLayout
+                android:id="@+id/sleep_layout"
+
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
 
-                    android:layout_alignParentRight="true"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="10dp"
+                    android:layout_weight="1
+"
                     android:fontFamily="@font/tajawal_regular"
                     android:text="@string/sleeping_zikr"
                     android:textColor="@color/textColor"
                     android:textSize="18sp" />
 
-                <com.suke.widget.SwitchButton
-                    android:id="@+id/sleep"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_margin="10dp"
-                    android:textColor="@color/textColor"
-                    app:sb_checked="false"
-                    app:sb_checked_color="@color/colorPrimaryDark"
-                    app:sb_checkline_color="@color/colorAccent"
-                    app:sb_uncheck_color="@color/colorPrimaryDark"
-
-                    />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackground">
-
-                <TextView
-                    android:id="@+id/sleep_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_toStartOf="@+id/hour4"
-                    android:layout_toLeftOf="@+id/hour4"
-                    android:fontFamily="@font/tajawal_regular"
-                    android:text=""
-                    android:textAlignment="center"
-                    android:textColor="@color/textColor"
-                    android:textDirection="rtl" />
-
-                <TextView
-                    android:id="@+id/hour4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
                     android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
 
-                    android:fontFamily="@font/tajawal_regular"
-                    android:foreground="?android:attr/selectableItemBackground"
+                    <TextView
+                        android:id="@+id/sleep_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_toStartOf="@+id/hour4"
+                        android:layout_toLeftOf="@+id/hour4"
+                        android:fontFamily="@font/tajawal_regular"
+                        android:text=""
+                        android:textAlignment="center"
+                        android:textColor="@color/textColor"
+                        android:textDirection="rtl" />
 
-                    android:text="@string/hour"
-                    android:textColor="@color/textColor"
-                    android:textDirection="rtl" />
+                    <TextView
+                        android:id="@+id/hour4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:clickable="true"
 
-            </RelativeLayout>
+                        android:fontFamily="@font/tajawal_regular"
+                        android:foreground="?android:attr/selectableItemBackground"
+
+                        android:text="@string/hour"
+                        android:textColor="@color/textColor"
+                        android:textDirection="rtl" />
+
+                </RelativeLayout>
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5.5dp"
             android:background="#ADFFFFFF"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <com.suke.widget.SwitchButton
+                android:id="@+id/reminder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:textColor="@color/textColor"
+                app:sb_checked="false"
+                app:sb_checked_color="@color/colorPrimaryDark"
+                app:sb_checkline_color="@color/colorAccent"
+                app:sb_uncheck_color="@color/colorPrimaryDark" />
+
+            <LinearLayout
+                android:id="@+id/reminder_layout"
+
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:layout_alignParentRight="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="10dp"
+                    android:layout_weight="1"
                     android:fontFamily="@font/tajawal_regular"
                     android:text="@string/reminder"
                     android:textColor="@color/textColor"
                     android:textSize="18sp" />
 
-                <com.suke.widget.SwitchButton
-                    android:id="@+id/reminder"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_margin="10dp"
-                    android:textColor="@color/textColor"
-                    app:sb_checked="false"
-                    app:sb_checked_color="@color/colorPrimaryDark"
-                    app:sb_checkline_color="@color/colorAccent"
-                    app:sb_uncheck_color="@color/colorPrimaryDark" />
-            </RelativeLayout>
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
 
+                    <TextView
+                        android:id="@+id/reminder_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_toStartOf="@+id/reminder_select"
+                        android:layout_toLeftOf="@+id/reminder_select"
+                        android:fontFamily="@font/tajawal_regular"
+                        android:text=""
+                        android:textAlignment="center"
+                        android:textColor="@color/textColor"
+                        android:textDirection="rtl" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackground">
+                    <TextView
+                        android:id="@+id/reminder_select"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:fontFamily="@font/tajawal_regular"
 
-                <TextView
-                    android:id="@+id/reminder_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_toStartOf="@+id/reminder_select"
-                    android:layout_toLeftOf="@+id/reminder_select"
-                    android:fontFamily="@font/tajawal_regular"
-                    android:text=""
-                    android:textAlignment="center"
-                    android:textColor="@color/textColor"
-                    android:textDirection="rtl" />
+                        android:text="@string/send_reminder"
+                        android:textColor="@color/textColor" />
 
-                <TextView
-                    android:id="@+id/reminder_select"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:fontFamily="@font/tajawal_regular"
-
-                    android:text="@string/send_reminder"
-                    android:textColor="@color/textColor" />
-
-            </RelativeLayout>
+                </RelativeLayout>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

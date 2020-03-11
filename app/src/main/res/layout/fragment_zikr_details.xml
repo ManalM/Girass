@@ -56,7 +56,7 @@
                 android:layout_margin="20dp"
                 android:gravity="center|center_vertical"
                 android:lineSpacingExtra="15dp"
-                android:textColor="@color/textColor"
+                android:textColor="@color/narriated"
                 android:textStyle="bold" />
 
         </LinearLayout>
