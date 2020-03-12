@@ -138,15 +138,18 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.ItemViewHold
 
 
                 if (pref.getString("defaultFont", "regular").equals("regular"))
-                    defaultFont = ResourcesCompat.getFont(context, R.font.tajawal_regular);
+                    defaultFont = Typeface.createFromAsset(context.getAssets(),
+                            "fonts/tajawal_regular.ttf");
                 else if (pref.getString("defaultFont", "bold").equals("bold"))
-                    defaultFont = ResourcesCompat.getFont(context, R.font.tajawal_bold);
+                    defaultFont = Typeface.createFromAsset(context.getAssets(), "fonts/arial.ttf");
                 else if (pref.getString("defaultFont", "light").equals("light"))
-                    defaultFont = ResourcesCompat.getFont(context, R.font.tajawal_light);
+                    defaultFont = Typeface.createFromAsset(context.getAssets(),
+                            "fonts/sans-serif.ttf");
 
             } else {
 
-                defaultFont = ResourcesCompat.getFont(context, R.font.tajawal_regular);
+                defaultFont = Typeface.createFromAsset(context.getAssets(),
+                        "fonts/tajawal_regular.ttf");
 
                 editor.putString("defaultFont", "regular");
 

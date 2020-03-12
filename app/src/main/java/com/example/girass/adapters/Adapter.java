@@ -12,6 +12,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -94,7 +95,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.viewHolder> implements
 
         SharedPreferences pref;
         SharedPreferences.Editor editor;
-        LinearLayout zikrLinear;
+        RelativeLayout zikrLinear;
 
         int textSize;
 
@@ -111,21 +112,20 @@ public class Adapter extends RecyclerView.Adapter<Adapter.viewHolder> implements
                 textSize = pref.getInt("fontSize", 18);
 
 
+
                 if (pref.getString("defaultFont", "regular").equals("regular"))
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        defaultFont = Adapter.mContext.getResources().getFont(R.font.tajawal_regular);
-                    } else if (pref.getString("defaultFont", "bold").equals("bold"))
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            defaultFont = Adapter.mContext.getResources().getFont(R.font.tajawal_bold);
-                        } else if (pref.getString("defaultFont", "light").equals("light"))
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                defaultFont = Adapter.mContext.getResources().getFont(R.font.tajawal_light);
-                            }
+                    defaultFont = Typeface.createFromAsset(mContext.getAssets(),
+                            "fonts/tajawal_regular.ttf");
+                else if (pref.getString("defaultFont", "bold").equals("bold"))
+                    defaultFont = Typeface.createFromAsset(mContext.getAssets(), "fonts/arial.ttf");
+                else if (pref.getString("defaultFont", "light").equals("light"))
+                    defaultFont = Typeface.createFromAsset(mContext.getAssets(),
+                            "fonts/sans-serif.ttf");
             } else {
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    defaultFont = Adapter.mContext.getResources().getFont(R.font.tajawal_regular);
-                }
+                defaultFont = Typeface.createFromAsset(mContext.getAssets(),
+                        "fonts/tajawal_regular.ttf");
+
                 editor.putString("defaultFont", "regular");
 
 
@@ -138,8 +138,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.viewHolder> implements
             mTextView = itemView.findViewById(R.id.zikrText);
             zikrLinear = itemView.findViewById(R.id.zikr_linear);
             //-------------------- set Zikr text ---------------------------
-            if (textSize > 18)
-                mTextView.setTextSize(18);
+            if (textSize > 20)
+                mTextView.setTextSize(20);
             else
                 mTextView.setTextSize(textSize);
 

@@ -19,13 +19,14 @@
 
 
         <ImageButton
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:layout_marginLeft="5dp"
-            android:background="@android:color/transparent"
-            android:rotation="180"
-            android:src="@drawable/zikr_star" />
+            android:layout_gravity="center"
+
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/zikr_star_cell"
+            android:rotation="180" />
 
 
         <TextView
@@ -44,11 +45,12 @@
 
 
         <ImageButton
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:layout_marginRight="5dp"
-            android:background="@android:color/transparent"
-            android:src="@drawable/zikr_star" />
+            android:layout_gravity="center"
+
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/zikr_star_cell" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

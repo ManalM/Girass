@@ -69,7 +69,7 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.viewHolder> {
         int textSize;
         Typeface defaultFont;
 
-        public viewHolder(@NonNull View itemView, FavAdapter.OnItemClickListener listener) {
+        public viewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
 
             title = itemView.findViewById(R.id.zikrText_fav);
@@ -82,22 +82,19 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.viewHolder> {
             if (pref != null) {
                 textSize = pref.getInt("fontSize", 18);
 
-
                 if (pref.getString("defaultFont", "regular").equals("regular"))
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        defaultFont = FavAdapter.mContext.getResources().getFont(R.font.tajawal_regular);
-                    } else if (pref.getString("defaultFont", "bold").equals("bold"))
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            defaultFont = FavAdapter.mContext.getResources().getFont(R.font.tajawal_bold);
-                        } else if (pref.getString("defaultFont", "light").equals("light"))
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                defaultFont = FavAdapter.mContext.getResources().getFont(R.font.tajawal_light);
-                            }
+                    defaultFont = Typeface.createFromAsset(mContext.getAssets(),
+                            "fonts/tajawal_regular.ttf");
+                else if (pref.getString("defaultFont", "bold").equals("bold"))
+                    defaultFont = Typeface.createFromAsset(mContext.getAssets(), "fonts/arial.ttf");
+                else if (pref.getString("defaultFont", "light").equals("light"))
+                    defaultFont = Typeface.createFromAsset(mContext.getAssets(),
+                            "fonts/sans-serif.ttf");
             } else {
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    defaultFont = FavAdapter.mContext.getResources().getFont(R.font.tajawal_regular);
-                }
+                defaultFont = Typeface.createFromAsset(mContext.getAssets(),
+                        "fonts/tajawal_regular.ttf");
+
                 editor.putString("defaultFont", "regular");
 
                 textSize = 18;
@@ -106,8 +103,8 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.viewHolder> {
             }
             //--------------------------------------------------------
 
-            if (textSize > 18)
-                title.setTextSize(18);
+            if (textSize > 20)
+                title.setTextSize(20);
             else
                 title.setTextSize(textSize);
 

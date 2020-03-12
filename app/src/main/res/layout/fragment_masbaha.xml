@@ -125,8 +125,8 @@
 
         <ImageButton
             android:id="@+id/subha_btn"
-            android:layout_width="180dp"
-            android:layout_height="180dp"
+            android:layout_width="170dp"
+            android:layout_height="170dp"
 
             android:background="@drawable/subha_b" />
     </LinearLayout>

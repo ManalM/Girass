@@ -97,25 +97,21 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
         if (pref != null) {
 
 
-                if (pref.getString("defaultFont", "regular").equals("regular"))
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        defaultFont = getResources().getFont(R.font.tajawal_regular);
-                    }
-
-                else if (pref.getString("defaultFont", "bold").equals("bold"))
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            defaultFont = getResources().getFont(R.font.tajawal_bold);
-                        } else if (pref.getString("defaultFont", "light").equals("light"))
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                defaultFont = getResources().getFont(R.font.tajawal_light);
-                            }
+            if (pref.getString("defaultFont", "regular").equals("regular"))
+                defaultFont = Typeface.createFromAsset(getContext().getAssets(),
+                        "fonts/tajawal_regular.ttf");
+            else if (pref.getString("defaultFont", "bold").equals("bold"))
+                defaultFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/arial.ttf");
+            else if (pref.getString("defaultFont", "light").equals("light"))
+                defaultFont = Typeface.createFromAsset(getContext().getAssets(),
+                        "fonts/sans-serif.ttf");
             likeSound = pref.getBoolean("generalSound", true);
 
 
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                defaultFont = getResources().getFont(R.font.tajawal_regular);
-            }
+            defaultFont = Typeface.createFromAsset(getContext().getAssets(),
+                    "fonts/tajawal_regular.ttf");
+
             likeSound = true;
         }
         editor.putString("defaultFont", "regular");

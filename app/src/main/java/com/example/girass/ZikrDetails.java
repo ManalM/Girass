@@ -92,24 +92,23 @@ public class ZikrDetails extends Fragment {
             defualt = MediaPlayer.create(getContext(), pref.getInt("defaultSound", R.raw.click));
             doIPlaySound = pref.getBoolean("masbahaSound", true);
             doIVibrate = pref.getBoolean("masbahaVibrate", true);
+
             if (pref.getString("defaultFont", "regular").equals("regular"))
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    defaultFont = getResources().getFont(R.font.tajawal_regular);
-                } else if (pref.getString("defaultFont", "bold").equals("bold"))
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        defaultFont = getResources().getFont(R.font.tajawal_bold);
-                    } else if (pref.getString("defaultFont", "light").equals("light"))
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            defaultFont = getResources().getFont(R.font.tajawal_light);
-                        }
+                defaultFont = Typeface.createFromAsset(getContext().getAssets(),
+                        "fonts/tajawal_regular.ttf");
+            else if (pref.getString("defaultFont", "bold").equals("bold"))
+                defaultFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/arial.ttf");
+            else if (pref.getString("defaultFont", "light").equals("light"))
+                defaultFont = Typeface.createFromAsset(getContext().getAssets(),
+                        "fonts/sans-serif.ttf");
             TextSize = pref.getInt("fontSize", 22);
 
         } else {
             defualt = MediaPlayer.create(getContext(), R.raw.click);
             doIPlaySound = true;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                defaultFont = getResources().getFont(R.font.tajawal_regular);
-            }
+            defaultFont = Typeface.createFromAsset(getContext().getAssets(),
+                    "fonts/tajawal_regular.ttf");
+
             TextSize = 22;
             editor.putInt("defaultSound", R.raw.click);
             editor.putBoolean("masbahaSound", true);

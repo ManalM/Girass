@@ -174,7 +174,6 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         generalVibrate = rootView.findViewById(R.id.general_vibrate);
 
 
-
         //-------------------------------------------------------------
         now = Calendar.getInstance();
         hourOfDay = now.get(Calendar.HOUR_OF_DAY);
@@ -211,16 +210,13 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 
 
         if (pref.getString("defaultFont", "regular").equals("regular"))
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                defualtFont = getResources().getFont(R.font.tajawal_regular);
-            } else if (pref.getString("defaultFont", "bold").equals("bold"))
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    defualtFont = getResources().getFont(R.font.tajawal_bold);
-                } else if (pref.getString("defaultFont", "light").equals("light"))
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        defualtFont = getResources().getFont(R.font.tajawal_light);
-                    }
-
+            defualtFont = Typeface.createFromAsset(getContext().getAssets(),
+                    "fonts/tajawal_regular.ttf");
+        else if (pref.getString("defaultFont", "bold").equals("bold"))
+            defualtFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/arial.ttf");
+        else if (pref.getString("defaultFont", "light").equals("light"))
+            defualtFont = Typeface.createFromAsset(getContext().getAssets(),
+                    "fonts/sans-serif.ttf");
 
         //-------------------------------------------------------------
         textSize = (TextView) rootView.findViewById(R.id.text_size);
@@ -234,11 +230,8 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
             seekBar.setMinimumHeight(22);
         }
 
-        if (pref.getInt("fontSize", 15) > 23)
-            textSize.setTextSize(21);
-        else
 
-            textSize.setTextSize(pref.getInt("fontSize", 22));
+        textSize.setTextSize(pref.getInt("fontSize", 22));
         checkSound = MediaPlayer.create(getContext(), R.raw.correct);
 
         //--------------------Listeners------------------------------
@@ -324,36 +317,21 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 
                 if (position == 0) {
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        defualtFont = getResources().getFont(R.font.tajawal_regular);
-                        fontType.setTypeface(defualtFont);
-                    }
+                    defualtFont = Typeface.createFromAsset(getContext().getAssets(),
+                            "fonts/tajawal_regular.ttf");
 
-                    //fontType.setTypeface( getResources().getFont(R.font.tajawal_regular));
                     editor.putString("defaultFont", "regular");
                 } else if (position == 1) {
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        defualtFont = getResources().getFont(R.font.tajawal_light);
-
-                    }
-
-                    // fontType.setTypeface( getResources().getFont(R.font.tajawal_light));
-
+                    defualtFont = Typeface.createFromAsset(getContext().getAssets(),
+                            "fonts/sans-serif.ttf");
                     editor.putString("defaultFont", "light");
                 } else if (position == 2) {
 
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        defualtFont = getResources().getFont(R.font.tajawal_bold);
-                    }
-
-
-                    // fontType.setTypeface(ResourcesCompat.getFont(getContext(),R.font.tajawal_bold));
-
-
+                    defualtFont = Typeface.createFromAsset(getContext().getAssets(),
+                            "fonts/arial.ttf");
                     editor.putString("defaultFont", "bold");
-                    }
+                }
 
 
                 fontType.setTypeface(defualtFont);
@@ -371,10 +349,8 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-                if (progress > 23)
-                    textSize.setTextSize(21);
-                else
-                    textSize.setTextSize(progress);
+
+                textSize.setTextSize(progress);
 
                 editor.putInt("fontSize", progress);
                 editor.commit();
