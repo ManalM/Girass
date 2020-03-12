@@ -52,7 +52,7 @@ public class ZikrDetails extends Fragment {
     private Boolean doIPlaySound, doIVibrate;
     private CircularProgressBar progressBar;
     private Typeface defaultFont;
-    private int TextSize, countNumber = 1;
+    private int TextSize, countNumber = 0;
     private ZikrObject zikrObject;
 
     private Vibrator vibrator;
@@ -119,7 +119,6 @@ public class ZikrDetails extends Fragment {
         }
 
 
-
         //---------------- change text view--------------------
         zikr.setText(zikrObject.Details);
         narriated.setText(zikrObject.Narriated);
@@ -129,17 +128,32 @@ public class ZikrDetails extends Fragment {
         //---------------style of text depends on settings---------------
         textStyle();
         //--------------------------- counting button -------------
-        int repeatingNumber = Integer.valueOf(zikrObject.TimesToRepeat);
+        int repeatingNumber = zikrObject.TimesToRepeat;
         progressBar.setMax(repeatingNumber);
 
         click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (countNumber <= repeatingNumber) {
-                    countingText.setText(String.valueOf(countNumber));
-                    progressBar.setProgress(countNumber);
-                    countNumber++;
+                if (countNumber < repeatingNumber) {
+                    countingText.setText(String.valueOf(countNumber + 1));
+                    progressBar.setProgress(countNumber + 1);
+
                 }
+                countNumber++;
+
+                if (countNumber == repeatingNumber) {
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            // move to next page
+                            AllZikr.moveToNext();
+                        }
+                    }, 600);
+
+
+                }
+
                 if (doIPlaySound)
                     defualt.start();
                 if (doIVibrate)
@@ -147,6 +161,7 @@ public class ZikrDetails extends Fragment {
                         vibrator.vibrate(VibrationEffect.createOneShot(100, 1));
                     } else
                         vibrator.vibrate(100);
+
 
             }
         });
@@ -166,7 +181,6 @@ public class ZikrDetails extends Fragment {
         zikr.setTextSize(TextSize);
         narriated.setTextSize(TextSize);
     }
-
 
 
 }

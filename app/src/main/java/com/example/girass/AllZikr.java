@@ -34,7 +34,6 @@ import com.example.girass.model.PrefMethods;
 import com.example.girass.model.ZikrObject;
 
 
-
 import java.util.ArrayList;
 
 
@@ -50,19 +49,18 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
     public static SharedPreferences.Editor editor;
     private ImageView backBtn;
     private PagerAdapter pagerAdapter;
-    private ViewPager mPager;
+    public static ViewPager mPager;
     private CircleIndicator circleIndicator;
     public static String title;
     Typeface defaultFont;
 
 
     private int tag;
-    private int indicatorNumber;
+    public static int indicatorNumber;
     public static ArrayList<String> favArray;
 
     ImageView like, animeHeart;
 
-    private HorizontalScrollView hzScrollView;
     MediaPlayer likeMedia;
     boolean likeSound;
     @Nullable
@@ -115,13 +113,10 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
             likeSound = true;
         }
         editor.putString("defaultFont", "regular");
-
-
         toolbarText.setTypeface(defaultFont);
 
         //----------------------viewPager and indicator---------------------
 
-        hzScrollView = (HorizontalScrollView) rootView.findViewById(R.id.horizontalScrollView);
 
         mPager = (ViewPager) rootView.findViewById(R.id.view_pager);
         pagerAdapter = new ScreenSlidePagerAdapter(getChildFragmentManager());
@@ -145,7 +140,6 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
         if (indicatorNumber > 1)
             circleIndicator.createIndicators(indicatorNumber, 0);
 
-        setHzScrollViewCenter(circleIndicator);
         //------------------------------------------------------------------
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -211,6 +205,13 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
         return rootView;
     }
 
+    public static void moveToNext() {
+        if (AllZikr.indicatorNumber > 1) {
+            mPager.setCurrentItem(mPager.getCurrentItem() + 1, true);
+
+        }
+    }
+
     private void animateHeart() {
         Animation likeAnim = AnimationUtils.loadAnimation(getContext(), R.anim.heart_beat);
         animeHeart.setVisibility(View.VISIBLE);
@@ -232,20 +233,6 @@ public class AllZikr extends Fragment implements ViewPager.OnPageChangeListener 
             }
         });
     }
-private void setHzScrollViewCenter(View view) {
-    //smoothly set horizontalScrollView to centerLock
-    int screenWidth = mPager.getWidth();
-    int scrollX = (view.getLeft() - (screenWidth / 2)) + (view.getWidth() / 2);
-    hzScrollView.smoothScrollTo(scrollX, 0);
-
-}
-
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
 
     public void onBackPressed() {
         if (tag == 1)
@@ -262,7 +249,6 @@ private void setHzScrollViewCenter(View view) {
 
     @Override
     public void onPageSelected(int position) {
-
         circleIndicator.animatePageSelected(position);
     }
 
