@@ -79,7 +79,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
             morningTime, eveningTime, sleepTime, wakeTime, reminderTime,
 
     textSize, fontType;
-    private ImageView www_img, email_img, phone_img, twitter_img;
+    private ImageView www_img, email_img, phone_img, twitter_img, dozo;
     private ImageView generalArrow, masbahaArrow;
     //
     private SeekBar seekBar;
@@ -581,7 +581,8 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         dialog.setContentView(R.layout.notification_dialog);
 
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.MATCH_PARENT);
         ///-----------TextView--------------
         morningTime = dialog.findViewById(R.id.morning_time);
         eveningTime = dialog.findViewById(R.id.evening_time);
@@ -1216,6 +1217,8 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
             }
         });
 //--------------------------------------------------------------------------------
+
+        dozo = aboutDialog.findViewById(R.id.dozo);
         listContact = aboutDialog.findViewById(R.id.list_contact);
         declare = aboutDialog.findViewById(R.id.declare);
         btns = aboutDialog.findViewById(R.id.btns);
@@ -1282,10 +1285,11 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         //------------------------------------------------------------
         www_img.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         twitter_img.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        // dozo.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         Glide.with(this).load(R.drawable.phone).into(phone_img);
         Glide.with(this).load(R.drawable.email1).into(email_img);
-
+        // Glide.with(this).load(R.drawable.white_dozo).into(dozo);
         twitter.setText("@dozo_app");
         desc.setText("تمت برمجة هذا التطبيق في معامل دوزو إذا كان لديك اقتراح أو فكرة تطبيق تريد أن  ننفذها لك فتواصل معنا");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

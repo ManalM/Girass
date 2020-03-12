@@ -52,8 +52,8 @@ public class FavAdapter extends RecyclerView.Adapter<FavAdapter.viewHolder> {
     public void onBindViewHolder(@NonNull FavAdapter.viewHolder holder, int position) {
 
         holder.title.setText(arrayList.get(position));
-        if (arrayList.size() > 0)
-            holder.cardView.setAnimation(AnimationUtils.loadAnimation(mContext, R.anim.list_anim));
+      /*  if (arrayList.size() > 0)
+            holder.cardView.setAnimation(AnimationUtils.loadAnimation(mContext, R.anim.list_anim));*/
     }
 
     @Override

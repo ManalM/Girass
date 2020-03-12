@@ -65,7 +65,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.viewHolder> implements
             holder.textSize = 18;
         }
 
-        holder.zikrLinear.setAnimation(AnimationUtils.loadAnimation(mContext, R.anim.list_anim));
+        // holder.zikrLinear.setAnimation(AnimationUtils.loadAnimation(mContext, R.anim.list_anim));
     }
 
     @Override
