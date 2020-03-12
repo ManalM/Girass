@@ -1204,8 +1204,18 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         aboutDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         aboutDialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.MATCH_PARENT);
+        //-------------------------control navigation bar---------------------
 
+        View decorView = aboutDialog.getWindow().getDecorView();
 
+        decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+            @Override
+            public void onSystemUiVisibilityChange(int visibility) {
+                if (visibility == 0)
+                    decorView.setSystemUiVisibility(hideNavigation());
+            }
+        });
+//--------------------------------------------------------------------------------
         listContact = aboutDialog.findViewById(R.id.list_contact);
         declare = aboutDialog.findViewById(R.id.declare);
         btns = aboutDialog.findViewById(R.id.btns);
@@ -1381,6 +1391,20 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 
                 detailsDialog = new Dialog(getContext());
                 detailsDialog.setContentView(R.layout.details_dialog);
+                detailsDialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT,
+                        WindowManager.LayoutParams.WRAP_CONTENT);
+
+                //-------------------------control navigation bar---------------------
+
+                View decoreView1 = detailsDialog.getWindow().getDecorView();
+                decoreView1.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+                    @Override
+                    public void onSystemUiVisibilityChange(int visibility) {
+                        if (visibility == 0)
+                            decoreView1.setSystemUiVisibility(hideNavigation());
+                    }
+                });
+                //----------------------------------------------------------------------
                 TextView thanks = detailsDialog.findViewById(R.id.thanks);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     thanks.setJustificationMode(JUSTIFICATION_MODE_INTER_WORD);
@@ -1394,4 +1418,15 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 
     }
 
+    private int hideNavigation() {
+        return View.SYSTEM_UI_FLAG_IMMERSIVE
+                // Set the content to appear under the system bars so that the
+                // content doesn't resize when the system bars hide and show.
+
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+
+                // Hide the nav bar and status bar
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                ;
+    }
 }
