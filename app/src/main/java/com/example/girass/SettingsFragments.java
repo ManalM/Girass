@@ -607,6 +607,17 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         wakeupLayout = dialog.findViewById(R.id.wakeup_layout);
         sleepLayout = dialog.findViewById(R.id.sleep_layout);
         reminderLayout = dialog.findViewById(R.id.reminder_layout);
+        //-------------------------control navigation bar---------------------
+        View decor = dialog.getWindow().getDecorView();
+
+        decor.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+            @Override
+            public void onSystemUiVisibilityChange(int visibility) {
+                if (visibility == 0)
+                    decor.setSystemUiVisibility(hideNavigation());
+            }
+        });
+
 //-----------------------sharedPreference----------------------
 
         if (pref.getBoolean("NotificationLinearVisibility", false)) {

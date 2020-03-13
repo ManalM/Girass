@@ -8,7 +8,9 @@ import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.ScaleAnimation;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.LinearLayout;
@@ -65,7 +67,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.viewHolder> implements
             holder.textSize = 18;
         }
 
-        // holder.zikrLinear.setAnimation(AnimationUtils.loadAnimation(mContext, R.anim.list_anim));
+        scaleAnimation(holder.zikrLinear);
     }
 
     @Override
@@ -73,6 +75,12 @@ public class Adapter extends RecyclerView.Adapter<Adapter.viewHolder> implements
         return mAzkarArray.size();
     }
 
+    private void scaleAnimation(View view) {
+        ScaleAnimation alphaAnimation = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f, Animation.RELATIVE_TO_SELF, (float) 0.5, Animation.RELATIVE_TO_SELF, 0.5f);
+        alphaAnimation.setDuration(700);
+        view.startAnimation(alphaAnimation);
+
+    }
     //--------- listener for each item---------------
     public interface SelectedUser {
 
