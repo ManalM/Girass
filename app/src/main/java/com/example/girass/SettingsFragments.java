@@ -641,11 +641,10 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         }
 
         morning.setChecked(pref.getBoolean("morningSwitch", true));
-
         evening.setChecked(pref.getBoolean("eveningSwitch", true));
-        sleep.setChecked(pref.getBoolean("sleepSwitch", true));
-        wakeup.setChecked(pref.getBoolean("wakeupSwitch", true));
-        reminder.setChecked(pref.getBoolean("reminderSwitch", true));
+        sleep.setChecked(pref.getBoolean("sleepSwitch", false));
+        wakeup.setChecked(pref.getBoolean("wakeupSwitch", false));
+        reminder.setChecked(pref.getBoolean("reminderSwitch", false));
         setTextOfTime("morning");
         setTextOfTime("evening");
         setTextOfTime("sleep");
@@ -669,8 +668,11 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                     checked = isChecked;
                     notificationLinear.setVisibility(View.GONE);
                     notificationLinear.startAnimation(hideList);
-                    for (int i = 1; i <= 4; i++)
+                    closeSwitches();
+
+                    for (int i = 0; i < 5; i++) {
                         cancelNotification(i);
+                    }
                     editor.putBoolean("NotificationLinearVisibility", checked);
                     editor.commit();
                 }
@@ -749,6 +751,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                     editor.putBoolean("reminderSwitch", true);
                     editor.commit();
                 } else {
+                    cancelNotification(5);
                     editor.putBoolean("reminderSwitch", false);
                     editor.commit();
                 }
@@ -778,6 +781,14 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         wakeupLayout.setOnClickListener(this);
         reminderLayout.setOnClickListener(this);
         dialog.show();
+    }
+
+    private void closeSwitches() {
+        morning.setChecked(false);
+        evening.setChecked(false);
+        sleep.setChecked(false);
+        wakeup.setChecked(false);
+        reminder.setChecked(false);
     }
 
     private void setTextOfReminder() {
@@ -819,6 +830,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                 reminderDialog.dismiss();
                 chozenReminderTime = stringPicker.getCurrentValue();
                 reminderTime.setText(chozenReminderTime);
+                reminder.setChecked(false);
                 editor.putString("chozenReminderTime", chozenReminderTime);
                 editor.commit();
             }
@@ -862,7 +874,6 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                     eveningTime.setText((pref.getInt("hourOfEvening", hourOfDay) + ":0" + pref.getInt("minOfEvening", min) + " " + pref.getString("formatOfEvening", format)));
                 else
                     eveningTime.setText((pref.getInt("hourOfEvening", hourOfDay) + ":" + pref.getInt("minOfEvening", min) + " " + pref.getString("formatOfEvening", format)));
-
                 break;
             case "sleep":
 
@@ -871,7 +882,6 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 
                 else
                     sleepTime.setText((pref.getInt("hourOfSleep", hourOfDay) + ":" + pref.getInt("minOfSleep", min) + " " + pref.getString("formatOfSleep", format)));
-
                 break;
             case "wakeup":
                 if (pref.getInt("minOfWakeup", min) < 10 || pref.getInt("minOfWakeup", min) == 0)
@@ -943,11 +953,6 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                     format = "AM";
                 }
 
-/*
-                editor.putInt("hourOf" + textView, hour);
-                editor.putInt("minOf" + textView, minute);
-                editor.putString("formatOf" + textView, format);
-                editor.commit();*/
 
                 switch (textview) {
                     case "morning":
@@ -960,7 +965,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 
                         } else
                             morningTime.setText((pref.getInt("hourOfMorning", 00) + ":" + pref.getInt("minOfMorning", 00) + " " + pref.getString("formatOfMorning", "AM")));
-
+                        morning.setChecked(false);
                         break;
                     case "evening":
                         editor.putInt("hourOfEvening", hour);
@@ -971,7 +976,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                             eveningTime.setText((pref.getInt("hourOfEvening", 00) + ":0" + pref.getInt("minOfEvening", 00) + " " + pref.getString("formatOfEvening", "AM")));
                         else
                             eveningTime.setText((pref.getInt("hourOfEvening", 00) + ":" + pref.getInt("minOfEvening", 00) + " " + pref.getString("formatOfEvening", "AM")));
-
+                        evening.setChecked(false);
                         break;
                     case "sleep":
                         editor.putInt("hourOfSleep", hour);
@@ -983,7 +988,7 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 
                         else
                             sleepTime.setText((pref.getInt("hourOfSleep", 00) + ":" + pref.getInt("minOfSleep", 00) + " " + pref.getString("formatOfSleep", "AM")));
-
+                        sleep.setChecked(false);
                         break;
                     case "wakeup":
                         editor.putInt("hourOfWakeup", hour);
@@ -994,14 +999,13 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
                             wakeTime.setText((pref.getInt("hourOfWakeup", 00) + ":0" + pref.getInt("minOfWakeup", 00) + " " + pref.getString("formatOfWakeup", "AM")));
                         else
                             wakeTime.setText((pref.getInt("hourOfWakeup", 00) + ":" + pref.getInt("minOfWakeup", 00) + " " + pref.getString("formatOfWakeup", "AM")));
-
+                        wakeup.setChecked(false);
                         break;
                 }
 
             }
         });
 
-        //   textView.setText(pref.getInt("hourOf" + textView.getText(), 00) + ":" + pref.getInt("minOf" + textView.getText(), 00) + " " + pref.getString("formatOf" + textView.getText(), "AM"));
     }
 
     private Calendar getCalender(String s) {
@@ -1009,8 +1013,6 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         switch (s) {
             case "morning":
 
-        /*        editor.putString("contentOfMorning",content);
-                editor.apply();*/
                 calendar.set(Calendar.HOUR, pref.getInt("hourOfMorning", hourOfDay));
                 calendar.set(Calendar.MINUTE, pref.getInt("minOfMorning", min));
                 if (pref.getString("formatOfMorning", format).equals("AM"))
@@ -1057,13 +1059,10 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
         Calendar calendar = getCalender("morning");
 
         try {
-            //   ArrayList<PendingIntent> intentArray = new ArrayList<PendingIntent>();
             Intent myIntent = new Intent(getContext(), Notify.class);
 
-            //  for (int i = 0; i <= 4; i++) {
             AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);
-           /* myIntent.putExtra("content", content);
-            myIntent.putExtra("requestCode", requestCode);*/
+
             PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 1, myIntent, 0);
 
 
@@ -1071,11 +1070,6 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
 
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
             }
-            // intentArray.add(pendingIntent);
-
-                /*editor.putInt("arrayListLength", intentArray.size());
-                editor.commit();*/
-            //  }
 
 
         } catch (NullPointerException e) {
@@ -1147,13 +1141,43 @@ public class SettingsFragments extends Fragment implements View.OnClickListener 
     }
 
     private void cancelNotification(int requestCode) {
-        count--;
         AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(getContext(), Notify.class);
-        intent.putExtra("count", count);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), requestCode, intent, 0);
 
-        alarmManager.cancel(pendingIntent);
+        switch (requestCode) {
+            case 1:
+                Intent intent = new Intent(getContext(), Notify.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), requestCode, intent, 0);
+                alarmManager.cancel(pendingIntent);
+
+                break;
+            case 2:
+                Intent intent1 = new Intent(getContext(), NotifyEvening.class);
+                PendingIntent pendingIntent1 = PendingIntent.getBroadcast(getContext(), requestCode, intent1, 0);
+                alarmManager.cancel(pendingIntent1);
+
+                break;
+            case 3:
+                Intent intent2 = new Intent(getContext(), NotifySleep.class);
+                PendingIntent pendingIntent2 = PendingIntent.getBroadcast(getContext(), requestCode, intent2, 0);
+                alarmManager.cancel(pendingIntent2);
+
+                break;
+            case 4:
+                Intent intent3 = new Intent(getContext(), NotifyWakeup.class);
+                PendingIntent pendingIntent3 = PendingIntent.getBroadcast(getContext(), requestCode, intent3, 0);
+                alarmManager.cancel(pendingIntent3);
+
+                break;
+            case 5:
+                Intent intent4 = new Intent(getContext(), NotifyReminder.class);
+                PendingIntent pendingIntent4 = PendingIntent.getBroadcast(getContext(), requestCode, intent4, 0);
+                alarmManager.cancel(pendingIntent4);
+
+                break;
+        }
+        //   PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), requestCode, intent, 0);
+
+        // alarmManager.cancel(pendingIntent);
     }
 
     private void creatReminderNotification() {

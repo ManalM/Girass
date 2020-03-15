@@ -60,10 +60,8 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
     MediaPlayer defualt;
     private Dialog dialog;
     Vibrator v;
-    MediaPlayer pop, menu, click;
+    MediaPlayer pop, menu;
     Context context;
-
-    Bundle mBundleRecyclerViewState;
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
@@ -127,7 +125,6 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
 
         subhaBtn.setOnClickListener(this);
         tasbihLayout.setOnClickListener(this);
-        mBundleRecyclerViewState = new Bundle();
 
         return rootView;
     }
