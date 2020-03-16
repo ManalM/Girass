@@ -3,7 +3,9 @@ package com.example.girass;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -48,7 +50,7 @@ public class ZikrDetails extends Fragment {
 
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
-    private MediaPlayer defualt;
+    private SoundPool defualt;
     private Boolean doIPlaySound, doIVibrate;
     private CircularProgressBar progressBar;
     private Typeface defaultFont;
@@ -57,6 +59,7 @@ public class ZikrDetails extends Fragment {
 
     private Vibrator vibrator;
 
+    private int load;
 
     //------------Constructor -----------------
     public ZikrDetails(ZikrObject zikrObject) {
@@ -87,9 +90,9 @@ public class ZikrDetails extends Fragment {
 
         pref = PreferenceManager.getDefaultSharedPreferences(getContext());
         editor = PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
-
+        defualt = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
         if (pref != null) {
-            defualt = MediaPlayer.create(getContext(), pref.getInt("defaultSound", R.raw.click));
+            load = defualt.load(getContext(), pref.getInt("defaultSound", R.raw.click), 1);
             doIPlaySound = pref.getBoolean("masbahaSound", true);
             doIVibrate = pref.getBoolean("masbahaVibrate", true);
 
@@ -104,7 +107,8 @@ public class ZikrDetails extends Fragment {
             TextSize = pref.getInt("fontSize", 22);
 
         } else {
-            defualt = MediaPlayer.create(getContext(), R.raw.click);
+            load = defualt.load(getContext(), R.raw.click, 1);
+
             doIPlaySound = true;
             defaultFont = Typeface.createFromAsset(getContext().getAssets(),
                     "fonts/tajawal_regular.ttf");
@@ -155,7 +159,7 @@ public class ZikrDetails extends Fragment {
                 }
 
                 if (doIPlaySound)
-                    defualt.start();
+                    defualt.play(load, 1, 1, 0, 0, 1);
                 if (doIVibrate)
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         vibrator.vibrate(VibrationEffect.createOneShot(100, 1));

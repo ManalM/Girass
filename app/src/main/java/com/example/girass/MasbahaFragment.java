@@ -11,6 +11,10 @@ import android.graphics.drawable.ColorDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 
+import android.media.RingtoneManager;
+import android.media.SoundPool;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -21,6 +25,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import android.os.Handler;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
@@ -61,11 +66,12 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
     SharedPreferences.Editor settingsEditor;
     String zikr, chozenZikr = "";
     private String[] headZikrObjects;
-    MediaPlayer defualt;
     private Dialog dialog;
     Vibrator v;
     MediaPlayer pop, menu;
     Context context;
+    SoundPool soundPool;
+    int load;
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
@@ -80,20 +86,15 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
 
         settings = PreferenceManager.getDefaultSharedPreferences(getContext());
         settingsEditor = PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
-
-
-
+        soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
         if (settings != null) {
 
-            defualt = MediaPlayer.create(getContext(), settings.getInt("defaultSound", R.raw.click));
-            defualt.setAudioStreamType(AudioManager.MODE_RINGTONE);
-
+            load = soundPool.load(getContext(), settings.getInt("defaultSound", R.raw.click), 1);
             doIPlaySound = settings.getBoolean("masbahaSound", true);
             doIVibrate = settings.getBoolean("masbahaVibrate", true);
 
         } else {
-            defualt = MediaPlayer.create(getContext(), R.raw.click);
-            defualt.setAudioStreamType(AudioManager.MODE_RINGTONE);
+            load = soundPool.load(getContext(), R.raw.click, 1);
 
             doIVibrate = true;
             doIPlaySound = true;
@@ -170,10 +171,10 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
 
     private void chooseZikr() {
         if (doIPlaySound)
-            defualt.start();
+            soundPool.play(load, 1, 1, 0, 0, 1);
 
         if (doIVibrate)
-            v.vibrate(500);
+            v.vibrate(100);
         showDialog();
 
     }
@@ -332,7 +333,9 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
         else if (doIPlaySound && theCount >= 1000) {
             menu.start();
         } else {
-            defualt.start();
+
+            soundPool.play(load, 1, 1, 0, 0, 1);
+
         }
 
     }
@@ -347,7 +350,7 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
         if (doIVibrate)
             v.vibrate(100);
         if (doIPlaySound)
-            defualt.start();
+            soundPool.play(load, 1, 1, 0, 0, 1);
         // do nt forget to play sound depends on settings
         count = 0;
         theCount = 0;
@@ -402,6 +405,5 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
 
         dialog.show();
     }
-
 
 }
