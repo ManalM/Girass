@@ -44,7 +44,7 @@
         android:id="@+id/like"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginLeft="15dp"
+        android:layout_marginLeft="13dp"
         android:layout_marginBottom="15dp"
         android:padding="10dp"
         android:layout_above="@id/indicator"

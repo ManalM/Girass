@@ -5,8 +5,10 @@ import android.app.Dialog;
 import android.content.Context;
 
 import android.content.SharedPreferences;
+import android.content.res.AssetFileDescriptor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 
 import android.os.Build;
@@ -37,6 +39,8 @@ import android.widget.Toast;
 
 import com.example.girass.Data.DataService;
 import com.example.girass.adapters.AdapterAzkar;
+
+import java.io.IOException;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -78,13 +82,19 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
         settingsEditor = PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
 
 
+
         if (settings != null) {
+
             defualt = MediaPlayer.create(getContext(), settings.getInt("defaultSound", R.raw.click));
+            defualt.setAudioStreamType(AudioManager.MODE_RINGTONE);
+
             doIPlaySound = settings.getBoolean("masbahaSound", true);
             doIVibrate = settings.getBoolean("masbahaVibrate", true);
 
         } else {
             defualt = MediaPlayer.create(getContext(), R.raw.click);
+            defualt.setAudioStreamType(AudioManager.MODE_RINGTONE);
+
             doIVibrate = true;
             doIPlaySound = true;
             settingsEditor.putInt("defaultSound", R.raw.click);
