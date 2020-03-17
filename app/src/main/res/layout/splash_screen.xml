@@ -15,22 +15,22 @@
 
 
         <ImageView
-            android:visibility="invisible"
             android:id="@+id/star"
+            android:layout_width="250dp"
 
-            android:layout_width="200dp"
-            android:layout_height="250dp"
+            android:layout_height="300dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_marginStart="55dp"
-            android:layout_marginLeft="55dp"
-            android:layout_marginTop="163dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="150dp"
             android:layout_marginEnd="55dp"
-            android:layout_marginRight="55dp"
-            android:background="@drawable/splash_star" />
+            android:layout_marginRight="40dp"
+            android:background="@drawable/splash_star"
+            android:visibility="invisible" />
 
         <ImageView
             android:id="@+id/name"
@@ -46,15 +46,14 @@
             android:layout_centerInParent="true"
             android:layout_marginStart="53dp"
             android:layout_marginLeft="53dp"
-            android:layout_marginTop="230dp"
+            android:layout_marginTop="240dp"
             android:layout_marginEnd="66dp"
             android:layout_marginRight="66dp"
             app:srcCompat="@drawable/girass_name" />
 
         <LinearLayout
-            android:visibility="invisible"
-
             android:id="@+id/labels"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/star"
@@ -65,35 +64,36 @@
             android:layout_alignParentBottom="true"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="38dp"
+            android:layout_marginTop="30dp"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="159dp"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="invisible">
 
             <TextView
                 android:id="@+id/label1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/tajawal_regular"
-                android:maxLines="1"
                 android:gravity="center"
+                android:maxLines="1"
                 android:text="@string/label1"
                 android:textColor="@color/colorAccent"
 
                 android:textSize="18sp" />
 
             <TextView
-                android:maxLines="1"
-
                 android:id="@+id/label2"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/label1"
                 android:layout_margin="5dp"
                 android:fontFamily="@font/tajawal_regular"
                 android:gravity="center"
+                android:maxLines="1"
                 android:text="@string/label2"
                 android:textColor="@color/colorAccent"
                 android:textSize="18sp"
