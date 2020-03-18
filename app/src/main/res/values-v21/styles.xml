@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Base.TextAppearance.Widget.AppCompat.Toolbar.Subtitle." parent="Base.TextAppearance.Widget.AppCompat.Toolbar.Subtitle.">
+    <style name="Base.TextAppearance.Widget.AppCompat.Toolbar.Subtitle." parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
 
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/colorAccent</item>

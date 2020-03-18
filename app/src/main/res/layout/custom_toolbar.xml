@@ -11,25 +11,15 @@
     android:orientation="vertical"
     android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
 
-    <!--  <TextView
-          android:id="@+id/edit"
-          android:layout_width="wrap_content"
-          android:layout_height="match_parent"
-          android:layout_margin="15dp"
-          android:layout_gravity="end"
-          android:padding="3dp"
 
-          android:text=""
-          style="@style/Base.TextAppearance.Widget.AppCompat.Toolbar.Subtitle." />
-  -->
     <TextView
         android:id="@+id/toolbar_title"
-        style="@style/Toolbar.TitleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="3dp"
         android:ellipsize="end"
+        android:textColor="@color/colorAccent"
         android:fontFamily="@font/tajawal_bold"
         android:singleLine="true"
         android:text=""

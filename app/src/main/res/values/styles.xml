@@ -13,21 +13,20 @@
     <style name="PauseDialogAnimation">
         <item name="android:windowEnterAnimation">@anim/dialog_up</item>
     </style>
+    <!--
+        &lt;!&ndash;tool bar style&ndash;&gt;
+        <style name="Toolbar.TitleText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
 
-    <!--tool bar style-->
-    <style name="Toolbar.TitleText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+            <item name="android:textColor">@color/colorAccent</item>
 
-        <item name="android:textColor">@color/colorAccent</item>
-
-    </style>
+        </style>-->
 
 
-    <style name="Base.TextAppearance.Widget.AppCompat.Toolbar.Subtitle." parent="Base.TextAppearance.Widget.AppCompat.Toolbar.Subtitle.">
+    <style name="Base.TextAppearance.Widget.AppCompat.Toolbar.Subtitle." parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
 
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/colorAccent</item>
         <item name="android:fontFamily">@font/tajawal_regular</item>
-        <item name="android:navigationBarColor">@color/textColor</item>
     </style>
 
     <style name="dialog_theme">
