@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ZikrDetails">
+    tools:context="com.dozo.girass.ZikrDetails">
 
     <ScrollView
         android:id="@+id/scroll"
@@ -95,7 +95,7 @@
 
             >
 
-            <com.example.girass.CircularProgressBar
+            <com.dozo.girass.CircularProgressBar
                 android:id="@+id/progress"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

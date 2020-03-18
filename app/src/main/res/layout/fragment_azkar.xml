@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context=".AzkarFragment">
+    tools:context="com.dozo.girass.AzkarFragment">
 
     <include layout="@layout/background_image" />
 

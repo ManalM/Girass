@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    tools:context=".SettingsFragments"
+    tools:context="com.dozo.girass.SettingsFragments"
     android:layout_height="wrap_content">
 
     <include layout="@layout/dark_background_image" />

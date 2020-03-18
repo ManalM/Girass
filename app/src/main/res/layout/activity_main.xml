@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fontFamily="@font/tajawal_regular"
 
-    tools:context=".MainActivity">
+    tools:context="com.dozo.girass.MainActivity">
 
     <FrameLayout
         android:id="@+id/fragment_container"

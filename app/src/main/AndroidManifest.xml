@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.girass">
+    package="com.dozo.girass">
 
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -13,16 +13,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
-        <activity android:name=".AllZikr" ></activity>
+        <activity android:name="com.dozo.girass.AllZikr"></activity>
         <activity
-            android:name=".MainActivity"
+            android:name="com.dozo.girass.MainActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTop">
 
         </activity>
 
 
-        <activity android:name=".SplashScreen">
+        <activity android:name="com.dozo.girass.SplashScreen">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,11 +31,11 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".Notification.Notify" />
-        <receiver android:name=".Notification.NotifyReminder" />
-        <receiver android:name=".Notification.NotifyEvening" />
-        <receiver android:name=".Notification.NotifySleep" />
-        <receiver android:name=".Notification.NotifyWakeup" />
+        <receiver android:name="com.dozo.girass.Notification.Notify" />
+        <receiver android:name="com.dozo.girass.Notification.NotifyReminder" />
+        <receiver android:name="com.dozo.girass.Notification.NotifyEvening" />
+        <receiver android:name="com.dozo.girass.Notification.NotifySleep" />
+        <receiver android:name="com.dozo.girass.Notification.NotifyWakeup" />
     </application>
 
 </manifest>

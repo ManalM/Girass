@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/subha_back"
     android:orientation="vertical"
-    tools:context=".MasbahaFragment">
+    tools:context="com.dozo.girass.MasbahaFragment">
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
