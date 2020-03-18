@@ -126,7 +126,8 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
         subhaBtn.setOnClickListener(this);
         tasbihLayout.setOnClickListener(this);
 
-
+        ///-------------save data of counting---------------
+        retrieveCounting();
         return rootView;
     }
 
@@ -399,8 +400,8 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
 
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onPause() {
+        super.onPause();
         temporarySharedEditor.putInt("theCount", theCount);
         temporarySharedEditor.putString("first", firstZikr.getText().toString());
         temporarySharedEditor.putString("sec", secZikr.getText().toString());
@@ -411,9 +412,8 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    @Override
-    public void onResume() {
-        super.onResume();
+    public void retrieveCounting() {
+
         if (temporaryShared != null) {
             count = temporaryShared.getInt("count", 0);
             theCount = temporaryShared.getInt("theCount", 0);
