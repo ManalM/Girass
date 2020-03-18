@@ -111,7 +111,8 @@
             android:layout_marginLeft="8dp"
             android:singleLine="true"
             android:layout_marginRight="8dp"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/secondText"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
 

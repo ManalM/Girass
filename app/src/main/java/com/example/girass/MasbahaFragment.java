@@ -5,16 +5,12 @@ import android.app.Dialog;
 import android.content.Context;
 
 import android.content.SharedPreferences;
-import android.content.res.AssetFileDescriptor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 
-import android.media.RingtoneManager;
 import android.media.SoundPool;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -25,9 +21,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import android.os.Handler;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +31,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import android.view.animation.LayoutAnimationController;
 import android.widget.ImageButton;
 
 import android.widget.LinearLayout;
@@ -44,8 +39,6 @@ import android.widget.Toast;
 
 import com.example.girass.Data.DataService;
 import com.example.girass.adapters.AdapterAzkar;
-
-import java.io.IOException;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -60,48 +53,47 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
     private Boolean doIVibrate;
     private TextView noOfTasih, firstZikr, secZikr, thirdZikr;
     private final static String MY_PREFS = "MY_PREFS";
-    SharedPreferences.Editor editor;
-    SharedPreferences prefs;
-    SharedPreferences settings;
-    SharedPreferences.Editor settingsEditor;
-    String zikr, chozenZikr = "";
+    private SharedPreferences.Editor editor;
+    private SharedPreferences prefs;
+    private String zikr, chozenZikr = "";
     private String[] headZikrObjects;
     private Dialog dialog;
-    Vibrator v;
-    MediaPlayer pop, menu;
-    Context context;
-    SoundPool soundPool;
-    int load;
+    private Vibrator v;
+    private MediaPlayer pop, menu;
+    private SoundPool soundPool;
+    private int load;
+
+    private SharedPreferences.Editor temporarySharedEditor;
+    private SharedPreferences temporaryShared;
+
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_masbaha, container, false);
-
         /////////////////////////////////////////////////
         /////////////  initiate variables  /////////////
         ///////////////////////////////////////////////
         //---------------- SharedPreference settings -------------------------------------------
-
-        context = getActivity().getApplicationContext();
-
-        settings = PreferenceManager.getDefaultSharedPreferences(getContext());
-        settingsEditor = PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
+        editor = PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
+        prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        temporaryShared = getContext().getSharedPreferences(MY_PREFS, MODE_PRIVATE);
+        temporarySharedEditor = getContext().getSharedPreferences(MY_PREFS, MODE_PRIVATE).edit();
         soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
-        if (settings != null) {
+        if (prefs != null) {
 
-            load = soundPool.load(getContext(), settings.getInt("defaultSound", R.raw.click), 1);
-            doIPlaySound = settings.getBoolean("masbahaSound", true);
-            doIVibrate = settings.getBoolean("masbahaVibrate", true);
+            load = soundPool.load(getContext(), prefs.getInt("defaultSound", R.raw.click), 1);
+            doIPlaySound = prefs.getBoolean("masbahaSound", true);
+            doIVibrate = prefs.getBoolean("masbahaVibrate", true);
 
         } else {
             load = soundPool.load(getContext(), R.raw.click, 1);
 
             doIVibrate = true;
             doIPlaySound = true;
-            settingsEditor.putInt("defaultSound", R.raw.click);
-            settingsEditor.putBoolean("masbahaSound", true);
-            settingsEditor.putBoolean("masbahaVibrate", true);
-            settingsEditor.commit();
+            editor.putInt("defaultSound", R.raw.click);
+            editor.putBoolean("masbahaSound", true);
+            editor.putBoolean("masbahaVibrate", true);
+            editor.apply();
         }
 
 //-------------------------------------------------------------------
@@ -120,9 +112,7 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
         firstZikr = (TextView) rootView.findViewById(R.id.fisrt_zikr);
         secZikr = (TextView) rootView.findViewById(R.id.sec_zikr);
         thirdZikr = (TextView) rootView.findViewById(R.id.third_zikr);
-        editor = getContext().getSharedPreferences(MY_PREFS, MODE_PRIVATE).edit();
-        prefs = getContext().getSharedPreferences(MY_PREFS, MODE_PRIVATE);
-        settings = getContext().getSharedPreferences("SETTING_PREFS", MODE_PRIVATE);
+
         chozenZikr = prefs.getString("chooseZikr", null);
 
 
@@ -130,17 +120,18 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
         /////////////  show List Azkar using ListDialog class /////////////
         //////////////////////////////////////////////////////////////////
 
-
         resetCount.setOnClickListener(this);
         chooseZikr.setOnClickListener(this);
 
         subhaBtn.setOnClickListener(this);
         tasbihLayout.setOnClickListener(this);
 
+
         return rootView;
     }
 
-    ///////////////////////////////////////////////
+
+///////////////////////////////////////////////
     /////////////  Buttons Functions /////////////
     /////////////////////////////////////////////
 
@@ -179,14 +170,13 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    public void counting() {
+    private void counting() {
 
 
         /****************************************
          **** Subha button and animate the  *****
          **** text depending on the count   *****
          ****************************************/
-
         theCount++;
         count++;
         vibrateAndSounds();
@@ -223,7 +213,8 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
 
         }
 
-        editor.putInt("count", theCount);
+        editor.putInt("theCount", theCount);
+        editor.putInt("count", count);
         editor.apply();
     }
 
@@ -340,7 +331,7 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    public void setResetCount() {
+    private void setResetCount() {
 
         /*************************************
          ****         reset button        *****
@@ -362,7 +353,7 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    public void showDialog() {
+    private void showDialog() {
         dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.custom_dialog2);
 
@@ -406,4 +397,66 @@ public class MasbahaFragment extends Fragment implements View.OnClickListener {
         dialog.show();
     }
 
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        temporarySharedEditor.putInt("theCount", theCount);
+        temporarySharedEditor.putString("first", firstZikr.getText().toString());
+        temporarySharedEditor.putString("sec", secZikr.getText().toString());
+        temporarySharedEditor.putString("third", thirdZikr.getText().toString());
+        temporarySharedEditor.putString("text", noOfTasih.getText().toString());
+        temporarySharedEditor.putInt("count", count);
+        temporarySharedEditor.apply();
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (temporaryShared != null) {
+            count = temporaryShared.getInt("count", 0);
+            theCount = temporaryShared.getInt("theCount", 0);
+
+
+            if (theCount > 0) {
+
+                noOfTasih.setTextSize(40);
+                noOfTasih.setTextColor(getResources().getColor(R.color.colorAccent));
+            }
+            if (count == 0) {
+                if (theCount == 0) {
+                    noOfTasih.setText(temporaryShared.getString("text", ""));
+                } else
+
+                    noOfTasih.setText(String.valueOf(theCount));
+
+                firstZikr.setText(temporaryShared.getString("first", ""));
+
+                secZikr.setText(temporaryShared.getString("sec", ""));
+                thirdZikr.setText(temporaryShared.getString("third", ""));
+
+            } else if (count == 3) {
+
+                noOfTasih.setText(String.valueOf(theCount));
+
+                firstZikr.setText(temporaryShared.getString("first", ""));
+
+                secZikr.setText(temporaryShared.getString("sec", ""));
+                thirdZikr.setText(temporaryShared.getString("third", ""));
+
+                count = 0;
+
+            } else {
+                noOfTasih.setText(String.valueOf(theCount));
+
+                firstZikr.setText(temporaryShared.getString("first", ""));
+
+                secZikr.setText(temporaryShared.getString("sec", ""));
+                thirdZikr.setText(temporaryShared.getString("third", ""));
+            }
+
+        }
+    }
 }
+
